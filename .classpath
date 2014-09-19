@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry sourcepath="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2/73d0340eaecbb0ec9d3e0ace90547ef08cbfaf27/commons-collections-3.2-sources.jar" kind="lib" path="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2/f951934aa5ae5a88d7e6dfaa6d32307d834a88be/commons-collections-3.2.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/1952f91d84016a39e31346c9d18bd8c9c4a128a/javax.servlet-api-3.0.1-sources.jar" kind="lib" path="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/2f5877ef15adb721421e80f5aa2b6fe069eec8ed/jstl-1.2-sources.jar" kind="lib" path="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.2/74aca283cd4f4b4f3e425f5820cda58f44409547/jstl-1.2.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/junit/junit/4.12-beta-1/6b1bbf7aedba23e3e43cb7afe0e9842c364065bd/junit-4.12-beta-1-sources.jar" kind="lib" path="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/junit/junit/4.12-beta-1/f516376d8dbcaf37ab11975cd7807e5e1782a847/junit-4.12-beta-1.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="C:/Users/simon_000/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" exported="true"/>
+</classpath>
