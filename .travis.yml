@@ -1,1 +1,10 @@
 language: java
+deploy:
+  provider: openshift
+  user: daniel.webster92@gmail.com
+  password:
+    secure: WX4xc6OKbNShTxdACeICzJeCGBljYVYXK17L1jvL3QApVvroj8JVAhAAVmnHrjFjhhjIUtR+SXEbvTmKtsYtWsWAj/O7nbOf94oWQhU5k/NulZfbsTIfxwJoaFMQb8Ge7n4n2bF17w/EI5qnXEalLtnW2r7Q1jjY0N+phHyvLy0=
+  app: aggregates
+  domain: cmax
+  on:
+    repo: TylerHaigh/seng2050-assignment3
