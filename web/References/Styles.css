@@ -8,3 +8,22 @@ and open the template in the editor.
     Author     : Tyler 2
 */
 
+* {
+    border: 1px solid red;
+}
+
+.wrapper {
+    width:80%;
+}
+
+.wrapper .header {
+    height:100px;
+}
+
+.wrapper .main {
+    height:100px;
+}
+
+.wrapper .footer {
+    height:100px;
+}
