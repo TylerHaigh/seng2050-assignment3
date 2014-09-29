@@ -16,14 +16,90 @@ and open the template in the editor.
     width:80%;
 }
 
-.wrapper .header {
-    height:100px;
-}
+    .wrapper .header {
+        height:100px;
+    }
 
-.wrapper .main {
-    height:100px;
-}
+    .wrapper .main {
+        height:100px;
+    }
 
-.wrapper .footer {
-    height:100px;
-}
+    .wrapper .footer {
+        height:100px;
+    }
+
+    .wrapper #dashboard {
+	margin: auto auto; 
+	text-align: center;
+    }
+
+        .wrapper #dashboard ul ul {
+                display: none;
+        }
+
+        .wrapper #dashboard ul li:hover > ul {
+                display: block;
+        }
+
+        .wrapper #dashboard ul {
+                background: #efefef; 
+                list-style: none;
+                position: relative;
+                display: inline-table;
+        }
+            .wrapper #dashboard ul:after {
+                    content: "";
+                    clear: both;
+                    display: block;
+            }
+
+            .wrapper #dashboard ul li {
+                    float: left;
+                    padding:10px;
+            }
+                
+                .wrapper #dashboard ul li:hover {
+                        background: #4b545f;
+                }
+                    
+                    .wrapper #dashboard ul li:hover a {
+                            color: #fff;
+                    }
+
+                    .wrapper #dashboard ul li a {
+                            display: block;
+                            padding: 25px 40px;
+                            color: #757575;
+                            text-decoration: none;
+                    }
+
+
+            .wrapper #dashboard ul ul {
+                    background: #5f6975;
+                    border-radius: 0px;
+                    padding: 0;
+                    position: absolute;
+                    top: 100%;
+            }
+            
+                .wrapper #dashboard ul ul li {
+                        float: none; 
+                        border-top: 1px solid #6b727c;
+                        border-bottom: 1px solid #575f6a;
+                        position: relative;
+                }
+                    
+                    .wrapper #dashboard ul ul li a {
+                            padding: 15px 40px;
+                            color: #fff;
+                    }	
+                        
+                        .wrapper #dashboard ul ul li a:hover {
+                                background: #4b545f;
+                        }
+
+            .wrapper #dashboard ul ul ul {
+                    position: absolute;
+                    left: 100%;
+                    top:0;
+            }

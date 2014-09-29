@@ -8,10 +8,46 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Dashboard</title>
+        <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div class="wrapper">
+            
+            <div class="header">
+                
+            </div>
+            
+            <!-- http://line25.com/tutorials/how-to-create-a-pure-css-dropdown-menu -->
+            <div id="dashboard">
+                <ul>
+                    <li>
+                        My Research Groups
+                        <ul>
+                            <li>Group 1</li>
+                            <li>Group 2</li>
+                        </ul>
+                    </li>
+                    
+                    <li>Discussion Board</li>
+                    <li>
+                        Username <!-- Dynamically generate this-->
+                        <ul>
+                            <li>View Profile</li>
+                            <li>Log Out</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="main">
+                
+            </div>
+                
+            <div class="footer">
+                
+            </div>
+            
+        </div>
     </body>
 </html>
