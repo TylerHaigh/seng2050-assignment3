@@ -8,7 +8,8 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     
-    private String name;
+    private String firstName;
+    private String lastName;
     private String studentID;
     private String password;
     private String imageReference; //Unique string containing a reference to the image on disk
@@ -19,8 +20,12 @@ public class User implements Serializable {
     
     //Getters
     
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
     }
 
     public String getStudentID() {
@@ -37,8 +42,12 @@ public class User implements Serializable {
     
     //Setters
     
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setStudentID(String studentID) {
@@ -51,5 +60,10 @@ public class User implements Serializable {
 
     public void setImageReference(String imageReference) {
         this.imageReference = imageReference;
+    }
+    
+    //Queries
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 }

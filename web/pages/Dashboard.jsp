@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<jsp:useBean id="user" class="rgms.model.User" scope="session" />
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,7 +34,7 @@
                     
                     <li>Discussion Board</li>
                     <li>
-                        Username <!-- Dynamically generate this-->
+                        <jsp:getProperty name="user" property="firstName" /> <!-- Dynamically generate this-->
                         <ul>
                             <li>View Profile</li>
                             <li>Log Out</li>
