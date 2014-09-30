@@ -16,12 +16,12 @@ public class JDBCConnection {
 
     //My SQL Connection String
     private String databaseHost = "localhost";
-    private String databaseName = "databaseName";
+    private String databaseName = "RGMS_DB";
     private String dbUrl = "jdbc:mysql://" + databaseHost + "/" + databaseName;
     
     //My SQL Credentials
-    private String userName = "root";
-    private String password = "password";
+    private String userName = "rgms";
+    private String password = "seng2050";
     
     private Connection conn; //Create connection variable
     

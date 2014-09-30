@@ -14,7 +14,7 @@
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     
-    if (user != null) response.sendRedirect("Dashboard.jsp");
+    //if (user != null) response.sendRedirect("Dashboard.jsp");
 %>
 
 <!DOCTYPE html>
@@ -32,12 +32,18 @@
             database.setQuery(query);
             
             ResultSet rs = database.getData();
-            if (rs != null &&
-                    rs.getString("Username").equals(username) &&
-                    rs.getString("Password").equals(password)) {
-                //response.sendRedirect("Dashbard.jsp");
-            } else {
-                //response.sendRedirect("../index.html");
+            
+            if (rs != null) {
+                while (rs.next()) {
+                    String name = rs.getString("Username");
+                    String pass = rs.getString("Password");
+                    
+                    if (name.equals(username) && pass.equals(password)) {
+                        response.sendRedirect("Dashbard.jsp");
+                    } else {
+                        response.sendRedirect("../index.html");
+                    }
+                }
             }
         %>
         

@@ -1,0 +1,8 @@
+CREATE DATABASE RGMS_DB;
+
+CREATE TABLE Users (
+	FirstName VARCHAR(64),
+	LastName VARCHAR(64),
+	Username VARCHAR(64),
+	Password VARCHAR(64)
+);

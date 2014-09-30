@@ -1,0 +1,1 @@
+INSERT INTO Users VALUES('Tyler', 'Haigh', 'c3182929', 'test')
