@@ -4,48 +4,67 @@
     Author     : Tyler 2
 --%>
 
-<%@page import="java.sql.ResultSet"%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="rgms.controller.LoginController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<jsp:useBean id="database" class="rgms.model.DatabaseBean" />
-<jsp:useBean id="user" class="rgms.model.User" scope="session" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
+    LoginController lc = new LoginController();
+    
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     
-    //if (user != null) response.sendRedirect("Dashboard.jsp");
+    boolean error = Boolean.parseBoolean(request.getParameter("error"));
+    pageContext.setAttribute("error", error);
+    
+    if (username != null && password != null)
+        response.sendRedirect(lc.login(username, password));
+    
 %>
 
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login</title>
+        <title>Login | Research Group Management System</title>
+        <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
     </head>
     <body>
-        <h1>Logging you in...</h1>
-        <%
-            String query = "SELECT * FROM Users WHERE Username='" + username +
-                "' AND Password='" + password + "'";
+        <div class="wrapper">
             
-            database.setQuery(query);
+            <div class="header">
+                
+            </div>
             
-            ResultSet rs = database.getData();
-            
-            if (rs != null) {
-                while (rs.next()) {
-                    String name = rs.getString("Username");
-                    String pass = rs.getString("Password");
+            <div class="main">
+                
+                <c:if test="${error}">
+                    <p>Error: Invalid username or password</p>
+                </c:if>
+                
+                
+                <form method="get" action="Login.jsp">
+                    <label for="username">Username: </label>
+                    <input type="text" name="username" id="username" /> <br />
                     
-                    if (name.equals(username) && pass.equals(password)) {
-                        response.sendRedirect("Dashbard.jsp");
-                    } else {
-                        response.sendRedirect("../index.html");
-                    }
-                }
-            }
-        %>
-        
+                    <label for="password">Password: </label>
+                    <input type="password" name="password" id="password" /> <br />
+                    
+                    <input type="submit" value="Login"  />
+                </form>
+            </div>
+            
+            <div class="footer">
+                <p>Copyright The Aggregates 3.0 (2014)</p>
+            </div>
+            
+        </div>
     </body>
 </html>

@@ -43,7 +43,7 @@ public class JDBCConnection {
      * Creates a connection to the JDBC Database
      * @throws SQLException The connection cannot be established
      */
-    private void getConnection() throws	SQLException {
+    public void getConnection() throws	SQLException {
         //Check if the connection does not exist
         if(conn	== null || conn.isClosed()) {
             //Establish a new connection
@@ -55,7 +55,7 @@ public class JDBCConnection {
      * Closes the connection to the JDBC Database
      * @throws SQLException The connection cannot be closed
      */
-    private void setDone() throws SQLException {
+    public void setDone() throws SQLException {
         //Check the connection still exists
         if(conn!=null) {
             //Close the connection
@@ -70,9 +70,6 @@ public class JDBCConnection {
      * @throws SQLException 
      */
     public ResultSet executeQuery(String query) throws SQLException {
-        //Establish the connection
-        getConnection();
-        
         ResultSet rs = null;
         
         //Exeute the query
@@ -82,8 +79,7 @@ public class JDBCConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //Close the connection and return the results
-        setDone();
+        
         return rs;
     }
     
