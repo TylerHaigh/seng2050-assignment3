@@ -33,7 +33,7 @@ public class AuthenticationManager {
                  * Since usernames are unique, there should only be at most
                  * one set returned by the query
                  */
-                if (rs != null) {
+                if (rs != null && rs.next()) {
                     userSession = createSession(rs);
                 }
                 
@@ -50,6 +50,7 @@ public class AuthenticationManager {
     }
     
     private static Session createSession(ResultSet rs) throws SQLException {
+        
         
         String rsUsername = rs.getString("Username");
         String rsPassword = rs.getString("Passphrase");
