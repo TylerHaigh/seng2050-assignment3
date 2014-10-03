@@ -12,16 +12,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
-    LoginController lc = new LoginController();
-    
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
-    
-    boolean error = Boolean.parseBoolean(request.getParameter("error"));
-    pageContext.setAttribute("error", error);
-    
-    if (username != null && password != null)
-        response.sendRedirect(lc.login(username, password));
+    LoginController lc = new LoginController(request.getSession());
+    String autoLogin = lc.autoLogin();
+    if (autoLogin == null) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        boolean error = Boolean.parseBoolean(request.getParameter("error"));
+        pageContext.setAttribute("error", error);
+
+        if (username != null && password != null)
+            response.sendRedirect(lc.login(username, password));
+    } else response.sendRedirect(autoLogin);
     
 %>
 
