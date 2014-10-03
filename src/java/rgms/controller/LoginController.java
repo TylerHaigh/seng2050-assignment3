@@ -5,50 +5,26 @@
  */
 package rgms.controller;
 
-import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import rgms.infrastructure.*;
 
 /**
  *
  * @author Tyler 2
  */
-public class LoginController {
+public abstract class LoginController {
     
-    private JDBCConnection conn;
-    
-    public LoginController() {
-        try {
-            conn = new JDBCConnection();
-        } catch (Exception ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static Session AutoLogin() {
+        Session oldSession = AuthenticationManager.LoadCurrentSession();
+        return oldSession;
     }
     
-    public String login(String username, String password) {
-        String query = "SELECT * FROM Users WHERE Username='" + username +
-                "' AND Password='" + password + "'" ;
+    public static String Login(String username, String password) {
+        Session userSession = AuthenticationManager.Login(username, password, false);
         
-        boolean validated = false;
+        //TODO: Add session to HTTP Session
         
-        try {
-            conn.getConnection();
-            
-            ResultSet rs = conn.executeQuery(query);
-            if (rs != null) {
-                while (rs.next()) {
-                    if (rs.getString("Username").equals(username) &&
-                        rs.getString("Password").equals(password))
-                        validated = true;
-                }
-            }
-            
-            conn.setDone();
-        } catch (Exception e) {
-            
-        }
+        return (userSession != null) ?  "Dashboard.jsp" : "Login.jsp?error=true";
         
-        return (validated) ?  "Dashboard.jsp" : "Login.jsp?error=true";
     }
     
 }

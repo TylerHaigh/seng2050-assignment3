@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rgms.controller.JDBCConnection;
+import rgms.infrastructure.JDBCConnection;
 
 /**
  * Stores a connection to a JDBC connection
