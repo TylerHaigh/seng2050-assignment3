@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rgms.infrastructure;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.*;
-import javax.servlet.http.HttpSession;
 import rgms.model.User;
 
 /**
@@ -27,30 +22,19 @@ public class AuthenticationManager {
             JDBCConnection conn = new JDBCConnection();
             
             String query = "SELECT * FROM Users WHERE Username='" + username +
-                    "' AND Password='" + password + "'" ;
+                    "' AND Passphrase='" + password + "'" ;
             
             try {
                 conn.getConnection();
                 
                 ResultSet rs = conn.executeQuery(query);
+                
+                /**
+                 * Since usernames are unique, there should only be at most
+                 * one set returned by the query
+                 */
                 if (rs != null) {
-                    while (rs.next()) {
-                        String rsUsername = rs.getString("Username");
-                        String rsPassword = rs.getString("Password");
-                        
-                        if (rsUsername.equals(username) &&
-                                rsPassword.equals(password)) {
-                            
-                            int rsUserId = Integer.parseInt(rs.getString("Id"));
-                            String rsFirstName = rs.getString("Firstname");
-                            String rsLastName = rs.getString("Lastname");
-                            String rsImageReference = rs.getString("ImageReference");
-                            
-                            User thisUser = new User(rsUserId, rsFirstName, rsLastName, rsUsername, rsPassword, rsImageReference);
-                            userSession = new Session(false, rsUserId, thisUser);
-                        }
-                            
-                    }
+                    userSession = createSession(rs);
                 }
                 
                 conn.setDone();
@@ -63,5 +47,19 @@ public class AuthenticationManager {
         }
         
         return userSession;
-    } 
+    }
+    
+    private static Session createSession(ResultSet rs) throws SQLException {
+        
+        String rsUsername = rs.getString("Username");
+        String rsPassword = rs.getString("Passphrase");
+        int rsUserId = Integer.parseInt(rs.getString("Id"));
+        String rsFirstName = rs.getString("Firstname");
+        String rsLastName = rs.getString("Lastname");
+        String rsImageReference = rs.getString("ImageReference");
+
+        User thisUser = new User(rsUserId, rsFirstName, rsLastName, rsUsername, rsPassword, rsImageReference);
+        Session session = new Session(false, rsUserId, thisUser);
+        return session;
+    }
 }
