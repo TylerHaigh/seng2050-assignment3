@@ -4,6 +4,7 @@
     Author     : Tyler 2
 --%>
 
+<%@page import="rgms.infrastructure.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <jsp:useBean id="user" class="rgms.model.User" scope="session" />
@@ -34,6 +35,11 @@
                     
                     <li>Discussion Board</li>
                     <li>
+                        <%
+                            Session s = (Session)request.getSession().getAttribute("session");
+                            out.print(s.getUser().getFullName());
+                        %>
+                        
                         <jsp:getProperty name="user" property="firstName" /> <!-- Dynamically generate this-->
                         <ul>
                             <li>View Profile</li>
