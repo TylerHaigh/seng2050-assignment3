@@ -4,7 +4,14 @@
     Author     : Tyler 2
 --%>
 
+<%@page import="rgms.infrastructure.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+    Session userSession = (Session)session.getAttribute("session");
+    if (userSession == null) response.sendRedirect("Login.jsp");
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
