@@ -5,3 +5,6 @@
  */
 
 
+$(document).ready(function() {
+   $(".nav").load("../References/Navigation.jsp");
+});

@@ -28,45 +28,45 @@ and open the template in the editor.
         height:100px;
     }
 
-    .wrapper #dashboard {
+    .wrapper .nav {
 	margin: auto auto; 
 	text-align: center;
     }
 
-        .wrapper #dashboard ul ul {
+        .wrapper .nav ul ul {
                 display: none;
         }
 
-        .wrapper #dashboard ul li:hover > ul {
+        .wrapper .nav ul li:hover > ul {
                 display: block;
         }
 
-        .wrapper #dashboard ul {
+        .wrapper .nav ul {
                 background: #efefef; 
                 list-style: none;
                 position: relative;
                 display: inline-table;
         }
-            .wrapper #dashboard ul:after {
+            .wrapper .nav ul:after {
                     content: "";
                     clear: both;
                     display: block;
             }
 
-            .wrapper #dashboard ul li {
+            .wrapper .nav ul li {
                     float: left;
                     padding:10px;
             }
                 
-                .wrapper #dashboard ul li:hover {
+                .wrapper .nav ul li:hover {
                         background: #4b545f;
                 }
                     
-                    .wrapper #dashboard ul li:hover a {
+                    .wrapper .nav ul li:hover a {
                             color: #fff;
                     }
 
-                    .wrapper #dashboard ul li a {
+                    .wrapper .nav ul li a {
                             display: block;
                             padding: 25px 40px;
                             color: #757575;
@@ -74,7 +74,7 @@ and open the template in the editor.
                     }
 
 
-            .wrapper #dashboard ul ul {
+            .wrapper .nav ul ul {
                     background: #5f6975;
                     border-radius: 0px;
                     padding: 0;
@@ -82,23 +82,23 @@ and open the template in the editor.
                     top: 100%;
             }
             
-                .wrapper #dashboard ul ul li {
+                .wrapper .nav ul ul li {
                         float: none; 
                         border-top: 1px solid #6b727c;
                         border-bottom: 1px solid #575f6a;
                         position: relative;
                 }
                     
-                    .wrapper #dashboard ul ul li a {
+                    .wrapper .nav ul ul li a {
                             padding: 15px 40px;
                             color: #fff;
                     }	
                         
-                        .wrapper #dashboard ul ul li a:hover {
+                        .wrapper .nav ul ul li a:hover {
                                 background: #4b545f;
                         }
 
-            .wrapper #dashboard ul ul ul {
+            .wrapper .nav ul ul ul {
                     position: absolute;
                     left: 100%;
                     top:0;
