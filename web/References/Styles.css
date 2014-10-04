@@ -103,3 +103,27 @@ and open the template in the editor.
                     left: 100%;
                     top:0;
             }
+
+        
+            
+    .wrapper .details {
+        height:100px;
+    }
+            
+        .wrapper .details #image {
+            float:left;
+            width:100px;
+            height:100px;
+            background-color: blue;
+        }
+
+        .wrapper .details #aboutMe {
+            float:right;
+            background-color: green;
+        }
+            
+    .wrapper .researchGroups {
+        clear:both;
+        height: 100px;
+        background-color: pink;
+    }

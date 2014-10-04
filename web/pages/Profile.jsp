@@ -6,10 +6,12 @@
 
 <%@page import="rgms.infrastructure.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
     Session userSession = (Session)session.getAttribute("session");
     if (userSession == null) response.sendRedirect("Login.jsp");
+    else pageContext.setAttribute("user", userSession);
 %>
 
 <!DOCTYPE html>
@@ -27,7 +29,14 @@
             </div>
             
             <div class="details">
-                    
+                <div id="image">
+                    <c:out value="${user.getUser().getImageReference()}"></c:out>
+                </div>
+                
+                <div id="aboutMe">
+                    <c:out value="${user.getUser().getFullName()}"></c:out>
+                </div>
+                
             </div>
             
             <div class="researchGroups">
