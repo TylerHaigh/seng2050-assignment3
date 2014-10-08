@@ -9,103 +9,39 @@ and open the template in the editor.
 */
 
 * {
-    border: 1px solid red;
+/*     border: 1px solid red; */
 }
 
 .wrapper {
     width:80%;
+    margin: 0 auto;
 }
 
     .wrapper .header {
         height:100px;
     }
+    
+    .wrapper .header .headerNav {
+    	margin: 0 25%;
+    	width: 50%;
+    	background-color: #C2D8EC;
+    	border-radius:5px;
+    }
 
     .wrapper .main {
-        height:100px;
+    }
+    
+    .wrapper .main .login-form {
+    	display:inline-block;
+    	margin: 0 33%;
+    	widht:33%;
     }
 
     .wrapper .footer {
+        clear: both;
         height:100px;
     }
 
-    .wrapper .nav {
-	margin: auto auto; 
-	text-align: center;
-    }
-
-        .wrapper .nav ul ul {
-                display: none;
-        }
-
-        .wrapper .nav ul li:hover > ul {
-                display: block;
-        }
-
-        .wrapper .nav ul {
-                background: #efefef; 
-                list-style: none;
-                position: relative;
-                display: inline-table;
-        }
-            .wrapper .nav ul:after {
-                    content: "";
-                    clear: both;
-                    display: block;
-            }
-
-            .wrapper .nav ul li {
-                    float: left;
-                    padding:10px;
-            }
-                
-                .wrapper .nav ul li:hover {
-                        background: #4b545f;
-                }
-                    
-                    .wrapper .nav ul li:hover a {
-                            color: #fff;
-                    }
-
-                    .wrapper .nav ul li a {
-                            display: block;
-                            padding: 25px 40px;
-                            color: #757575;
-                            text-decoration: none;
-                    }
-
-
-            .wrapper .nav ul ul {
-                    background: #5f6975;
-                    border-radius: 0px;
-                    padding: 0;
-                    position: absolute;
-                    top: 100%;
-            }
-            
-                .wrapper .nav ul ul li {
-                        float: none; 
-                        border-top: 1px solid #6b727c;
-                        border-bottom: 1px solid #575f6a;
-                        position: relative;
-                }
-                    
-                    .wrapper .nav ul ul li a {
-                            padding: 15px 40px;
-                            color: #fff;
-                    }	
-                        
-                        .wrapper .nav ul ul li a:hover {
-                                background: #4b545f;
-                        }
-
-            .wrapper .nav ul ul ul {
-                    position: absolute;
-                    left: 100%;
-                    top:0;
-            }
-
-        
-            
     .wrapper .details {
         height:100px;
     }

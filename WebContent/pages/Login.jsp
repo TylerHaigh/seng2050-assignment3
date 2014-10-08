@@ -35,31 +35,43 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Login | Research Group Management System</title>
+        <title>Login | RGMS</title>
         <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
+        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
     </head>
     <body>
         <div class="wrapper">
             
             <div class="header">
-                
+                <h1>RGMS</h1>
             </div>
             
             <div class="main">
                 
                 <c:if test="${error}">
-                    <p>Error: Invalid username or password</p>
+                <div class="alert alert-danger">Error: Invalid username or password</div>
                 </c:if>
                 
-                
-                <form method="get" action="Login.jsp">
-                    <label for="username">Username: </label>
-                    <input type="text" name="username" id="username" /> <br />
+                <form method="get" action="Login.jsp" class="login-form">
                     
-                    <label for="password">Password: </label>
-                    <input type="password" name="password" id="password" /> <br />
+                    <div class="input-group">
+                    	<label for="username">Username: </label>
+                    	<input type="text" name="username" class="form-control" />
+                    </div>
                     
-                    <input type="submit" value="Login"  />
+                    <br />
+                    
+                    <div class="input-group">
+                    	<label for="password">Password: </label>
+                    	<input type="password" name="password" class="form-control" />
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="btn-group">
+                    	<input type="submit" value="Login" class="btn btn-default"  />
+                    </div>
                 </form>
             </div>
             

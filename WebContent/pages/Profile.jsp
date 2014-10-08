@@ -19,13 +19,15 @@
     <head>
         <title>My Profile</title>
         <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
+        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
         <script src="../References/jquery.js"></script> 
         <script src="../References/Scripts.js"></script> 
     </head>
     <body>
         <div class="wrapper">
             <div class="header">
-                <div class="nav"></div>
+            	<div class="headerNav"></div>
             </div>
             
             <div class="details">
@@ -40,11 +42,11 @@
             </div>
             
             <div class="researchGroups">
-                
+            	
             </div>
             
             <div class="footer">
-                
+            	
             </div>
             
         </div>

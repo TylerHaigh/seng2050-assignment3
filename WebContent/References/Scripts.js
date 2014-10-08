@@ -6,5 +6,5 @@
 
 
 $(document).ready(function() {
-   $(".nav").load("../References/Navigation.jsp");
+   $(".headerNav").load("../References/Navigation.jsp #target");
 });

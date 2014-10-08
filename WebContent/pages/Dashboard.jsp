@@ -17,21 +17,23 @@
     <head>
         <title>Dashboard</title>
         <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
+        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
         <script src="../References/jquery.js"></script> 
         <script src="../References/Scripts.js"></script> 
     </head>
     <body>
         <div class="wrapper">
             <div class="header">
-                <div class="nav"></div>
+            	<div class="headerNav"></div>
             </div>
             
             <div class="main">
-                
+                <h1>Dashboard</h1>
             </div>
                 
             <div class="footer">
-                
+                 <p>Copyright The Aggregates 3.0 (2014)</p>
             </div>
             
         </div>
