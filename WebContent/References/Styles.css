@@ -19,13 +19,21 @@ and open the template in the editor.
 
     .wrapper .header {
         height:100px;
+        background-color:#C2D8EC;
+        border-bottom: 20px solid #007788;
+        border-radius: 0px 0px 50px 0px;
+        padding: 10px 10px;
+        margin-bottom: 10px;
+    }
+    
+    .wrapper .header img {
+    	height: 60px;
+    	margin: 0 auto;
     }
     
     .wrapper .header .headerNav {
     	margin: 0 25%;
     	width: 50%;
-    	background-color: #C2D8EC;
-    	border-radius:5px;
     }
 
     .wrapper .main {
@@ -34,12 +42,13 @@ and open the template in the editor.
     .wrapper .main .login-form {
     	display:inline-block;
     	margin: 0 33%;
-    	widht:33%;
+    	width:33%;
     }
 
     .wrapper .footer {
         clear: both;
         height:100px;
+        line-height: 100px;
     }
 
     .wrapper .details {
