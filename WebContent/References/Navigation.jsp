@@ -34,7 +34,7 @@
 	                <span class="caret"></span>
                 </a>
                 <ul> <!--  class="dropdown-menu" -->
-                    <li><a href="Profile.jsp">View Profile</a></li>
+                    <li><a href="Profile.jsp?userId=${userSession.user.studentID}">View Profile</a></li>
                     <li><a href="Redirector.jsp?logout=true">Log Out</a></li>
                 </ul>
             </li>

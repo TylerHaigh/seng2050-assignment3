@@ -3,6 +3,7 @@ package rgms.infrastructure;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.*;
+
 import rgms.model.User;
 
 /**
@@ -11,7 +12,9 @@ import rgms.model.User;
  */
 public class AuthenticationManager {
     
-    public static Session LoadCurrentSession() {
+	private static final Logger logger = Logger.getLogger(AuthenticationManager.class.getName());
+	
+	public static Session LoadCurrentSession() {
         return null;
     }
     
@@ -34,25 +37,23 @@ public class AuthenticationManager {
                  * one set returned by the query
                  */
                 if (rs != null && rs.next()) {
-                    userSession = createSession(rs);
+                    userSession = CreateSession(rs);
                 }
                 
                 conn.setDone();
-            } catch (Exception e) {
-                 Logger.getLogger(AuthenticationManager.class.getName()).log(Level.SEVERE, null, e);
+            } catch (SQLException sql) {
+                 logger.log(Level.SEVERE, "Unable to execute query: " + query, sql);
             }
             
-        } catch (Exception ex) {
-            Logger.getLogger(AuthenticationManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception jdbc) {
+            logger.log(Level.SEVERE, "Unable to establish a connection to the JDBC", jdbc);
         }
         
         return userSession;
     }
     
-    private static Session createSession(ResultSet rs) throws SQLException {
-        
-        
-        String rsUsername = rs.getString("Username");
+    public static User CreateUser(ResultSet rs) throws SQLException {
+    	String rsUsername = rs.getString("Username");
         String rsPassword = rs.getString("Passphrase");
         int rsUserId = Integer.parseInt(rs.getString("Id"));
         String rsFirstName = rs.getString("Firstname");
@@ -60,7 +61,12 @@ public class AuthenticationManager {
         String rsImageReference = rs.getString("ImageReference");
 
         User thisUser = new User(rsUserId, rsFirstName, rsLastName, rsUsername, rsPassword, rsImageReference);
-        Session session = new Session(false, rsUserId, thisUser);
+        return thisUser;
+    }
+    
+    public static Session CreateSession(ResultSet rs) throws SQLException {
+        User thisUser = CreateUser(rs);
+    	Session session = new Session(false, thisUser.getId(), thisUser);
         return session;
     }
 }
