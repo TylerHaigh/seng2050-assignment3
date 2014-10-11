@@ -61,7 +61,10 @@ and open the template in the editor.
             float:left;
             width:100px;
             height:100px;
-            background-color: blue;
+        }
+        
+        .wrapper .details #image img {
+        	width: 100px;
         }
 
         .wrapper .details #aboutMe {

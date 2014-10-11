@@ -54,7 +54,8 @@
             	
 		            	<div class="details">
 			                <div id="image">
-			                    <c:out value="${profileUser.imageReference}" />
+			                    <img src="${ profileUser.imageReference }"
+			                    	 alt="${ profileUser.fullName } Profile Image" />
 			                </div>
 			                
 			                <div id="aboutMe">
