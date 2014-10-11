@@ -1,3 +1,4 @@
+apply plugin: 'war'
 apply plugin: 'tomcat'
 apply plugin: 'eclipse'
 
@@ -15,7 +16,23 @@ dependencies {
         exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
     }
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
-    runtime 'javax.servlet:jstl:1.2'
+    runtime fileTree(dir: 'WebContent/WEB-INF/lib', include: '*.jar')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+}
+
+war {
+    webInf { from 'WebContent/WEB-INF'}
+}
+
+tomcat {
+    webAppDirName = 'WebContent'
 }
 
 buildscript {
