@@ -18,8 +18,11 @@
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        boolean error = Boolean.parseBoolean(request.getParameter("error"));
-        pageContext.setAttribute("error", error);
+        String errorStr = request.getParameter("error");
+        if (errorStr != null) {
+        	boolean error = Boolean.parseBoolean(errorStr);
+     		pageContext.setAttribute("error", error);
+        }
 
         if (username != null && password != null)
             response.sendRedirect(lc.login(username, password));
@@ -44,10 +47,12 @@ and open the template in the editor.
         <div class="wrapper">
             
             <div class="header">
-                <h1>RGMS</h1>
+                <img src="../References/images/UoN_Logo.png" alt="UoN Logo"/>
             </div>
             
             <div class="main">
+                
+                <h1>Research Group Management System</h1>
                 
                 <c:if test="${error}">
                 <div class="alert alert-danger">Error: Invalid username or password</div>

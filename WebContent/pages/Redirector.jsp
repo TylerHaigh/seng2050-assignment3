@@ -7,7 +7,7 @@
 <%
     boolean logout = Boolean.parseBoolean(request.getParameter("logout"));
     if (logout) {
-        session.removeAttribute("session");
+        session.removeAttribute("userSession");
         response.sendRedirect("Login.jsp");
     }
 %>

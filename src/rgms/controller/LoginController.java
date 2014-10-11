@@ -22,9 +22,9 @@ public class LoginController {
     
     public String autoLogin() {
         
-        Session oldSession = (Session)session.getAttribute("session");
+        Session oldSession = (Session)session.getAttribute("userSession");
         
-        if (oldSession == null) session.setAttribute("session", oldSession);
+        //if (oldSession == null) session.setAttribute("userSession", oldSession);
         
         if (oldSession != null && oldSession.getUser() != null)  return "Dashboard.jsp";
         else return null;
@@ -32,7 +32,13 @@ public class LoginController {
     
     public String login(String username, String password) {
         Session userSession = AuthenticationManager.Login(username, password, false);
-        session.setAttribute("session", userSession);
-        return (userSession != null) ?  "Dashboard.jsp" : "Login.jsp?error=true";
+        
+        if (userSession != null) {
+        	session.setAttribute("userSession", userSession);
+        	return "Dashboard.jsp";
+        } else {
+        	return "Login.jsp?error=true";
+        }
+        
     }
 }
