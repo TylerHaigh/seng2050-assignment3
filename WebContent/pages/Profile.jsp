@@ -65,7 +65,10 @@
 			            </div>
 			            
 			            <div class="researchGroups">
-			            	
+			            	<c:forEach var="group"
+			            		items="${ profileController.getGroups(profileUser.studentID) }" >
+			            		<p><c:out value="${ group.groupName }" /></p>
+			            	</c:forEach>
 			            </div>
 	            
 					</c:otherwise>
