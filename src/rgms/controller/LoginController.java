@@ -5,19 +5,30 @@
  */
 package rgms.controller;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpSession;
+
 import rgms.infrastructure.*;
 
 /**
  *
  * @author Tyler 2
  */
-public class LoginController {
+@SuppressWarnings("serial")
+public class LoginController implements Serializable {
     
     private HttpSession session;
     
-    public LoginController(HttpSession session) {
-        this.session = session;
+    public LoginController() {
+    }
+    
+    public HttpSession getSession() {
+    	return this.session;
+    }
+    
+    public void setSession(HttpSession session) {
+    	this.session = session;
     }
     
     public String autoLogin() {

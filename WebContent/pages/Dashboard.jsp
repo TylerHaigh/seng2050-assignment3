@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Dashboard</title>
+        <title>Dashboard | RGMS</title>
         <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
         <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
