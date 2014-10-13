@@ -4,6 +4,12 @@
     Author     : Tyler 2
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<c:if test="${empty userSession}">
+	<c:redirect url="Login.jsp" />
+</c:if>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

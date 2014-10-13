@@ -6,6 +6,9 @@
 
 <%@page import="rgms.infrastructure.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
     <head></head>
@@ -27,14 +30,11 @@
             
             <li class="dropdown">
             	<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-	                <%
-	                    Session s = (Session)request.getSession().getAttribute("session");
-	                    out.print(s.getUser().getFullName());
-	                %>
-	                 <span class="caret"></span>
+	                <c:out value="${userSession.user.fullName}" />
+	                <span class="caret"></span>
                 </a>
                 <ul> <!--  class="dropdown-menu" -->
-                    <li><a href="Profile.jsp">View Profile</a></li>
+                    <li><a href="Profile.jsp?userId=${userSession.user.studentID}">View Profile</a></li>
                     <li><a href="Redirector.jsp?logout=true">Log Out</a></li>
                 </ul>
             </li>

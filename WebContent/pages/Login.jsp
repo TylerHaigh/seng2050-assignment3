@@ -5,27 +5,29 @@
 --%>
 
 <%@page import="java.util.Enumeration"%>
-<%@page import="rgms.controller.LoginController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%
-    LoginController lc = new LoginController(request.getSession());
-    String autoLogin = lc.autoLogin();
-    if (autoLogin == null) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        boolean error = Boolean.parseBoolean(request.getParameter("error"));
-        pageContext.setAttribute("error", error);
-
-        if (username != null && password != null)
-            response.sendRedirect(lc.login(username, password));
-    } else response.sendRedirect(autoLogin);
-    
-%>
+<jsp:useBean id="loginController" class="rgms.controller.LoginController" scope="page" />
+<jsp:setProperty name="loginController" property="session" value="${ pageContext.session }"/>
+<c:set var="autoLogin" value="${ loginController.autoLogin() }" />
+<c:choose>
+	<c:when test="${ empty autoLogin }">
+		<c:set var="username" value="${ param.username }" />
+		<c:set var="password" value="${ param.password }" />
+		<c:set var="error" value="${ param.error }" />
+		
+		<c:if test="${ not empty username and not empty password }" >
+			<c:redirect url="${ loginController.login(username, password) }" />
+		</c:if>
+	</c:when>
+	
+	<c:otherwise>
+		<c:redirect url="${ autoLogin }" />
+	</c:otherwise>
+</c:choose>
 
 <!DOCTYPE html>
 <!--
@@ -44,10 +46,12 @@ and open the template in the editor.
         <div class="wrapper">
             
             <div class="header">
-                <h1>RGMS</h1>
+                <img src="../References/images/UoN_Logo.png" alt="UoN Logo"/>
             </div>
             
             <div class="main">
+                
+                <h1>Research Group Management System</h1>
                 
                 <c:if test="${error}">
                 <div class="alert alert-danger">Error: Invalid username or password</div>

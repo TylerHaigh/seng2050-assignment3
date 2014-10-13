@@ -5,26 +5,37 @@
  */
 package rgms.controller;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpSession;
+
 import rgms.infrastructure.*;
 
 /**
  *
  * @author Tyler 2
  */
-public class LoginController {
+@SuppressWarnings("serial")
+public class LoginController implements Serializable {
     
     private HttpSession session;
     
-    public LoginController(HttpSession session) {
-        this.session = session;
+    public LoginController() {
+    }
+    
+    public HttpSession getSession() {
+    	return this.session;
+    }
+    
+    public void setSession(HttpSession session) {
+    	this.session = session;
     }
     
     public String autoLogin() {
         
-        Session oldSession = (Session)session.getAttribute("session");
+        Session oldSession = (Session)session.getAttribute("userSession");
         
-        if (oldSession == null) session.setAttribute("session", oldSession);
+        //if (oldSession == null) session.setAttribute("userSession", oldSession);
         
         if (oldSession != null && oldSession.getUser() != null)  return "Dashboard.jsp";
         else return null;
@@ -32,7 +43,13 @@ public class LoginController {
     
     public String login(String username, String password) {
         Session userSession = AuthenticationManager.Login(username, password, false);
-        session.setAttribute("session", userSession);
-        return (userSession != null) ?  "Dashboard.jsp" : "Login.jsp?error=true";
+        
+        if (userSession != null) {
+        	session.setAttribute("userSession", userSession);
+        	return "Dashboard.jsp";
+        } else {
+        	return "Login.jsp?error=true";
+        }
+        
     }
 }
