@@ -2,3 +2,4 @@
 build
 /dist/
 [Tt]humbs.db
+*.~ml
