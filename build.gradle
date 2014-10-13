@@ -16,7 +16,13 @@ dependencies {
         exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
     }
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
-    runtime fileTree(dir: 'WebContent/WEB-INF/lib', include: '*.jar')
+	runtime 'jstl:jstl:1.2',
+		'mysql:mysql-connector-java:5.1.33',
+		'xalan:xalan:2.7.2',
+		'xalan:serializer:2.7.2',
+		'taglibs:standard:1.1.2',
+		'xerces:xercesImpl:2.11.0',
+		'xml-apis:xml-apis:2.0.2'	
 }
 
 sourceSets {
@@ -25,6 +31,11 @@ sourceSets {
             srcDir 'src'
         }
     }
+	test {
+		java {
+			srcDir 'test'
+		}
+	}
 }
 
 war {
