@@ -4,4 +4,4 @@ build
 [Tt]humbs.db
 *.~ml
 bin
-
+WebContent/WEB-INF/lib/*
