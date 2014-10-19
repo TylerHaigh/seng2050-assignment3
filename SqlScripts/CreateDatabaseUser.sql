@@ -1,2 +1,5 @@
+DROP USER 'rgms'@'localhost';
+
 CREATE USER 'rgms'@'localhost' IDENTIFIED BY 'seng2050';
-GRANT ALL ON RGMS_DB TO 'rgms'@'localhost';
+GRANT ALL PRIVILEGES ON *.* TO 'rgms'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
