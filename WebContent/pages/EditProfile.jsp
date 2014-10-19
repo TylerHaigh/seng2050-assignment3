@@ -15,9 +15,23 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Edit Your Profile</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Edit your profile</h1>
+        <!--Form for user to update profile with. Will have to discuss how it is updated in DB. and JavaScript client side validation-->
+        <form action="">
+        <!-- Table to line everything up -->
+        	<table id="editProfile">
+        		<!-- What data shall the user be able to change. Research fields? -->
+        		<tr><td><label for="rfields"></label></td>
+        			<td><input type="text" name="rfields" id="rfields" /></td>
+       			</tr>
+        	</table>
+        	<input type = "submit" value="Submit" />
+        	<input type="reset" value="Reset" />
+        	
+        
+        </form>
     </body>
 </html>
