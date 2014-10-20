@@ -4,12 +4,12 @@
     Author     : Tyler 2
 --%>
 
-<%@page import="java.util.Enumeration"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<%-- 
 <jsp:useBean id="loginController" class="rgms.controller.LoginController" scope="page" />
 <jsp:setProperty name="loginController" property="session" value="${ pageContext.session }"/>
 <c:set var="autoLogin" value="${ loginController.autoLogin() }" />
@@ -28,6 +28,7 @@
 		<c:redirect url="${ autoLogin }" />
 	</c:otherwise>
 </c:choose>
+--%>
 
 <!DOCTYPE html>
 <!--
