@@ -1,6 +1,6 @@
 apply plugin: 'war'
-apply plugin: 'tomcat'
-apply plugin: 'eclipse'
+apply plugin: 'com.bmuschko.tomcat'
+apply plugin: 'eclipse-wtp'
 
 repositories {
     mavenCentral()
@@ -15,14 +15,16 @@ dependencies {
     tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
         exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
     }
-    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1',
+        'org.hibernate:hibernate-core:4.3.6.Final'
 	runtime 'jstl:jstl:1.2',
 		'mysql:mysql-connector-java:5.1.33',
 		'xalan:xalan:2.7.2',
 		'xalan:serializer:2.7.2',
 		'taglibs:standard:1.1.2',
 		'xerces:xercesImpl:2.11.0',
-		'xml-apis:xml-apis:2.0.2'	
+		'xml-apis:xml-apis:2.0.2',
+        'org.hibernate:hibernate-core:4.3.6.Final'
 }
 
 sourceSets {
@@ -52,6 +54,6 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.2.4'
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
     }
 }

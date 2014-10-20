@@ -1,20 +1,28 @@
 package rgms.model;
 
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import org.hibernate.annotations.*;
 
 /**
  * Stores all information pertaining to a User's account and profile
  * @author Tyler Haigh - C3182929
  */
+@Entity
+@Table(name = "Users")
 public class User implements Serializable {
     
     private int id;
+    private String userName;
     private String firstName;
     private String lastName;
     private String studentID;
     private String password;
     private String imageReference; //Unique string containing a reference to the image on disk
-    
+
     public User() {
         this.id = 1;
         this.firstName = "";
@@ -24,9 +32,10 @@ public class User implements Serializable {
         this.imageReference = "";
     }
     
-    public User(int id, String firstName, String lastName, String studentID,
+    public User(int id, String userName, String firstName, String lastName, String studentID,
             String password, String imageReference) {
         this.id = id;
+        this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentID = studentID;
@@ -36,10 +45,17 @@ public class User implements Serializable {
     
     //Getters
     
+    @Id
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment", strategy="increment")
     public int getId() {
         return id;
     }
-    
+
+    public String getUserName() {
+        return userName;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -64,6 +80,10 @@ public class User implements Serializable {
     
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     
     public void setFirstName(String firstName) {
