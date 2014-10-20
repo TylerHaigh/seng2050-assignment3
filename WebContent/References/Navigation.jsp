@@ -20,7 +20,7 @@
             <li class="dropdown">
     			<a href="#" class="dropdown-toggle" data-toggle="dropdown" >Research Groups <span class="caret"></span>
     			</a>
-    			<ul class="dropdown-menu"> <!--   -->
+    			<ul class="dropdown-menu">
                     <li><a href="#" data-toggle="dropdown">Group 1</a></li>
                     <li><a href="#">Group 2</a></li>
                 </ul>
@@ -33,7 +33,7 @@
 	                <c:out value="${userSession.user.fullName}" />
 	                <span class="caret"></span>
                 </a>
-                <ul> <!--  class="dropdown-menu" -->
+                <ul class="dropdown-menu" >
                     <li><a href="Profile.jsp?userId=${userSession.user.studentID}">View Profile</a></li>
                     <li><a href="Redirector.jsp?logout=true">Log Out</a></li>
                 </ul>

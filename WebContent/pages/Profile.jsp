@@ -33,7 +33,8 @@
         <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
         <script src="../References/jquery.js"></script> 
-        <script src="../References/Scripts.js"></script> 
+        <script src="../References/Scripts.js"></script>
+        <script src="../References/bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -64,10 +65,16 @@
 			                </div>
 			            </div>
 			            
-			            <div class="researchGroups">
+			            <h2>
+			            	<c:out value="${ profileUser.firstName }" />'s Groups
+			            </h2>
+			            
+			            <div class="list-group">
 			            	<c:forEach var="group"
 			            		items="${ profileController.getGroups(profileUser.studentID) }" >
-			            		<p><c:out value="${ group.groupName }" /></p>
+			            		<a href="ResearchGroup.jsp?groupName=${ group.groupName }" class="list-group-item">
+			            			<c:out value="${ group.groupName }" />
+			            		</a>
 			            	</c:forEach>
 			            </div>
 	            
