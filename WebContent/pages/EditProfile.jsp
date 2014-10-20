@@ -14,8 +14,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Edit Your Profile</title>
+        <script src="../References/bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
         <h1>Edit your profile</h1>

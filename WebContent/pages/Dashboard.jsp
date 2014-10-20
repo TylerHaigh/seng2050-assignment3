@@ -21,7 +21,8 @@
         <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
         <script src="../References/jquery.js"></script> 
-        <script src="../References/Scripts.js"></script> 
+        <script src="../References/Scripts.js"></script>
+        <script src="../References/bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
