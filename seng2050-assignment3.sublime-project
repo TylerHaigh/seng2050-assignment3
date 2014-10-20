@@ -1,0 +1,34 @@
+{
+	"folders":
+	[
+		{
+      "name": "SENG2050 Assignment 3",
+			"path": ".",
+      "file_exclude_patterns":
+      [
+        ".project",
+        ".gitignore"
+      ],
+      "folder_exclude_patterns": 
+      [
+        ".gradle",
+        ".settings",
+        "build",
+        "Documentation",
+        "bin",
+        "SqlScripts"
+      ]
+		},
+    {
+      "path": "./SqlScripts/",
+      "name": "SQL Scripts"
+    }
+	],
+  "build_systems": 
+  [
+    {
+      "name": "Gradle",
+      "cmd": [ "gradle", "build" ]
+    }
+  ]
+}
