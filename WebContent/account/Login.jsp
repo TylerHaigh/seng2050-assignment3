@@ -76,6 +76,7 @@ and open the template in the editor.
                     
                     <div class="btn-group">
                     	<input type="submit" value="Login" class="btn btn-default"  />
+                        <a href="Register.jsp" class="btn btn-default">Register</a>
                     </div>
                 </form>
             </div>
