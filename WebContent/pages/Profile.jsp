@@ -65,10 +65,16 @@
 			                </div>
 			            </div>
 			            
-			            <div class="researchGroups">
+			            <h2>
+			            	<c:out value="${ profileUser.firstName }" />'s Groups
+			            </h2>
+			            
+			            <div class="list-group">
 			            	<c:forEach var="group"
 			            		items="${ profileController.getGroups(profileUser.studentID) }" >
-			            		<p><c:out value="${ group.groupName }" /></p>
+			            		<a href="ResearchGroup.jsp?groupName=${ group.groupName }" class="list-group-item">
+			            			<c:out value="${ group.groupName }" />
+			            		</a>
 			            	</c:forEach>
 			            </div>
 	            
