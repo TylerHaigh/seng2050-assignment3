@@ -7,3 +7,4 @@ bin
 WebContent/WEB-INF/lib/*
 *.sublime-workspace
 *.class
+libs
