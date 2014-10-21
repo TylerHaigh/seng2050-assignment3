@@ -7,11 +7,12 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.util.logging.*;
 import java.util.regex.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 @WebServlet(urlPatterns = { "/account/*", "/account" })
 public class AccountController extends HttpServlet {
   private static final Logger logger = Logger.getLogger(AccountController.class.getName());
-  private static final Pattern pattern = Pattern.compile("[.]*/account/([a-zA-Z]*)[?/][.]*", Pattern.CASE_INSENSITIVE);
 
   public AccountController() { }
 
@@ -23,36 +24,58 @@ public class AccountController extends HttpServlet {
     routeRequest(req, resp);
   }
 
-  private void login() {
+  private void loginAction(HttpServletRequest req, HttpServletResponse res) {
+    String viewFile = "/views/account/Login.jsp";
 
+    view(req, res, viewFile);
   }
 
-  private void routeRequest(HttpServletRequest req, HttpServletResponse res) {
-    String actionName = Controller.getAction(req.getRequestURL().toString());
-    view(res, req, actionName);
-  }
-
-  public void view(HttpServletResponse res, HttpServletRequest req, String actionName) {
-    //todo: abstract this out
-    String viewFile = null;
-    switch (actionName) {
-      case "login": 
-        viewFile = "/views/account/Login.jsp";
-        break;
-
-      default: 
-        break;
+  private Method getActionMethod(String actionName) {
+    Method[] methods = AccountController.class.getDeclaredMethods();
+    for (Method m: methods) {
+      if (m.getName().equals(actionName + "Action")) {
+        return m;
+      }
     }
 
+    return null;
+  }
+
+  public void view(HttpServletRequest req, HttpServletResponse res, String viewPath) {
     try {
-      RequestDispatcher view = req.getRequestDispatcher(viewFile);
-      view.forward(req, res);
+      RequestDispatcher view = req.getRequestDispatcher(viewPath);
+      view.forward(req, res); 
     }
     catch (ServletException e) {
       logger.log(Level.SEVERE, "Servlet Error", e);
     }
     catch (IOException e) {
       logger.log(Level.SEVERE, "IO Error", e);
+    }
+  }
+
+  public void routeRequest(HttpServletRequest req, HttpServletResponse res) {
+    try {
+      //get action name
+      String actionName = Controller.getAction(req.getRequestURL().toString());
+
+      //find action method on class
+      Method actionMethod = this.getActionMethod(actionName);
+
+      //no action found
+      if (actionMethod == null) {
+        //404 then return
+        res.sendError(HttpServletResponse.SC_NOT_FOUND);
+        return;
+      }
+
+      actionMethod.invoke(this, req, res);
+    }
+    catch (IOException e) {
+      logger.log(Level.SEVERE, "IO Error", e);
+    }
+    catch (IllegalAccessException | InvocationTargetException e) {
+      logger.log(Level.SEVERE, "Action Method Error", e);
     }
   }
 }
