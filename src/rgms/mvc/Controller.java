@@ -16,7 +16,7 @@ public abstract class Controller extends HttpServlet {
   private static String getAction(URI requestUri) {
     String[] paths = requestUri.getPath().toLowerCase().split("/");
     String actionName = paths[paths.length - 1];
-    System.out.println(actionName);
+    logger.info("Returning action: " + actionName);
 
     return actionName;
   }
@@ -91,6 +91,15 @@ public abstract class Controller extends HttpServlet {
     }
     catch (IOException e) {
       logger.log(Level.SEVERE, "IO Error", e);
+    }
+  }
+
+  protected void redirectToLocal(HttpServletRequest req, HttpServletResponse res, String path) {
+    try {
+      res.sendRedirect(req.getContextPath() + path);
+    }
+    catch (java.io.IOException e) {
+      logger.log(Level.SEVERE, "Redirection Error", e);
     }
   }
 }

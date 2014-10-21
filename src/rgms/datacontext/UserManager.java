@@ -18,14 +18,15 @@ public class UserManager extends DataManager {
     try {
       Connection conn = connection.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(
-        "INSERT INTO Users (FirstName, LastName, UserName, Passphrase)" +
-        "VALUES (?, ?, ?, ?)"
+        "INSERT INTO Users (FirstName, LastName, UserName, Passphrase, StudentId)" +
+        "VALUES (?, ?, ?, ?, ?)"
         );
 
       pstmt.setString(1, user.getFirstName());
       pstmt.setString(2, user.getLastName());
       pstmt.setString(3, user.getUserName());
       pstmt.setString(4, user.getPassword());
+      pstmt.setString(5, user.getStudentId());
 
       pstmt.execute();
     }
@@ -34,22 +35,68 @@ public class UserManager extends DataManager {
     }
   }
 
-  public User get(int Id) {
-    // return (User)session.get(User.class, Id);
-    return null;
+  public User get(int id) {
+    Connection conn = null;
+    try {
+      conn = connection.getConnection();
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE Id = ?");
+      pstmt.setInt(1, id);
+
+      ResultSet rs = pstmt.executeQuery();
+      return User.fromResultSet(rs);
+    }
+    catch (Exception e) {
+      logger.log(Level.SEVERE, "SQL Error", e);
+      return null;
+    }
+    finally {
+      if (conn != null)
+        try {
+          conn.close();
+        }
+        catch (SQLException e) {
+          logger.log(Level.WARNING, "Connection Close", e);
+        }
+    }
   }
 
   public User get(String userName) {
-    //todo;
-    return null;
+    Connection conn = null;
+    try {
+      conn = connection.getConnection();
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE UserName = ?");
+      pstmt.setString(1, userName);
+
+      ResultSet rs = pstmt.executeQuery();
+      return User.fromResultSet(rs);
+    }
+    catch (Exception e) {
+      logger.log(Level.SEVERE, "SQL Error", e);
+      return null;
+    }
+    finally {
+      if (conn != null)
+        try {
+          conn.close();
+        }
+        catch (SQLException e) {
+          logger.log(Level.WARNING, "Connection Close", e);
+        }
+    }
   }
 
   public boolean validate(String userName, String plainPassword) {
-    // session.beginTransaction();
+    User user = this.get(userName);
+    String hashedPass = UserManager.hashPassword(plainPassword);
+    boolean valid = hashedPass.equals(user.getPassword());
+    if (!valid) {
+      logger.log(Level.INFO, "User Validation Failed. Expected: " + 
+        user.getPassword() +
+        " Actual: " +
+        hashedPass);
+    }
 
-    // User user = this.get(userName);
-    // return user.getPassword() == UserManager.hashPassword(plainPassword);
-    return false;
+    return valid;
   }
 
   public static String hashPassword(String password) {

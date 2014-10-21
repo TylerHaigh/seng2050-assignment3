@@ -11,7 +11,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:if test="${empty userSession}">
-	<c:redirect url="Login.jsp" />
+	<c:redirect url="/account/login/" />
 </c:if>
 
 <jsp:useBean id="profileController" class="rgms.controller.ProfileController" scope="page" />

@@ -38,6 +38,7 @@ public class JDBCConnection {
     public JDBCConnection() {
         //Load the database driver
         try {
+            logger.info("Loading JDBC driver");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
         }
         catch (Exception e) {

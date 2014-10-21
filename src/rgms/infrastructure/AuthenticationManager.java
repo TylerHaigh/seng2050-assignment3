@@ -24,18 +24,12 @@ public class AuthenticationManager {
         Session userSession = null;
         
         try {
-
             UserManager userManager = new UserManager();
             User user = userManager.get(username);
             
-            /**
-             * Since usernames are unique, there should only be at most
-             * one set returned by the query
-             */
             if (!(user == null) && userManager.validate(username, password)) {
                 userSession = new Session(false, user.getId(), user);
             }
-
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Unknown Error", e);
         }

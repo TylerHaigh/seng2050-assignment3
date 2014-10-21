@@ -1,6 +1,8 @@
 package rgms.model;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.util.logging.*;
 
 /**
  * Stores all information pertaining to a User's account and profile
@@ -13,26 +15,52 @@ public class User implements Serializable {
     private String userName;
     private String firstName;
     private String lastName;
-    private String studentID;
+    private String studentId;
     private String password;
     private String imageReference; //Unique string containing a reference to the image on disk
+
+    public static User fromResultSet(ResultSet rs) {
+        User user = new User();
+
+        try {
+            if (rs.first()) {
+                user.setId(rs.getInt("Id"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                user.setPassword(rs.getString("PassPhrase"));
+                user.setStudentId(rs.getString("StudentId"));
+                user.setImageReference(rs.getString("ImageReference"));
+
+                Logger.getLogger("rgms.model.User")
+                    .info(String.format("Loaded User: %d, %s, %s, %s, %s, %s",
+                        user.getId(), user.getFirstName(), user.getLastName(),
+                        user.getPassword(), user.getStudentId(), 
+                        user.getImageReference()));
+            }
+        }
+        catch (java.sql.SQLException e) {
+            Logger.getLogger("rgms.model.User").log(Level.SEVERE, "SQL Error", e);
+        }
+
+        return user;
+    }
 
     public User() {
         this.id = 1;
         this.firstName = "";
         this.lastName = "";
-        this.studentID = "";
+        this.studentId = "";
         this.password = "";
         this.imageReference = "";
     }
     
-    public User(int id, String userName, String firstName, String lastName, String studentID,
+    public User(int id, String userName, String firstName, String lastName, String studentId,
             String password, String imageReference) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.studentID = studentID;
+        this.studentId = studentId;
         this.password = password;
         this.imageReference = imageReference;
     }
@@ -55,8 +83,8 @@ public class User implements Serializable {
         return lastName;
     }
 
-    public String getStudentID() {
-        return studentID;
+    public String getStudentId() {
+        return studentId;
     }
     
     public String getPassword() {
@@ -85,8 +113,8 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public void setStudentID(String studentID) {
-        this.studentID = studentID;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public void setPassword(String password) {
