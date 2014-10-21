@@ -8,3 +8,4 @@ WebContent/WEB-INF/lib/*
 *.sublime-workspace
 *.class
 libs
+.settings
