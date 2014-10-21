@@ -39,15 +39,15 @@ and open the template in the editor.
 <html>
     <head>
         <title>Login | RGMS</title>
-        <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
-        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/References/Styles.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/References/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/References/bootstrap/css/bootstrap-theme.css" />
     </head>
     <body>
         <div class="wrapper">
             
             <div class="header">
-                <img src="../References/images/UoN_Logo.png" alt="UoN Logo"/>
+                <img src="${pageContext.request.contextPath}/References/images/UoN_Logo.png" alt="UoN Logo"/>
             </div>
             
             <div class="main">

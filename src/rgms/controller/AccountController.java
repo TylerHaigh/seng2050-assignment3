@@ -1,14 +1,17 @@
 package rgms.controller;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.util.logging.*;
+import java.util.regex.*;
 
-//@WebServlet(urlPatterns = { "/account/*" })
+@WebServlet(urlPatterns = { "/account/*", "/account" })
 public class AccountController extends HttpServlet {
   private static final Logger logger = Logger.getLogger(AccountController.class.getName());
+  private static final Pattern pattern = Pattern.compile("[.]*/account/([a-zA-Z]*)[?/][.]*", Pattern.CASE_INSENSITIVE);
 
   public AccountController() { }
 
@@ -25,15 +28,31 @@ public class AccountController extends HttpServlet {
   }
 
   private void routeRequest(HttpServletRequest req, HttpServletResponse res) {
-    //get the jsp
-    RequestDispatcher view = req.getRequestDispatcher("views/account/login.jsp");
+    String actionName = Controller.getAction(req.getRequestURL().toString());
+    view(res, req, actionName);
+  }
+
+  public void view(HttpServletResponse res, HttpServletRequest req, String actionName) {
+    //todo: abstract this out
+    String viewFile = null;
+    switch (actionName) {
+      case "login": 
+        viewFile = "/views/account/Login.jsp";
+        break;
+
+      default: 
+        break;
+    }
 
     try {
-      //forward the request
+      RequestDispatcher view = req.getRequestDispatcher(viewFile);
       view.forward(req, res);
     }
-    catch (Exception e) {  
-      logger.log(Level.SEVERE, "Unknown Error", e);
+    catch (ServletException e) {
+      logger.log(Level.SEVERE, "Servlet Error", e);
+    }
+    catch (IOException e) {
+      logger.log(Level.SEVERE, "IO Error", e);
     }
   }
 }
