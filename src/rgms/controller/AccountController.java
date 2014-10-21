@@ -1,14 +1,8 @@
 package rgms.controller;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.util.logging.*;
-import java.util.regex.*;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 import rgms.mvc.*;
 
 @WebServlet(urlPatterns = { "/account/*", "/account" })
