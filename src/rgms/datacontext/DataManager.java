@@ -1,7 +1,8 @@
 package rgms.datacontext;
 
-import org.hibernate.Session;
+import java.sql.*;
+import rgms.infrastructure.*;
 
 public abstract class DataManager {
-  static Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+  protected JDBCConnection connection = new JDBCConnection();
 }

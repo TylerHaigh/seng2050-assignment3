@@ -20,7 +20,7 @@ public class AuthenticationManager {
         return null;
     }
     
-    public static Session Login(String username, String password, boolean rememberMe) {
+    public static Session login(String username, String password, boolean rememberMe) {
         Session userSession = null;
         
         try {

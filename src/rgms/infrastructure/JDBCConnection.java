@@ -7,12 +7,14 @@
 package rgms.infrastructure;
 
 import	java.sql.*;
+import java.util.logging.*;
 
 /**
  *
  * @author Tyler 2
  */
 public class JDBCConnection {
+    private static final Logger logger = Logger.getLogger(JDBCConnection.class.getName());
 
     //My SQL Connection String
     private String databaseHost = "localhost";
@@ -33,22 +35,28 @@ public class JDBCConnection {
      *                                JDBC driver
      * @throws IllegalAccessException Unable to access the JDBC driver
      */		
-    public JDBCConnection() throws ClassNotFoundException,
-            InstantiationException, IllegalAccessException {
+    public JDBCConnection() {
         //Load the database driver
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        }
+        catch (Exception e) {
+            logger.log(Level.SEVERE, "JDBC Error", e);
+        }
     }
     
     /**
      * Creates a connection to the JDBC Database
      * @throws SQLException The connection cannot be established
      */
-    public void getConnection() throws	SQLException {
+    public Connection getConnection() throws	SQLException {
         //Check if the connection does not exist
         if(conn	== null || conn.isClosed()) {
             //Establish a new connection
             conn = DriverManager.getConnection(dbUrl,userName,password);
         }
+
+        return conn;
     }
     
     /**

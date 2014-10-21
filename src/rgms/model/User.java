@@ -1,18 +1,12 @@
 package rgms.model;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import org.hibernate.annotations.*;
 
 /**
  * Stores all information pertaining to a User's account and profile
  * @author Tyler Haigh - C3182929
+ * @author Simon Hartcher - C3185790
  */
-@Entity
-@Table(name = "Users")
 public class User implements Serializable {
     
     private int id;
@@ -45,9 +39,6 @@ public class User implements Serializable {
     
     //Getters
     
-    @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy="increment")
     public int getId() {
         return id;
     }

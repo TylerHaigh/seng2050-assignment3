@@ -74,17 +74,23 @@ public abstract class Controller extends HttpServlet {
       //no action found
       if (actionMethod == null) {
         //404 then return
-        res.sendError(HttpServletResponse.SC_NOT_FOUND);
+        httpNotFound(res);
         return;
       }
 
       actionMethod.invoke(this, req, res);
     }
-    catch (IOException e) {
-      logger.log(Level.SEVERE, "IO Error", e);
-    }
     catch (IllegalAccessException | InvocationTargetException e) {
       logger.log(Level.SEVERE, "Action Method Error", e);
+    }
+  }
+
+  protected void httpNotFound(HttpServletResponse res) {
+    try {
+      res.sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
+    catch (IOException e) {
+      logger.log(Level.SEVERE, "IO Error", e);
     }
   }
 }

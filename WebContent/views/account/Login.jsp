@@ -58,11 +58,11 @@ and open the template in the editor.
                 <div class="alert alert-danger">Error: Invalid username or password</div>
                 </c:if>
                 
-                <form method="get" action="Login.jsp" class="login-form">
+                <form method="post" class="login-form">
                     
                     <div class="input-group">
-                    	<label for="username">Username: </label>
-                    	<input type="text" name="username" class="form-control" />
+                    	<label for="userName">Username: </label>
+                    	<input type="text" name="userName" class="form-control" />
                     </div>
                     
                     <br />
@@ -76,7 +76,7 @@ and open the template in the editor.
                     
                     <div class="btn-group">
                     	<input type="submit" value="Login" class="btn btn-default"  />
-                        <a href="Register.jsp" class="btn btn-default">Register</a>
+                        <a href="${pageContext.request.contextPath}/account/register/" class="btn btn-default">Register</a>
                     </div>
                 </form>
             </div>

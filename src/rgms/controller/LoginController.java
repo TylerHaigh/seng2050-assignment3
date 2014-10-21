@@ -42,7 +42,7 @@ public class LoginController implements Serializable {
     }
     
     public String login(String username, String password) {
-        Session userSession = AuthenticationManager.Login(username, password, false);
+        Session userSession = AuthenticationManager.login(username, password, false);
         
         if (userSession != null) {
         	session.setAttribute("userSession", userSession);
