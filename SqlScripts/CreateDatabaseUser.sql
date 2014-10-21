@@ -1,3 +1,4 @@
+GRANT USAGE ON *.* TO 'rgms'@'localhost';
 DROP USER 'rgms'@'localhost';
 
 CREATE USER 'rgms'@'localhost' IDENTIFIED BY 'seng2050';
