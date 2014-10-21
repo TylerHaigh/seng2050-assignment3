@@ -13,8 +13,6 @@ public class AccountController extends Controller {
   private static final Logger logger = Logger.getLogger(AccountController.class.getName());
 
   public AccountController() {
-    Handler consoleHandler = new ConsoleHandler();
-    Logger.getLogger("").addHandler(consoleHandler);
   }
 
   public void loginAction(HttpServletRequest req, HttpServletResponse res) {
