@@ -17,12 +17,12 @@
 <html>
     <head>
         <title>Dashboard | RGMS</title>
-        <link rel="stylesheet" type="text/css" href="../References/Styles.css" />
-        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="../References/bootstrap/css/bootstrap-theme.css" />
-        <script src="../References/jquery.js"></script> 
-        <script src="../References/Scripts.js"></script>
-        <script src="../References/bootstrap/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/References/Styles.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/References/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/References/bootstrap/css/bootstrap-theme.css" />
+        <script src="${pageContext.request.contextPath}/References/jquery.js"></script> 
+        <script src="${pageContext.request.contextPath}/References/Scripts.js"></script>
+        <script src="${pageContext.request.contextPath}/References/bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
