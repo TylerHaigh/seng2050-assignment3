@@ -41,8 +41,11 @@ public class AccountController extends Controller {
   }
 
   public void registerAction(HttpServletRequest req, HttpServletResponse res) {
+    Map<String, String> viewData = new HashMap<String, String>();
+    viewData.put("title", "Register");
+
     if (req.getMethod() == HttpMethod.Get) {
-      view(req, res, "/views/account/Register.jsp");
+      view(req, res, "/views/account/Register.jsp", viewData);
     }
     else if (req.getMethod() == HttpMethod.Post) {
       User user = new User();
@@ -57,7 +60,7 @@ public class AccountController extends Controller {
       Session userSession = AuthenticationManager.login(user.getUserName(), req.getParameter("password") , false);
       if (userSession == null) {
         req.setAttribute("registerError", true);
-        view(req, res, "/views/account/Register.jsp");
+        view(req, res, "/views/account/Register.jsp", viewData);
       }
       else {
         HttpSession session = req.getSession();
@@ -68,8 +71,11 @@ public class AccountController extends Controller {
   }
 
   public void profileAction(HttpServletRequest req, HttpServletResponse res) {
+    Map<String, String> viewData = new HashMap<String, String>();
+    viewData.put("title", "Profile");
+
 	  String username = req.getParameter("userId");
 	  Logger.getLogger("").info("Showing profile for user: " + username);
-	  view(req, res, "/views/account/Profile.jsp");
+	  view(req, res, "/views/account/Profile.jsp", viewData);
   }
 }
