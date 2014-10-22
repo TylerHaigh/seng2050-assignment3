@@ -7,6 +7,7 @@ import rgms.mvc.*;
 import rgms.infrastructure.*;
 import rgms.model.User;
 import rgms.datacontext.UserManager;
+import java.util.*;
 
 @WebServlet(urlPatterns = { "/account/*", "/account" })
 public class AccountController extends Controller {
@@ -16,10 +17,11 @@ public class AccountController extends Controller {
   }
 
   public void loginAction(HttpServletRequest req, HttpServletResponse res) {
-    if (req.getMethod() == HttpMethod.Get) {
-      String viewFile = "/views/account/Login.jsp";
+    Map<String, String> viewData = new HashMap<String, String>();
+    viewData.put("title", "Login");
 
-      view(req, res, viewFile);
+    if (req.getMethod() == HttpMethod.Get) {
+      view(req, res, "/views/account/Login.jsp", viewData);
     }
     else if (req.getMethod() == HttpMethod.Post) {
       String userName = req.getParameter("userName");
@@ -29,7 +31,7 @@ public class AccountController extends Controller {
       Session userSession = AuthenticationManager.login(userName, password, false);
       if (userSession == null) {
         req.setAttribute("loginError", true);
-        view(req, res, "/views/account/Login.jsp");
+        view(req, res, "/views/account/Login.jsp", viewData);
       }
       else {
         HttpSession session = req.getSession();

@@ -9,9 +9,18 @@ import java.util.logging.*;
 import java.util.regex.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.*;
+import java.nio.charset.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public abstract class Controller extends HttpServlet {
   private static final Logger logger = Logger.getLogger(Controller.class.getName());
+  public static final String LAYOUT_PATH = "/views/shared/Layout.jsp";
+  private static final String BODY_ATTRIBUTE = "body";
+  private static final String SCRIPTS_ATTRIBUTE = "scripts";
+  private static final String STYLES_ATTRIBUTE = "styles";
+  private static final String TITLE_ATTRIBUTE = "title";
 
   private static String getAction(URI requestUri) {
     String[] paths = requestUri.getPath().toLowerCase().split("/");
@@ -50,17 +59,19 @@ public abstract class Controller extends HttpServlet {
     return null;
   }
 
+  protected void view(HttpServletRequest req, HttpServletResponse res, String viewPath, Map<String, String> viewData) {
+    for (Map.Entry<String, String> entry : viewData.entrySet()) {
+      req.setAttribute(entry.getKey(), entry.getValue());
+    }
+
+    view(req, res, viewPath);
+  }
+
   protected void view(HttpServletRequest req, HttpServletResponse res, String viewPath) {
-    try {
-      RequestDispatcher view = req.getRequestDispatcher(viewPath);
-      view.forward(req, res); 
-    }
-    catch (ServletException e) {
-      logger.log(Level.SEVERE, "Servlet Error", e);
-    }
-    catch (IOException e) {
-      logger.log(Level.SEVERE, "IO Error", e);
-    }
+    req.setAttribute("partialViewMain", viewPath);
+
+    //render layout
+    renderLayout(req, res);
   }
 
   private void routeRequest(HttpServletRequest req, HttpServletResponse res) {
@@ -100,6 +111,19 @@ public abstract class Controller extends HttpServlet {
     }
     catch (java.io.IOException e) {
       logger.log(Level.SEVERE, "Redirection Error", e);
+    }
+  }
+
+  private void renderLayout(HttpServletRequest req, HttpServletResponse res) {
+    try{
+      RequestDispatcher rd = req.getRequestDispatcher(LAYOUT_PATH);
+      rd.forward(req, res); 
+    }
+    catch (ServletException e) {
+      logger.log(Level.SEVERE, "Servlet Error", e);
+    }
+    catch (IOException e) {
+      logger.log(Level.SEVERE, "IO Error", e);
     }
   }
 }
