@@ -9,3 +9,5 @@ WebContent/WEB-INF/lib/*
 *.class
 libs
 .settings
+.metadata
+
