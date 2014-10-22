@@ -53,8 +53,8 @@ public class AccountController extends Controller {
 
       UserManager userManager = new UserManager();
       userManager.createUser(user, req.getParameter("password"));
-
-      Session userSession = AuthenticationManager.login(user.getUserName(), user.getPassword(), false);
+      //Get password here returns the hashed password stored in the db, not the plain password user.getPassword()
+      Session userSession = AuthenticationManager.login(user.getUserName(), req.getParameter("password") , false);
       if (userSession == null) {
         req.setAttribute("registerError", true);
         view(req, res, "/views/account/Register.jsp");
