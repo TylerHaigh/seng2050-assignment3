@@ -11,7 +11,6 @@ import java.util.*;
 
 @WebServlet(urlPatterns = { "/account/*", "/account" })
 public class AccountController extends Controller {
-  private static final Logger logger = Logger.getLogger(AccountController.class.getName());
 
   public AccountController() {
   }
@@ -69,6 +68,8 @@ public class AccountController extends Controller {
   }
 
   public void profileAction(HttpServletRequest req, HttpServletResponse res) {
-    view(req, res, "/views/account/Profile.jsp");
+	  String username = req.getParameter("userId");
+	  Logger.getLogger("").info("Showing profile for user: " + username);
+	  view(req, res, "/views/account/Profile.jsp");
   }
 }

@@ -28,8 +28,8 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" >
-                    <li><a href="../account/Profile.jsp?userId=${userSession.user.studentId}">View Profile</a></li>
-                    <li><a href="Redirector.jsp?logout=true">Log Out</a></li>
+                    <li><a href="${pageContext.request.contextPath}/account/profile?userId=${ userSession.user.studentId }">View Profile</a></li>
+                    <li><a href=".${pageContext.request.contextPath}/Redirector.jsp?logout=true">Log Out</a></li>
                 </ul>
             </li>
         </ul>

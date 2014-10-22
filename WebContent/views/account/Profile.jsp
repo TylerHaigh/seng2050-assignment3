@@ -71,7 +71,7 @@
 			            
 			            <div class="list-group">
 			            	<c:forEach var="group"
-			            		items="${ profileController.getGroups(profileUser.studentID) }" >
+			            		items="${ profileController.getGroups(profileUser.studentId) }" >
 			            		<a href="ResearchGroup.jsp?groupName=${ group.groupName }" class="list-group-item">
 			            			<c:out value="${ group.groupName }" />
 			            		</a>
