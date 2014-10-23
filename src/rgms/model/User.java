@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String studentId;
     private String password;
     private String imageReference; //Unique string containing a reference to the image on disk
+    private boolean isAdmin;
 
     public static User fromResultSet(ResultSet rs) {
         User user = new User();
@@ -27,10 +28,12 @@ public class User implements Serializable {
                 user.setId(rs.getInt("Id"));
                 user.setFirstName(rs.getString("FirstName"));
                 user.setLastName(rs.getString("LastName"));
-                user.setPassword(rs.getString("PassPhrase"));
+                user.setUserName(rs.getString("Username"));
                 user.setStudentId(rs.getString("StudentId"));
+                user.setPassword(rs.getString("Passphrase"));
                 user.setImageReference(rs.getString("ImageReference"));
-
+                user.setAdmin(Boolean.parseBoolean(rs.getString("IsAdmin")));
+                
                 Logger.getLogger("rgms.model.User")
                     .info(String.format("Loaded User: %d, %s, %s, %s, %s, %s",
                         user.getId(), user.getFirstName(), user.getLastName(),
@@ -95,6 +98,10 @@ public class User implements Serializable {
         return imageReference;
     }
     
+    public boolean isAdmin() {
+		return isAdmin;
+	}
+    
     //Setters
     
     public void setId(int id) {
@@ -124,6 +131,10 @@ public class User implements Serializable {
     public void setImageReference(String imageReference) {
         this.imageReference = imageReference;
     }
+    
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
     
     //Queries
     public String getFullName() {

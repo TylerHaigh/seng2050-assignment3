@@ -12,31 +12,34 @@ import java.util.*;
 @WebServlet(urlPatterns = { "/account/*", "/account" })
 public class AccountController extends Controller {
 
-  public AccountController() {
-  }
+  public AccountController() { }
 
   public void loginAction(HttpServletRequest req, HttpServletResponse res) {
-    Map<String, String> viewData = new HashMap<String, String>();
+	
+	Map<String, String> viewData = new HashMap<String, String>();
     viewData.put("title", "Login");
 
+    //Check the Request method
     if (req.getMethod() == HttpMethod.Get) {
       view(req, res, "/views/account/Login.jsp", viewData);
-    }
-    else if (req.getMethod() == HttpMethod.Post) {
+    } else if (req.getMethod() == HttpMethod.Post) {
+      
+      //User is trying to log in
       String userName = req.getParameter("userName");
       String password = req.getParameter("password");
-      // boolean rememberMe = Boolean.parse(req.getParameter("rememberMe"));
+      //boolean rememberMe = Boolean.parse(req.getParameter("rememberMe"));
 
+      //Create a userSession for the user
       Session userSession = AuthenticationManager.login(userName, password, false);
       if (userSession == null) {
         req.setAttribute("loginError", true);
         view(req, res, "/views/account/Login.jsp", viewData);
-      }
-      else {
+      } else {
         HttpSession session = req.getSession();
         session.setAttribute("userSession", userSession);
         redirectToLocal(req, res, "/home/dashboard");
       }
+      
     }
   }
 

@@ -64,7 +64,7 @@ public class UserManager extends DataManager {
     Connection conn = null;
     try {
       conn = connection.getConnection();
-      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE UserName = ?");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE Username = ?");
       pstmt.setString(1, userName);
 
       ResultSet rs = pstmt.executeQuery();
