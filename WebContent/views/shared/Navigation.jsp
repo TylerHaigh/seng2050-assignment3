@@ -7,7 +7,8 @@
     <div class="navbar-header">
         <img src="${pageContext.request.contextPath}/References/images/UoN_Logo.png" alt="UoN Logo" class="pull-left"/>
     </div>
-    <c:if test="{not empty userSession}">
+    
+    <c:if test="${not empty userSession}">
         <ul id="target" class="nav nav-pills">
             <li><a href="${pageContext.request.contextPath}/home/dashboard/">Home</a></li>
             
