@@ -5,6 +5,7 @@ public class Group {
 	//Private Instance Variables
 	private int id;
 	private String groupName;
+	private String description;
 	
 	//Constructors
 	
@@ -27,6 +28,10 @@ public class Group {
 	public String getGroupName() {
 		return groupName;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
 
 	//Setters
 	
@@ -37,7 +42,8 @@ public class Group {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
-	
-	
-	
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
