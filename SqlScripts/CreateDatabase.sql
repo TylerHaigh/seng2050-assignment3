@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS RGMS_DB.AccessRecords;
+DROP TABLE IF EXISTS RGMS_DB.DiscussionPosts;
+DROP TABLE IF EXISTS RGMS_DB.Documents;
+DROP TABLE IF EXISTS RGMS_DB.DiscussionThreads;
+DROP TABLE IF EXISTS RGMS_DB.DiscussionTypes;
 DROP TABLE IF EXISTS RGMS_DB.Meetings;
 DROP TABLE IF EXISTS RGMS_DB.GroupUserMaps;
 DROP TABLE IF EXISTS RGMS_DB.Users;
@@ -9,7 +14,8 @@ CREATE DATABASE RGMS_DB;
 
 CREATE TABLE RGMS_DB.Groups (
 	Id INT PRIMARY KEY NOT NULL auto_increment,
-	GroupName VARCHAR(100) NOT NULL
+	GroupName VARCHAR(100) NOT NULL,
+	Description VARCHAR(500)
 );
 
 CREATE TABLE RGMS_DB.Users (
@@ -34,4 +40,39 @@ CREATE TABLE RGMS_DB.Meetings (
 	DateCreated DATETIME DEFAULT NOW(),
 	DateDue DATETIME NULL DEFAULT NOW(), /* NOW() + 1 */
 	GroupId INT REFERENCES RGMS_DB.Groups(Id)
+);
+
+CREATE TABLE RGMS_DB.DiscussionTypes (
+	Id INT PRIMARY KEY NOT NULL auto_increment,
+	DiscussionType VARCHAR(64) NOT NULL /* Meeting, Document, etc. */
+);
+
+CREATE TABLE RGMS_DB.DiscussionThreads (
+	Id INT PRIMARY KEY NOT NULL auto_increment,
+	DiscussionType VARCHAR(64) NOT NULL REFERENCES RGMS_DB.DiscussionTypes(Id),
+	GroupId INT NOT NULL REFERENCES RGMS_DB.Groups(Id),
+	ThreadName VARCHAR(100)
+);
+
+CREATE TABLE RGMS_DB.Documents (
+	Id INT PRIMARY KEY NOT NULL auto_increment,
+	DocumentPath VARCHAR(128) NOT NULL, /* Root Folder */
+	DocumentName VARCHAR(64) NOT NULL,
+	VersionNumber INT NOT NULL,
+	UploadDate DATETIME NOT NULL DEFAULT NOW() ,
+	ThreadId INT NOT NULL REFERENCES RGMS_DB.DiscussionThreads(Id)
+);
+
+CREATE TABLE RGMS_DB.DiscussionPosts (
+	Id INT PRIMARY KEY NOT NULL auto_increment,
+	ThreadId INT NOT NULL REFERENCES RGMS_DB.DiscussionThread(Id),
+	UserId INT NOT NULL REFERENCES RGMS_DB.Users(Id),
+	Message VARCHAR(512)
+);
+
+CREATE TABLE RGMS_DB.AccessRecords (
+	Id INT PRIMARY KEY NOT NULL auto_increment,
+	UserId INT NOT NULL REFERENCES RGMS_DB.Users(Id),
+	DateAccessed DATETIME NOT NULL DEFAULT NOW(),
+	DocumentId INT NOT NULL REFERENCES RGMS_DB.Documents(Id)
 );
