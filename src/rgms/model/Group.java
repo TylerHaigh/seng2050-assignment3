@@ -1,6 +1,8 @@
 package rgms.model;
 
-public class Group {
+import java.io.Serializable;
+
+public class Group implements Serializable {
 
 	//Private Instance Variables
 	private int id;

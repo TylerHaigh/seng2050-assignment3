@@ -1,8 +1,9 @@
 package rgms.model;
 
 import java.util.Date;
+import java.io.Serializable;
 
-public class AccessRecord {
+public class AccessRecord implements Serializable {
 
 	//Private Instance Variables
 	private int id;

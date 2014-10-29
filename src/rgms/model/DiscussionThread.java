@@ -1,6 +1,8 @@
 package rgms.model;
 
-public class DiscussionThread {
+import java.io.Serializable;
+
+public class DiscussionThread implements Serializable {
 
 	//Private Instance Variables
 	private int id;

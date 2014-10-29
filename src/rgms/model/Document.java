@@ -1,6 +1,8 @@
 package rgms.model;
 
-public class Document {
+import java.io.Serializable;
+
+public class Document implements Serializable {
 
 	//Private Instance Variables
 	private int id;

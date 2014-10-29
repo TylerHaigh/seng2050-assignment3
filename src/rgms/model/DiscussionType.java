@@ -1,6 +1,8 @@
 package rgms.model;
 
-public enum DiscussionType {
+import java.io.Serializable;
+
+public enum DiscussionType implements Serializable {
 
 	Meeting,
 	Document

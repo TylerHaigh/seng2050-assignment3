@@ -1,6 +1,8 @@
 package rgms.model;
 
-public class DiscussionPost {
+import java.io.Serializable;
+
+public class DiscussionPost implements Serializable {
 
 	//Private Instance Variables
 	private int id;

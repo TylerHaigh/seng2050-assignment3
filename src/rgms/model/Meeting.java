@@ -1,8 +1,9 @@
 package rgms.model;
 
 import java.util.Date;
+import java.io.Serializable;
 
-public class Meeting {
+public class Meeting implements Serializable {
 
 	//Private Instance Variables
 	private int id;
