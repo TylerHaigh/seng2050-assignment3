@@ -2,11 +2,14 @@ package rgms.controller;
 
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+
 import java.util.logging.*;
+
 import rgms.mvc.*;
 import rgms.infrastructure.*;
 import rgms.model.User;
 import rgms.datacontext.UserManager;
+
 import java.util.*;
 
 @WebServlet(urlPatterns = { "/account/*", "/account" })
@@ -59,7 +62,7 @@ public class AccountController extends Controller {
 
       UserManager userManager = new UserManager();
       userManager.createUser(user, req.getParameter("password"));
-      //Get password here returns the hashed password stored in the db, not the plain password user.getPassword()
+      
       Session userSession = AuthenticationManager.login(user.getUserName(), req.getParameter("password") , false);
       if (userSession == null) {
         req.setAttribute("registerError", true);
@@ -68,7 +71,7 @@ public class AccountController extends Controller {
       else {
         HttpSession session = req.getSession();
         session.setAttribute("userSession", userSession);
-        redirectToLocal(req, res, "/account/profile/");
+        redirectToLocal(req, res, "/account/profile?userId=" + user.getUserName());
       }
     }
   }
@@ -81,4 +84,60 @@ public class AccountController extends Controller {
 	  Logger.getLogger("").info("Showing profile for user: " + username);
 	  view(req, res, "/views/account/Profile.jsp", viewData);
   }
+  //#########JOSH DID THIS##########
+  public void editprofileAction(HttpServletRequest req, HttpServletResponse res) {
+	  Map<String, String> viewData = new HashMap<String, String>();
+	    viewData.put("title", "Edit Profile");
+	    
+	  String username = req.getParameter("userId");
+	  Logger.getLogger("").info("Edit profile of: " + username);
+	  view(req, res, "/views/account/EditProfile.jsp", viewData);
+  }
+  
+  public void updateAction(HttpServletRequest req, HttpServletResponse res){
+	  Map<String, String> viewData = new HashMap<String, String>();
+	    viewData.put("title", "Update Profile");
+	    String username = req.getParameter("userId");
+		  Logger.getLogger("").info("Updating profile of: " + username);
+	    if (req.getMethod() == HttpMethod.Get) {
+	        view(req, res, "/views/account/EditProfile.jsp", viewData);
+	      }
+	      else if (req.getMethod() == HttpMethod.Post) {
+	        User user = new User();
+	        user.setUserName(req.getParameter("userName"));
+	        user.setFirstName(req.getParameter("firstName"));
+	        user.setLastName(req.getParameter("lastName"));
+
+	        UserManager userManager = new UserManager();
+	        userManager.updateUser(user, req.getParameter("password"));
+	        
+	        Session userSession = AuthenticationManager.login(user.getUserName(), req.getParameter("password") , false);
+	        if (userSession == null) {
+	          req.setAttribute("updateError", true);
+	          view(req, res, "/views/account/Login.jsp", viewData);
+	        }
+	        else {
+	          HttpSession session = req.getSession();
+	          session.setAttribute("userSession", userSession);
+	          redirectToLocal(req, res, "/account/profile?userId=" + username);
+	          return;
+	        }
+	      } 
+	    
+	    
+		  //view(req, res, "/views/account/Profile.jsp", viewData);
+	    
+  }
+
+	public void logoutAction(HttpServletRequest req, HttpServletResponse res) {
+		 Map<String, String> viewData = new HashMap<String, String>();
+		 viewData.put("title", "Login");
+		 Logger.getLogger("").info("Loging out");
+		 HttpSession session = req.getSession();
+	     session.removeAttribute("userSession");
+	     view(req, res, "/views/account/Login.jsp", viewData);
+		 return;
+	}
+
+  //################################
 }

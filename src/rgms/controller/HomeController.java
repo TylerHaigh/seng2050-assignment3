@@ -26,6 +26,5 @@ public class HomeController extends Controller {
 			//404
 			httpNotFound(res);
 		}
-	}
-	
+	}	
 }

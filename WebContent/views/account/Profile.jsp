@@ -22,10 +22,12 @@
             <img src="${ profileUser.imageReference }"
             	 alt="${ profileUser.fullName } Profile Image" />
         </div>
-        
         <div id="aboutMe">
             <p>Details</p>
             <p>Details</p>
+            <div class = "btn-group">
+    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.userName }" >Edit Profile</a>
+    </div>
         </div>
     </div>
     

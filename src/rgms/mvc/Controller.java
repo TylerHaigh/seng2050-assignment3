@@ -108,6 +108,7 @@ public abstract class Controller extends HttpServlet {
   protected void redirectToLocal(HttpServletRequest req, HttpServletResponse res, String path) {
     try {
       res.sendRedirect(req.getContextPath() + path);
+      return;
     }
     catch (java.io.IOException e) {
       logger.log(Level.SEVERE, "Redirection Error", e);
@@ -117,7 +118,8 @@ public abstract class Controller extends HttpServlet {
   private void renderLayout(HttpServletRequest req, HttpServletResponse res) {
     try{
       RequestDispatcher rd = req.getRequestDispatcher(LAYOUT_PATH);
-      rd.forward(req, res); 
+      rd.forward(req, res);
+      return;
     }
     catch (ServletException e) {
       logger.log(Level.SEVERE, "Servlet Error", e);

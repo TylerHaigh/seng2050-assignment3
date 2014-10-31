@@ -11,3 +11,4 @@ libs
 .settings
 .metadata
 
+WebContent/WEB-INF/web.xml
