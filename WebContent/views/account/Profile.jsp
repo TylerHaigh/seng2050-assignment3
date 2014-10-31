@@ -15,7 +15,7 @@
 	
 	<c:otherwise>
 		<h1>
-      <c:out value="${profileUser.fullName}"></c:out>
+      <c:out value="${profileUser.fullName}" />
     </h1>
   	<div class="details">
         <div id="image">
