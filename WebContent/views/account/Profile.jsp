@@ -4,9 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<jsp:useBean id="profileController" class="rgms.controller.ProfileController" scope="page" />
-<c:set var="profileUser" value="${ profileController.getProfileUser(param.userId) }" />
-
 <c:choose>
 	<c:when test="${empty profileUser}">
 		<h1>Invalid User</h1>
@@ -19,15 +16,18 @@
     </h1>
   	<div class="details">
         <div id="image">
-            <img src="${ profileUser.imageReference }"
+            <img src="${ pageContext.request.contextPath }${ profileUser.imageReference }"
             	 alt="${ profileUser.fullName } Profile Image" />
         </div>
         <div id="aboutMe">
             <p>Details</p>
             <p>Details</p>
-            <div class = "btn-group">
-    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.userName }" >Edit Profile</a>
-    </div>
+            
+            <c:if test="${ profileUser.userName eq userSession.user.userName }">
+	            <div class = "btn-group">
+			    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.userName }" >Edit Profile</a>
+			    </div>
+		    </c:if>
         </div>
     </div>
     
