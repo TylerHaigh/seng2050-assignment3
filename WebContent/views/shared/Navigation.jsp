@@ -35,5 +35,4 @@
             </li>
         </ul>
     </c:if>
-   <c:out value="${pageContext.request.contextPath}" />
 </nav>

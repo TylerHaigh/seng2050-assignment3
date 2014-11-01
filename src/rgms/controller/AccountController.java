@@ -148,10 +148,6 @@ public class AccountController extends Controller {
 	          return;
 	        }
 	      } 
-	    
-	    
-		  //view(req, res, "/views/account/Profile.jsp", viewData);
-	    
   }
 
 	public void logoutAction(HttpServletRequest req, HttpServletResponse res) {
@@ -160,7 +156,7 @@ public class AccountController extends Controller {
 		 Logger.getLogger("").info("Loging out");
 		 HttpSession session = req.getSession();
 	     session.removeAttribute("userSession");
-	     view(req, res, "/views/account/Login.jsp", viewData);
+	     redirectToLocal(req, res, "/account/login");
 		 return;
 	}
 
