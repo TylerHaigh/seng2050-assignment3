@@ -7,8 +7,8 @@ import java.util.logging.*;
 
 import rgms.mvc.*;
 import rgms.infrastructure.*;
-import rgms.model.User;
-import rgms.datacontext.UserManager;
+import rgms.model.*;
+import rgms.datacontext.*;
 
 import java.util.*;
 
@@ -81,7 +81,8 @@ public class AccountController extends Controller {
 	  viewData.put("title", "Profile");
 
 	  User profileUser = null;
-	  
+	  List<Group> profileUserGroups = null;
+
 	  try {
 		  String username = req.getParameter("userId");
 		  //Logger.getLogger("").info("Showing profile for user: " + username);
@@ -90,15 +91,20 @@ public class AccountController extends Controller {
 		  profileUser = um.get(username);
 
 		  if (profileUser == null) {
-			  Logger.getLogger("").info("Bad user name");
-		  } else 
+			  Logger.getLogger("").info("Invalid user name: " + username);
+		  } else {
 			  Logger.getLogger("").info("Showing profile for user: " + username);
+			  
+			  GroupManager gm = new GroupManager();
+			  profileUserGroups = gm.getAllGroups(profileUser.getId());
+		  }
 		  
 	  } catch (Exception e) {
 		  Logger.getLogger("").log(Level.SEVERE, "An error occurred when getting profile user", e);
 	  }
 	  
 	  req.setAttribute("profileUser", profileUser);
+	  req.setAttribute("profileUserGroups", profileUserGroups);
 	  view(req, res, "/views/account/Profile.jsp", viewData);
   }
   

@@ -1,7 +1,7 @@
 package rgms.model;
 
 import java.io.Serializable;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.logging.*;
 
 /**
@@ -43,7 +43,7 @@ public class User implements Serializable {
                         user.getImageReference()));
             }
         }
-        catch (java.sql.SQLException e) {
+        catch (SQLException e) {
             Logger.getLogger("rgms.model.User").log(Level.SEVERE, "SQL Error", e);
         }
 

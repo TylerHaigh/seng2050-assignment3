@@ -1,6 +1,9 @@
 package rgms.model;
 
 import java.io.Serializable;
+import java.sql.*;
+import java.util.*;
+import java.util.logging.*;
 
 public class Group implements Serializable {
 
@@ -47,5 +50,43 @@ public class Group implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	//Queries
+	
+	public static Group fromResultSet(ResultSet rs) {
+		Group group = null;
+		
+		try {
+			if (rs.next()) {
+				group = new Group();
+				group.setId(rs.getInt("Id"));
+				group.setGroupName(rs.getString("GroupName"));
+				group.setDescription(rs.getString("Description"));
+				
+				Logger.getLogger("rgms.model.Group").info(
+					String.format("Loaded Group: %d, %s, %s",
+						group.getId(), group.getGroupName(), group.getDescription())
+				);
+				
+			}
+		} catch (SQLException e) {
+			Logger.getLogger("rgms.model.Group").log(Level.SEVERE, "SQL Error", e);
+		}
+		
+		return group;
+	}
+	
+	public static List<Group> listFromResultSet(ResultSet rs) {
+		List<Group> groups = new LinkedList<Group>();
+		
+		try {
+			while (!rs.isAfterLast())
+				groups.add(fromResultSet(rs));
+		} catch (Exception e) {
+			Logger.getLogger("rgms.model.Group").log(Level.SEVERE, "Error", e);
+		}
+		
+		return groups;
 	}
 }
