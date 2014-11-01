@@ -21,11 +21,13 @@ public class User implements Serializable {
     private boolean isAdmin;
 
     public static User fromResultSet(ResultSet rs) {
-        User user = new User();
+    	User user = null;
 
         try {
             if (rs.first()) {
-                user.setId(rs.getInt("Id"));
+            	user = new User();
+            	
+            	user.setId(rs.getInt("Id"));
                 user.setFirstName(rs.getString("FirstName"));
                 user.setLastName(rs.getString("LastName"));
                 user.setUserName(rs.getString("Username"));

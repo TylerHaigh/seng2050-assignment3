@@ -77,17 +77,36 @@ public class AccountController extends Controller {
   }
 
   public void profileAction(HttpServletRequest req, HttpServletResponse res) {
-    Map<String, String> viewData = new HashMap<String, String>();
-    viewData.put("title", "Profile");
+	  Map<String, String> viewData = new HashMap<String, String>();
+	  viewData.put("title", "Profile");
 
-	  String username = req.getParameter("userId");
-	  Logger.getLogger("").info("Showing profile for user: " + username);
+	  User profileUser = null;
+	  
+	  try {
+		  String username = req.getParameter("userId");
+		  //Logger.getLogger("").info("Showing profile for user: " + username);
+		  
+		  UserManager um = new UserManager();
+		  profileUser = um.get(username);
+
+		  if (profileUser == null) {
+			  Logger.getLogger("").info("Bad user name");
+		  } else 
+			  Logger.getLogger("").info("Showing profile for user: " + username);
+		  
+	  } catch (Exception e) {
+		  Logger.getLogger("").log(Level.SEVERE, "An error occurred when getting profile user", e);
+	  }
+	  
+	  req.setAttribute("profileUser", profileUser);
 	  view(req, res, "/views/account/Profile.jsp", viewData);
   }
+  
+  
   //#########JOSH DID THIS##########
   public void editprofileAction(HttpServletRequest req, HttpServletResponse res) {
 	  Map<String, String> viewData = new HashMap<String, String>();
-	    viewData.put("title", "Edit Profile");
+	  viewData.put("title", "Edit Profile");
 	    
 	  String username = req.getParameter("userId");
 	  Logger.getLogger("").info("Edit profile of: " + username);
