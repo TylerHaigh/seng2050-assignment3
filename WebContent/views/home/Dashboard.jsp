@@ -25,8 +25,8 @@
 		<div class="list-group">
 	    	<c:forEach var="meeting" items="${ userMeetings }" >
 	    		<a href="#" class="list-group-item">
-	    			<c:out value="Meeting Name: " />
-	    			<c:out value="Meeting Time" />
+	    			<c:out value="${ meeting.description } : " />
+	    			<c:out value="${ meeting.dateDue }" />
 	    		</a>
 	    	</c:forEach>
 	    </div>
