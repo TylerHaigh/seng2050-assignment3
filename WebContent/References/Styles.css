@@ -57,19 +57,17 @@ and open the template in the editor.
         height:100px;
     }
             
-        .wrapper .details #image {
-            float:left;
+        .wrapper .details .image {
             width:100px;
             height:100px;
         }
         
-        .wrapper .details #image img {
+        .wrapper .details .image img {
         	width: 100px;
         }
 
-        .wrapper .details #aboutMe {
-            float:right;
-            background-color: green;
+        .wrapper .details .aboutMe {
+        	float: right;
         }
             
     .wrapper .researchGroups {

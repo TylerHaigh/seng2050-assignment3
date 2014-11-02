@@ -14,20 +14,21 @@
 		<h1>
       <c:out value="${profileUser.fullName}" />
     </h1>
-  	<div class="details">
-        <div id="image">
+  	<div class="details row">
+        <div class="image col-md-4">
             <img src="${ pageContext.request.contextPath }${ profileUser.imageReference }"
             	 alt="${ profileUser.fullName } Profile Image" />
         </div>
-        <div id="aboutMe">
-            <p>Details</p>
-            <p>Details</p>
+        <div class="col-md-8 aboutMe">
+            
+            <div> Username: <c:out value="${ profileUser.userName }" /> </div>
             
             <c:if test="${ profileUser.userName eq userSession.user.userName }">
 	            <div class = "btn-group">
 			    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.userName }" >Edit Profile</a>
 			    </div>
 		    </c:if>
+		    
         </div>
     </div>
     
