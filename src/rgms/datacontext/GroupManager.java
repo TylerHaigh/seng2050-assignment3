@@ -54,6 +54,8 @@ public class GroupManager extends DataManager {
 
 	 public List<Group> getAllGroups(int userId) {
 		 Connection conn = null;
+		 List<Group> groups = new LinkedList<Group>();
+		 
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
@@ -65,7 +67,11 @@ public class GroupManager extends DataManager {
 			 pstmt.setInt(1, userId);
 			 
 			 ResultSet rs = pstmt.executeQuery();
-			 return Group.listFromResultSet(rs);
+			 while (!rs.isAfterLast()) {
+				Group resultGroup = Group.fromResultSet(rs);
+				if (resultGroup != null)
+					groups.add(resultGroup);
+			}
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
@@ -80,6 +86,8 @@ public class GroupManager extends DataManager {
 				 }
 			 }
 		 }
+		 
+		 return groups;
 	 }
 	 
 }
