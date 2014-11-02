@@ -35,8 +35,14 @@
                     <c:out value="${userSession.user.fullName}" />
                     <span class="caret"></span>
                 </a>
+                
                 <ul class="dropdown-menu" >
                     <li><a href="${pageContext.request.contextPath}/account/profile?userId=${ userSession.user.userName }">View Profile</a></li>
+                    
+                    <c:if test="${ userSession.user.admin == true }">
+		                <li><a href="${pageContext.request.contextPath}/admin/admin">Admin Tools</a></li>
+	                </c:if>
+                    
                     <li><a href="${pageContext.request.contextPath}/account/logout">Log Out</a></li>
                 </ul>
             </li>

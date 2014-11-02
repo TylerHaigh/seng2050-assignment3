@@ -21,7 +21,7 @@ public class User implements Serializable {
     private String studentId;
     private String password;
     private String imageReference; //Unique string containing a reference to the image on disk
-    private boolean isAdmin;
+    private boolean admin;
     
     private List<Group> groups;
     private List<Meeting> meetings;
@@ -46,7 +46,7 @@ public class User implements Serializable {
                 user.setStudentId(rs.getString("StudentId"));
                 user.setPassword(rs.getString("Passphrase"));
                 user.setImageReference(rs.getString("ImageReference"));
-                user.setAdmin(Boolean.parseBoolean(rs.getString("IsAdmin")));
+                user.setAdmin(rs.getBoolean("IsAdmin"));
                 
                 //Apply Data context specific data to user
                 user.setGroups(groupMan.getAllGroups(user.getId()));
@@ -117,7 +117,7 @@ public class User implements Serializable {
     }
     
     public boolean isAdmin() {
-		return isAdmin;
+		return admin;
 	}
     
     public List<Group> getGroups() {
@@ -158,8 +158,8 @@ public class User implements Serializable {
         this.imageReference = imageReference;
     }
     
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 	
 	public void setGroups(List<Group> groups) {
