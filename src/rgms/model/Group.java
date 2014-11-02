@@ -81,8 +81,12 @@ public class Group implements Serializable {
 		List<Group> groups = new LinkedList<Group>();
 		
 		try {
-			while (!rs.isAfterLast())
-				groups.add(fromResultSet(rs));
+			while (!rs.isAfterLast()) {
+				Group resultGroup = fromResultSet(rs);
+				if (resultGroup != null)
+					groups.add(resultGroup);
+			}
+				
 		} catch (Exception e) {
 			Logger.getLogger("rgms.model.Group").log(Level.SEVERE, "Error", e);
 		}
