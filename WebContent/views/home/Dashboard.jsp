@@ -10,7 +10,7 @@
 		<h2>My Groups</h2>
 		
 		<div class="list-group">
-	    	<c:forEach var="group" items="${ userGroups }" >
+	    	<c:forEach var="group" items="${ userSession.user.groups }" >
 	    		<a href="ResearchGroup.jsp?groupName=${ group.groupName }" class="list-group-item">
 	    			<c:out value="${ group.groupName }" />
 	    			<span class="badge">10</span>
@@ -23,7 +23,7 @@
 		<h2>Meetings</h2>
 		
 		<div class="list-group">
-	    	<c:forEach var="meeting" items="${ userMeetings }" >
+	    	<c:forEach var="meeting" items="${ userSession.user.meetings }" >
 	    		<a href="#" class="list-group-item">
 	    			<c:out value="${ meeting.description } : " />
 	    			<c:out value="${ meeting.dateDue }" />

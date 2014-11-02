@@ -2,7 +2,10 @@ package rgms.model;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
 import java.util.logging.*;
+
+import rgms.datacontext.*;
 
 /**
  * Stores all information pertaining to a User's account and profile
@@ -19,14 +22,23 @@ public class User implements Serializable {
     private String password;
     private String imageReference; //Unique string containing a reference to the image on disk
     private boolean isAdmin;
+    
+    private List<Group> groups;
+    private List<Meeting> meetings;
 
     public static User fromResultSet(ResultSet rs) {
     	User user = null;
 
         try {
             if (rs.first()) {
+            	
+            	//Set up data context managers
+            	GroupManager groupMan = new GroupManager();
+            	MeetingManager meetingMan = new MeetingManager();
+            	
             	user = new User();
             	
+            	//Apply the Database data to the user
             	user.setId(rs.getInt("Id"));
                 user.setFirstName(rs.getString("FirstName"));
                 user.setLastName(rs.getString("LastName"));
@@ -35,6 +47,10 @@ public class User implements Serializable {
                 user.setPassword(rs.getString("Passphrase"));
                 user.setImageReference(rs.getString("ImageReference"));
                 user.setAdmin(Boolean.parseBoolean(rs.getString("IsAdmin")));
+                
+                //Apply Data context specific data to user
+                user.setGroups(groupMan.getAllGroups(user.getId()));
+                user.setMeetings(meetingMan.getAllMeetings(user.getId()));
                 
                 Logger.getLogger("rgms.model.User")
                     .info(String.format("Loaded User: %d, %s, %s, %s, %s, %s",
@@ -104,6 +120,14 @@ public class User implements Serializable {
 		return isAdmin;
 	}
     
+    public List<Group> getGroups() {
+    	return groups;
+    }
+    
+    public List<Meeting> getMeetings() {
+    	return meetings;
+    }
+    
     //Setters
     
     public void setId(int id) {
@@ -137,7 +161,15 @@ public class User implements Serializable {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+	
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
     
+	public void setMeetings(List<Meeting> meetings) {
+		this.meetings = meetings;
+	}
+	
     //Queries
     public String getFullName() {
         return this.firstName + " " + this.lastName;

@@ -16,8 +16,15 @@
         		<a href="#" class="dropdown-toggle" data-toggle="dropdown" >Research Groups <span class="caret"></span>
         		</a>
         		<ul class="dropdown-menu">
-                    <li><a href="#" data-toggle="dropdown">Group 1</a></li>
-                    <li><a href="#">Group 2</a></li>
+                    
+                    <c:forEach var="group" items="${ userSession.user.groups }" >
+			    		<li>
+				    		<a href="#">
+				    			<c:out value="${ group.groupName }" />
+				    		</a>
+			    		</li>
+			    	</c:forEach>
+			    	
                 </ul>
             </li>
 

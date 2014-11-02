@@ -81,12 +81,9 @@ public class AccountController extends Controller {
 	  viewData.put("title", "Profile");
 
 	  User profileUser = null;
-	  List<Group> profileUserGroups = null;
 
 	  try {
 		  String username = req.getParameter("userId");
-		  //Logger.getLogger("").info("Showing profile for user: " + username);
-		  
 		  UserManager um = new UserManager();
 		  profileUser = um.get(username);
 
@@ -94,9 +91,6 @@ public class AccountController extends Controller {
 			  Logger.getLogger("").info("Invalid user name: " + username);
 		  } else {
 			  Logger.getLogger("").info("Showing profile for user: " + username);
-			  
-			  GroupManager gm = new GroupManager();
-			  profileUserGroups = gm.getAllGroups(profileUser.getId());
 		  }
 		  
 	  } catch (Exception e) {
@@ -104,7 +98,6 @@ public class AccountController extends Controller {
 	  }
 	  
 	  req.setAttribute("profileUser", profileUser);
-	  req.setAttribute("profileUserGroups", profileUserGroups);
 	  view(req, res, "/views/account/Profile.jsp", viewData);
   }
   

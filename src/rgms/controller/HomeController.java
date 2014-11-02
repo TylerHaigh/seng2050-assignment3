@@ -23,22 +23,6 @@ public class HomeController extends Controller {
     viewData.put("title", "Dashboard");
 
 		if (req.getMethod() == HttpMethod.Get) {
-			
-			Session userSession = (Session) req.getSession().getAttribute("userSession");
-			User user = userSession.getUser();
-			
-			//Define the Managers used to get information
-			GroupManager gm = new GroupManager();
-			MeetingManager mm = new MeetingManager();
-			
-			//Get the data
-			List<Group> userGroups = gm.getAllGroups(user.getId());
-			List<Meeting> userMeetings = mm.getAllMeetings(user.getId());
-			
-			//Set it in the request
-			req.setAttribute("userGroups", userGroups);
-			req.setAttribute("userMeetings", userMeetings);
-			
 			view(req, res, "/views/home/Dashboard.jsp", viewData);
 		} else if (req.getMethod() == HttpMethod.Post) {
 			//404
