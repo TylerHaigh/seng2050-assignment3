@@ -19,6 +19,8 @@ public class Notification implements Serializable {
 	private int discussionPostId;
 	private DiscussionPost discssionPost;
 	
+	private String description;
+	
 	//Constructors
 	
 	public Notification() {
@@ -32,11 +34,12 @@ public class Notification implements Serializable {
 		this.meeting = new Meeting();
 		this.discussionPostId = 1;
 		this.discssionPost = new DiscussionPost();
+		this.description = "";
 	}
 	
 	public Notification(int id, int userId, User user, int groupId,
 			Group group, int meetingId, Meeting meeting, int discussionPostId,
-			DiscussionPost discssionPost) {
+			DiscussionPost discssionPost, String description) {
 		
 		this.id = id;
 		this.userId = userId;
@@ -47,6 +50,7 @@ public class Notification implements Serializable {
 		this.meeting = meeting;
 		this.discussionPostId = discussionPostId;
 		this.discssionPost = discssionPost;
+		this.description = description;
 	}
 
 	//Getters
@@ -85,6 +89,10 @@ public class Notification implements Serializable {
 
 	public DiscussionPost getDiscssionPost() {
 		return discssionPost;
+	}
+	
+	public String getDescription() {
+		return this.description;
 	}
 
 	//Setters
@@ -125,4 +133,7 @@ public class Notification implements Serializable {
 		this.discssionPost = discssionPost;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

@@ -1,12 +1,15 @@
 package rgms.model;
 
+import java.sql.*;
 import java.util.Date;
+import java.util.logging.*;
 import java.io.Serializable;
 
 public class Meeting implements Serializable {
 
 	//Private Instance Variables
 	private int id;
+	private String description;
 	
 	private int createdByUserId;
 	private User createdByUser;
@@ -21,6 +24,7 @@ public class Meeting implements Serializable {
 	
 	public Meeting() {
 		this.id = 1;
+		this.description = "";
 		this.createdByUserId = 1;
 		this.createdByUser = new User();
 		this.dateCreated = new Date();
@@ -29,10 +33,11 @@ public class Meeting implements Serializable {
 		this.group = new Group();
 	}
 
-	public Meeting(int id, int createdByUserId, User createdByUser,
+	public Meeting(int id, String description, int createdByUserId, User createdByUser,
 			Date dateCreated, Date dateDue, int groupId, rgms.model.Group group) {
 		
 		this.id = id;
+		this.description = description;
 		this.createdByUserId = createdByUserId;
 		this.createdByUser = createdByUser;
 		this.dateCreated = dateCreated;
@@ -45,6 +50,10 @@ public class Meeting implements Serializable {
 	
 	public int getId() {
 		return id;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 
 	public int getCreatedByUserId() {
@@ -77,6 +86,10 @@ public class Meeting implements Serializable {
 		this.id = id;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	public void setCreatedByUserId(int createdByUserId) {
 		this.createdByUserId = createdByUserId;
 	}
@@ -101,4 +114,34 @@ public class Meeting implements Serializable {
 		this.group = group;
 	}
 	
+	//Queries
+	
+	public static Meeting fromResultSet(ResultSet rs) {
+		Meeting meeting = null;
+		
+		try {
+
+			if (rs.next()) {
+				meeting = new Meeting();
+				meeting.setId(rs.getInt("Id"));
+				meeting.setDescription(rs.getString("Description"));
+				meeting.setCreatedByUserId(rs.getInt("Id"));
+				meeting.setDateCreated((Date) rs.getDate("DateCreated"));
+				meeting.setDateDue((Date) rs.getDate("DateDue"));
+				meeting.setGroupId(rs.getInt("GroupId"));
+				
+				Logger.getLogger("rgms.model.Meeting").info(
+					String.format("Loaded Meeting: %d, %s, %d, %s, %s, %d",
+						meeting.getId(), meeting.getDescription(), meeting.getCreatedByUserId(),
+						meeting.getDateCreated().toString(), meeting.getDateDue().toString(),
+						meeting.getGroupId())
+				);
+			}
+				
+		} catch (SQLException e) {
+			Logger.getLogger("rgms.model.Meeting").log(Level.SEVERE, "SQL Error", e);
+		}
+		
+		return meeting;
+	}
 }

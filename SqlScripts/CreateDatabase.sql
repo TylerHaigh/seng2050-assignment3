@@ -38,6 +38,7 @@ CREATE TABLE RGMS_DB.GroupUserMaps (
 
 CREATE TABLE RGMS_DB.Meetings (
 	Id INT PRIMARY KEY NOT NULL auto_increment,
+	Description VARCHAR(128),
 	CreatedByUserId INT NOT NULL REFERENCES RGMS_DB.Users(Id),
 	DateCreated DATETIME DEFAULT NOW(),
 	DateDue DATETIME NULL DEFAULT NOW(), /* NOW() + 1 */
@@ -86,7 +87,8 @@ CREATE TABLE RGMS_DB.Notifications (
 
 	MeetingId INT REFERENCES RGMS_DB.Meetings(Id),
 	DocumentId INT REFERENCES RGMS_DB.Documents(Id),
-	DiscussionPostId INT REFERENCES RGMS_DB.DiscussionPosts(Id)
+	DiscussionPostId INT REFERENCES RGMS_DB.DiscussionPosts(Id),
+	Description VARCHAR(128)
 );
 
 CREATE TABLE RGMS_DB.Sessions (

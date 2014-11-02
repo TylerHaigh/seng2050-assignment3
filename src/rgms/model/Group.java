@@ -2,7 +2,6 @@ package rgms.model;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.util.*;
 import java.util.logging.*;
 
 public class Group implements Serializable {
