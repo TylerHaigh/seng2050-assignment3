@@ -67,11 +67,14 @@ public class GroupManager extends DataManager {
 			 pstmt.setInt(1, userId);
 			 
 			 ResultSet rs = pstmt.executeQuery();
-			 while (!rs.isAfterLast()) {
-				Group resultGroup = Group.fromResultSet(rs);
-				if (resultGroup != null)
-					groups.add(resultGroup);
-			}
+			 
+			 if (rs.isBeforeFirst()) {
+				 while (!rs.isAfterLast()) {
+					Group resultGroup = Group.fromResultSet(rs);
+					if (resultGroup != null)
+						groups.add(resultGroup);
+				 }
+			 }
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);

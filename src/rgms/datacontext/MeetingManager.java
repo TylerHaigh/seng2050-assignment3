@@ -71,11 +71,15 @@ public class MeetingManager extends DataManager {
 			 pstmt.setInt(1, userId);
 			 
 			 ResultSet rs = pstmt.executeQuery();
-			 while (!rs.isAfterLast()) {
-				Meeting resultMeeting = Meeting.fromResultSet(rs);
-				if (resultMeeting != null)
-					meetings.add(resultMeeting);
-			}
+			 
+			 if (rs.isBeforeFirst()) {
+				 
+				 while (!rs.isAfterLast()) {
+					Meeting resultMeeting = Meeting.fromResultSet(rs);
+					if (resultMeeting != null)
+						meetings.add(resultMeeting);
+				 }
+			 }
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
