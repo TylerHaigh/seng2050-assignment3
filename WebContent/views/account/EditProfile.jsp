@@ -9,8 +9,15 @@
 <!--Form for user to update profile with. Will have to discuss how it is updated in DB. and JavaScript client side validation-->
 <div class="row">        						
 <!-- Not sure about sending the userId here but when it redirects back to the profile I lost the profile -->
-	<form method="post" action="${pageContext.request.contextPath}/account/update?userId=${ userSession.user.id }">
+	<form method="post" action="${pageContext.request.contextPath}/account/update?userId=${ userSession.user.id }" enctype="multipart/form-data">
 		<h2>Edit your profile</h2>
+    <div class="form-group">
+      <label for="avatar">Avatar: </label>
+      <div class="form-controls">
+        <img class="profile-image" src="${pageContext.request.contextPath}/Uploads/images/${profileUser.imageReference}" data-src="holder.js/100x100/sky/text:No Image"/>
+        <input type="file" name="avatar" />
+      </div>
+    </div>
     <div class="form-group">
       <label for="userName">Username: </label>
       <input type="email" name="userName" class="form-control" value="${profileUser.userName}" readonly/>
@@ -47,3 +54,4 @@
 	</form>
 </div>
 
+<script src="${pageContext.request.contextPath}/References/holder.js" type="text/javascript"></script>

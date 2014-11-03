@@ -15,8 +15,8 @@
       <c:out value="${profileUser.fullName}" />
     </h1>
   	<div class="details row">
-        <div class="image col-md-4">
-            <img src="${ pageContext.request.contextPath }${ profileUser.imageReference }" alt="${ profileUser.fullName } Profile Image" data-src="holder.js/100x100/sky/text:${profileUser.fullName}"/>
+        <div class="profile-image image col-md-4">
+            <img src="${ pageContext.request.contextPath }/Uploads/images/${ profileUser.imageReference }" alt="${ profileUser.fullName } Profile Image" data-src="holder.js/100x100/sky/text:${profileUser.fullName}"/>
         </div>
         <div class="col-md-8 aboutMe">
             
