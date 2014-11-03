@@ -11,9 +11,14 @@ import rgms.model.*;
 import rgms.datacontext.*;
 
 import java.util.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
 
 @WebServlet(urlPatterns = { "/account/*", "/account" })
+@MultipartConfig
 public class AccountController extends Controller {
+  private static Logger logger = Logger.getLogger("rgms.AccountController");
 
   public AccountController() { }
 
@@ -144,6 +149,18 @@ public class AccountController extends Controller {
         user.setFirstName(req.getParameter("firstName"));
         user.setLastName(req.getParameter("lastName"));
 
+        try {
+          Part avatar = req.getPart("avatar");
+          if (avatar != null) {
+            String imageRef = saveProfileImage(avatar);
+            user.setImageReference(imageRef);
+            logger.info("Avatar uploaded for " + userId);
+          }
+        }
+        catch (Exception e) {
+          logger.log(Level.SEVERE, "Error loading file", e);
+        }
+
         UserManager userManager = new UserManager();
         userManager.updateUser(user, req.getParameter("password"));
         
@@ -159,6 +176,23 @@ public class AccountController extends Controller {
           return;
         }
       } 
+  }
+
+  private String saveProfileImage(Part profileImage) {
+    try {
+      //get random uuid
+      String id = UUID.randomUUID().toString();
+
+      //save to disk
+      String savePath = getServletContext().getRealPath("/Uploads/images") + "/" + id;
+      profileImage.write(savePath);
+
+      return id;
+    }
+    catch (Exception e) {
+      logger.log(Level.SEVERE, "Error saving profile image", e);
+      return null;
+    }
   }
 
 	public void logoutAction(HttpServletRequest req, HttpServletResponse res) {

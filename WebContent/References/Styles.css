@@ -75,3 +75,8 @@ and open the template in the editor.
         height: 100px;
         background-color: pink;
     }
+
+.profile-image {
+    width:100px;
+    height:100px;
+}

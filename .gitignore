@@ -12,3 +12,4 @@ libs
 .metadata
 WebContent/WEB-INF/web.xml
 *~
+WebContent/Uploads
