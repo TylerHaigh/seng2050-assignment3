@@ -10,5 +10,5 @@ WebContent/WEB-INF/lib/*
 libs
 .settings
 .metadata
-
 WebContent/WEB-INF/web.xml
+*~
