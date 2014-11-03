@@ -16,8 +16,7 @@
     </h1>
   	<div class="details row">
         <div class="image col-md-4">
-            <img src="${ pageContext.request.contextPath }${ profileUser.imageReference }"
-            	 alt="${ profileUser.fullName } Profile Image" />
+            <img src="${ pageContext.request.contextPath }${ profileUser.imageReference }" alt="${ profileUser.fullName } Profile Image" data-src="holder.js/100x100/sky/text:${profileUser.fullName}"/>
         </div>
         <div class="col-md-8 aboutMe">
             
@@ -47,3 +46,5 @@
       
 	</c:otherwise>
 </c:choose>
+
+<script src="${pageContext.request.contextPath}/References/holder.js" type="text/javascript"></script>
