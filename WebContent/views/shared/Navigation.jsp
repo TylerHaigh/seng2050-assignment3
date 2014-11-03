@@ -37,7 +37,7 @@
                 </a>
                 
                 <ul class="dropdown-menu" >
-                    <li><a href="${pageContext.request.contextPath}/account/profile?userId=${ userSession.user.userName }">View Profile</a></li>
+                    <li><a href="${pageContext.request.contextPath}/account/profile?userId=${ userSession.user.id }">View Profile</a></li>
                     
                     <c:if test="${ userSession.user.admin == true }">
 		                <li><a href="${pageContext.request.contextPath}/admin/admin">Admin Tools</a></li>

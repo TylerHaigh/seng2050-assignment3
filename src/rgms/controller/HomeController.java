@@ -19,7 +19,7 @@ public class HomeController extends Controller {
 	public HomeController() { }
 	
 	public void dashboardAction(HttpServletRequest req, HttpServletResponse res) {
-    Map<String, String> viewData = new HashMap<String, String>();
+    Map<String, Object> viewData = new HashMap<String, Object>();
     viewData.put("title", "Dashboard");
 
 		if (req.getMethod() == HttpMethod.Get) {

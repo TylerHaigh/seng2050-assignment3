@@ -25,7 +25,7 @@
             
             <c:if test="${ profileUser.userName eq userSession.user.userName }">
 	            <div class = "btn-group">
-			    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.userName }" >Edit Profile</a>
+			    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.id }" >Edit Profile</a>
 			    </div>
 		    </c:if>
 		    

@@ -59,8 +59,8 @@ public abstract class Controller extends HttpServlet {
     return null;
   }
 
-  protected void view(HttpServletRequest req, HttpServletResponse res, String viewPath, Map<String, String> viewData) {
-    for (Map.Entry<String, String> entry : viewData.entrySet()) {
+  protected void view(HttpServletRequest req, HttpServletResponse res, String viewPath, Map<String, Object> viewData) {
+    for (Map.Entry<String, Object> entry : viewData.entrySet()) {
       req.setAttribute(entry.getKey(), entry.getValue());
     }
 

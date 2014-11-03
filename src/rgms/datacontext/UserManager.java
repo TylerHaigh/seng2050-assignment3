@@ -34,7 +34,7 @@ public class UserManager extends DataManager {
       logger.log(Level.SEVERE, "SQL Error", e);
     }
   }
-  //###############JOSH DID THIS######################
+  
   public void updateUser(User user, String plainPassword) {
 	  String hashedPass = UserManager.hashPassword(plainPassword);
 	   user.setPassword(hashedPass);
@@ -57,7 +57,6 @@ public class UserManager extends DataManager {
 		  logger.log(Level.SEVERE, "SQL Error, Updating table", e);
 	  }
   }
-  //##################################################
 
   public User get(int id) {
     Connection conn = null;

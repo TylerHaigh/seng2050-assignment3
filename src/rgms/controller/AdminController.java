@@ -13,7 +13,7 @@ public class AdminController extends Controller {
 	public AdminController() { }
 	
 	public void adminAction(HttpServletRequest req, HttpServletResponse res) {
-		Map<String, String> viewData = new HashMap<String, String>();
+		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "Admin");
 		  
 		view(req, res, "/views/admin/Admin.jsp", viewData);
