@@ -34,7 +34,7 @@ public class UserManager extends DataManager {
       logger.log(Level.SEVERE, "SQL Error", e);
     }
   }
-  //###############JOSH DID THIS######################
+  
   public void updateUser(User user, String plainPassword) {
 	  String hashedPass = UserManager.hashPassword(plainPassword);
 	   user.setPassword(hashedPass);
@@ -43,13 +43,14 @@ public class UserManager extends DataManager {
 		  Connection conn = connection.getConnection();
 		  PreparedStatement pstmt = conn.prepareStatement(
 		  	"UPDATE users " + 
-		  	"SET FirstName=?, LastName=?, Passphrase=?" + 
+		  	"SET FirstName=?, LastName=?, Passphrase=?, ImageReference = ?" + 
 		  	"WHERE Username=? ;"
 		  	);
 		  pstmt.setString(1, user.getFirstName());
 		  pstmt.setString(2, user.getLastName());
 		  pstmt.setString(3, user.getPassword());
-		  pstmt.setString(4, user.getUserName());
+      pstmt.setString(4, user.getImageReference());
+		  pstmt.setString(5, user.getUserName());
 		  
 		  pstmt.execute();
 	  }
@@ -57,7 +58,6 @@ public class UserManager extends DataManager {
 		  logger.log(Level.SEVERE, "SQL Error, Updating table", e);
 	  }
   }
-  //##################################################
 
   public User get(int id) {
     Connection conn = null;

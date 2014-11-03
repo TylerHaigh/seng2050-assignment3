@@ -15,9 +15,8 @@
       <c:out value="${profileUser.fullName}" />
     </h1>
   	<div class="details row">
-        <div class="image col-md-4">
-            <img src="${ pageContext.request.contextPath }${ profileUser.imageReference }"
-            	 alt="${ profileUser.fullName } Profile Image" />
+        <div class="profile-image image col-md-4">
+            <img src="${ pageContext.request.contextPath }/Uploads/images/${ profileUser.imageReference }" alt="${ profileUser.fullName } Profile Image" data-src="holder.js/100x100/sky/text:${profileUser.fullName}"/>
         </div>
         <div class="col-md-8 aboutMe">
             
@@ -25,7 +24,7 @@
             
             <c:if test="${ profileUser.userName eq userSession.user.userName }">
 	            <div class = "btn-group">
-			    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.userName }" >Edit Profile</a>
+			    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.id }" >Edit Profile</a>
 			    </div>
 		    </c:if>
 		    
@@ -47,3 +46,5 @@
       
 	</c:otherwise>
 </c:choose>
+
+<script src="${pageContext.request.contextPath}/References/holder.js" type="text/javascript"></script>
