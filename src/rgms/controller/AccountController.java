@@ -77,6 +77,7 @@ public class AccountController extends Controller {
         HttpSession session = req.getSession();
         session.setAttribute("userSession", userSession);
         redirectToLocal(req, res, "/account/profile?userId=" + user.getId());
+        return;
       }
     }
   }

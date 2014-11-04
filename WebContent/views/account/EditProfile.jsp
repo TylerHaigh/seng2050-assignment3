@@ -5,9 +5,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <h1>Research Group Management System</h1>
-<!--Form for user to update profile with. Will have to discuss how it is updated in DB. and JavaScript client side validation-->
+<!--Form for user to update profile-->
 <div class="row">        						
-<!-- Not sure about sending the userId here but when it redirects back to the profile I lost the profile -->
 	<form method="post" onsubmit="return validateEdit();" action="${pageContext.request.contextPath}/account/update?userId=${ userSession.user.id }" enctype="multipart/form-data">
 		<h2>Edit your profile</h2>
     <div class="form-group">
