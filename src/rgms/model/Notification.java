@@ -13,6 +13,11 @@ public class Notification implements Serializable {
 	private int groupId;
 	private Group group;
 	
+	private NotificationType notificationType;
+	
+	private int registeringUserId;
+	private User registeringUser;
+	
 	private int meetingId;
 	private Meeting meeting;
 	
@@ -30,26 +35,36 @@ public class Notification implements Serializable {
 		this.user = new User();
 		this.groupId = 1;
 		this.group = new Group();
-		this.meetingId = 1;
-		this.meeting = new Meeting();
-		this.discussionPostId = 1;
-		this.discssionPost = new DiscussionPost();
+		
+		this.notificationType = NotificationType.Undefined;
 		this.description = "";
 	}
 	
-	public Notification(int id, int userId, User user, int groupId,
-			Group group, int meetingId, Meeting meeting, int discussionPostId,
-			DiscussionPost discssionPost, String description) {
+	public Notification(int id, int userId, User user,
+			int groupId, Group group,
+			NotificationType notificationType,
+			int registeringUserId, User registeringUser,
+			int meetingId, Meeting meeting,
+			int discussionPostId, DiscussionPost discssionPost,
+			String description) {
 		
 		this.id = id;
 		this.userId = userId;
 		this.user = user;
 		this.groupId = groupId;
 		this.group = group;
+		
+		this.notificationType = notificationType;
+		
+		this.registeringUserId = registeringUserId;
+		this.registeringUser = registeringUser;
+		
 		this.meetingId = meetingId;
 		this.meeting = meeting;
+		
 		this.discussionPostId = discussionPostId;
 		this.discssionPost = discssionPost;
+		
 		this.description = description;
 	}
 
@@ -75,6 +90,18 @@ public class Notification implements Serializable {
 		return group;
 	}
 
+	public NotificationType getNotificationType() {
+		return notificationType;
+	}
+	
+	public int getRegisteringUserId() {
+		return registeringUserId;
+	}
+	
+	public User getRegisteringUser() {
+		return registeringUser;
+	}
+	
 	public int getMeetingId() {
 		return meetingId;
 	}
@@ -117,6 +144,18 @@ public class Notification implements Serializable {
 		this.group = group;
 	}
 
+	public void setNotificationType(NotificationType notificationType) {
+		this.notificationType = notificationType;
+	}
+	
+	public void setRegisteringUserId(int registeringUserId) {
+		this.registeringUserId = registeringUserId;
+	}
+	
+	public void setRegisteringUser(User registeringUser) {
+		this.registeringUser = registeringUser;
+	}
+	
 	public void setMeetingId(int meetingId) {
 		this.meetingId = meetingId;
 	}

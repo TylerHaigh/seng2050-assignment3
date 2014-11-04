@@ -22,6 +22,7 @@ public class User implements Serializable {
     private String password;
     private String imageReference; //Unique string containing a reference to the image on disk
     private boolean admin;
+    private boolean active;
     
     private List<Group> groups;
     private List<Meeting> meetings;
@@ -47,6 +48,7 @@ public class User implements Serializable {
                 user.setPassword(rs.getString("Passphrase"));
                 user.setImageReference(rs.getString("ImageReference"));
                 user.setAdmin(rs.getBoolean("IsAdmin"));
+                user.setActive(rs.getBoolean("IsActive"));
                 
                 //Apply Data context specific data to user
                 user.setGroups(groupMan.getAllGroups(user.getId()));
@@ -73,10 +75,12 @@ public class User implements Serializable {
         this.studentId = "";
         this.password = "";
         this.imageReference = "";
+        this.admin = false;
+        this.active = false;
     }
     
     public User(int id, String userName, String firstName, String lastName, String studentId,
-            String password, String imageReference) {
+            String password, String imageReference, boolean admin, boolean active) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -84,6 +88,8 @@ public class User implements Serializable {
         this.studentId = studentId;
         this.password = password;
         this.imageReference = imageReference;
+        this.admin = admin;
+        this.active = active;
     }
     
     //Getters
@@ -119,6 +125,10 @@ public class User implements Serializable {
     public boolean isAdmin() {
 		return admin;
 	}
+    
+    public boolean isActive() {
+    	return active;
+    }
     
     public List<Group> getGroups() {
     	return groups;
@@ -160,6 +170,10 @@ public class User implements Serializable {
     
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	public void setGroups(List<Group> groups) {

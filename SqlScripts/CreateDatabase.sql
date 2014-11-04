@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS RGMS_DB.Sessions;
 DROP TABLE IF EXISTS RGMS_DB.Notifications;
+DROP TABLE IF EXISTS RGMS_DB.NotificationTypes;
 DROP TABLE IF EXISTS RGMS_DB.AccessRecords;
 DROP TABLE IF EXISTS RGMS_DB.DiscussionPosts;
 DROP TABLE IF EXISTS RGMS_DB.Documents;
@@ -7,6 +8,7 @@ DROP TABLE IF EXISTS RGMS_DB.DiscussionThreads;
 DROP TABLE IF EXISTS RGMS_DB.DiscussionTypes;
 DROP TABLE IF EXISTS RGMS_DB.Meetings;
 DROP TABLE IF EXISTS RGMS_DB.GroupUserMaps;
+DROP TABLE IF EXISTS RGMS_DB.Coordinators;
 DROP TABLE IF EXISTS RGMS_DB.Users;
 DROP TABLE IF EXISTS RGMS_DB.Groups;
 
@@ -28,7 +30,13 @@ CREATE TABLE RGMS_DB.Users (
 	StudentId VARCHAR(64) NOT NULL UNIQUE,
 	Passphrase VARCHAR(64)NOT NULL,
 	ImageReference VARCHAR(512),
-	IsAdmin BOOLEAN DEFAULT 0
+	IsAdmin BOOLEAN DEFAULT 0,
+	IsActive BOOLEAN DEFAULT 0
+);
+
+CREATE TABLE RGMS_DB.Coordinators (
+	Id INT PRIMARY KEY NOT NULL auto_increment,
+	UserId INT NOT NULL REFERENCES RGMS_DB.Users(Id)
 );
 
 CREATE TABLE RGMS_DB.GroupUserMaps (
@@ -80,14 +88,22 @@ CREATE TABLE RGMS_DB.AccessRecords (
 	DocumentId INT NOT NULL REFERENCES RGMS_DB.Documents(Id)
 );
 
+CREATE TABLE RGMS_DB.NotificationTypes (
+	Id INT PRIMARY KEY NOT NULL auto_increment,
+	NotificationType VARCHAR(64) NOT NULL /* Meeting, Document, Registering User, etc. */
+);
+
 CREATE TABLE RGMS_DB.Notifications (
 	Id INT PRIMARY KEY NOT NULL auto_increment,
-	UserId INT NOT NULL REFERENCES RGMS_DB.Users(Id),
-	GroupId INT NOT NULL REFERENCES RGMS_DB.Groups(Id),
+	UserId INT NOT NULL REFERENCES RGMS_DB.Users(Id), /* Receiving User */
+	GroupId INT REFERENCES RGMS_DB.Groups(Id), /* Receiving Group */
 
+	NotificationTypeId INT NOT NULL REFERENCES RGMS_DB.NotificationType(Id),
+	RegisteringUserId INT REFERENCES RGMS_DB.Users(Id),
 	MeetingId INT REFERENCES RGMS_DB.Meetings(Id),
 	DocumentId INT REFERENCES RGMS_DB.Documents(Id),
 	DiscussionPostId INT REFERENCES RGMS_DB.DiscussionPosts(Id),
+
 	Description VARCHAR(128)
 );
 
