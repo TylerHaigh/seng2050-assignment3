@@ -58,6 +58,9 @@ public class HomeController extends Controller {
 				int dismissIndex = Integer.parseInt(req.getParameter("dismiss"));
 				Notification deleted = notifications.remove(dismissIndex);
 				notificationMan.deleteNotification(deleted.getId());
+				
+				//Notify of deletion
+				req.setAttribute("dismissed", true);
 			}
 			
 			//Handle activation of user
@@ -70,6 +73,9 @@ public class HomeController extends Controller {
 				
 				UserManager userManager = new UserManager();
 				userManager.activateUser(activatedUserId);
+				
+				//Notify of activation
+				req.setAttribute("activated", true);
 			}
 			
 			view(req, res, "/views/home/Notification.jsp", viewData);

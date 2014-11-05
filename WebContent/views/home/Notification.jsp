@@ -4,6 +4,16 @@
 
 <h1>Notifications</h1>
 
+<c:choose>
+	<c:when test="${ dismissed }">
+		<div class="alert alert-success">Notification successfully dismissed</div>
+	</c:when>
+	
+	<c:when test="${ activated }">
+		<div class="alert alert-success">User account successfully activated</div>
+	</c:when>
+</c:choose>
+
 <div class="list-group">
 	<c:set var="counter" value="0" />
 	
