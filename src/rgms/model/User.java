@@ -31,7 +31,7 @@ public class User implements Serializable {
     	User user = null;
 
         try {
-            if (rs.first()) {
+            if (rs.next()) {
             	
             	//Set up data context managers
             	GroupManager groupMan = new GroupManager();

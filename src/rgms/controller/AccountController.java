@@ -94,12 +94,14 @@ public class AccountController extends Controller {
         
     	  //Notify all coordinators to approve the user
           NotificationManager notificationManager = new NotificationManager();
-          User admin = userManager.get(1);
-          
-          Notification registerNotification = new Notification(admin.getId(), admin,
-        		  NotificationType.RegisteringUser, user, "New user " + user.getFullName() + " wants to join");
-          
-          notificationManager.createNotification(registerNotification);
+          List<User> coordinators = userManager.getCoordinators();
+          for (User coordinator : coordinators) {
+        	  
+        	  Notification registerNotification = new Notification(coordinator.getId(), coordinator,
+            		  NotificationType.RegisteringUser, user, "New user " + user.getFullName() + " wants to join");
+              
+              notificationManager.createNotification(registerNotification);
+          }
     	  
     	  //Redirect back to login page
           

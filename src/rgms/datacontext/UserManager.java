@@ -3,6 +3,8 @@ package rgms.datacontext;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.*;
 
 import rgms.model.User;
@@ -123,6 +125,41 @@ public class UserManager extends DataManager {
     }
   }
 
+  public List<User> getCoordinators() {
+	  Connection conn = null;
+	  List<User> coordinators = new LinkedList<User>();
+	  
+	  try {
+		  conn = connection.getConnection();
+		  PreparedStatement pstmt = conn.prepareStatement(
+			  "SELECT * FROM Users WHERE IsAdmin=true"
+		  );
+		  
+		  ResultSet rs = pstmt.executeQuery();
+		  
+		  if (rs.isBeforeFirst()) {
+			  while (!rs.isAfterLast()) {
+				  User user = User.fromResultSet(rs);
+				  if (user != null)
+					  coordinators.add(user);
+			  }
+		  }
+	  } catch (SQLException e) {
+		  logger.log(Level.SEVERE, "SQL Error", e);
+			 return null;
+	  } finally {
+		  if (conn != null) {
+			  try {
+				  conn.close();
+			  } catch (SQLException e) {
+				  logger.log(Level.WARNING, "Connection Close", e);
+			  }
+		  }
+	  }
+	  
+	  return coordinators;
+  }
+  
   public boolean validate(String userName, String plainPassword) {
     User user = this.get(userName);
     String hashedPass = UserManager.hashPassword(plainPassword);
