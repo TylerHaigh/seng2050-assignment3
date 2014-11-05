@@ -3,6 +3,10 @@ package rgms.controller;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,9 +55,10 @@ public class GroupController extends Controller{
 		Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Meeting");
 	    
+	    MeetingManager meetingMan = new MeetingManager();
+	    
 	    if (req.getMethod() == HttpMethod.Get) {
 	    	int meetingId = Integer.parseInt(req.getParameter("meetingId"));
-		    MeetingManager meetingMan = new MeetingManager();
 		    Meeting meeting = meetingMan.get(meetingId);
 		    
 		    if (meeting != null) {
@@ -62,8 +67,50 @@ public class GroupController extends Controller{
 		    } else {
 		    	httpNotFound(req, res);
 		    }
-	    } else {
-	    	httpNotFound(req, res);
+	    } else if (req.getMethod() == HttpMethod.Post) {
+	    	
+	    	//Get details from request
+	    	String description = req.getParameter("description");
+	    	int createdByUserId = Integer.parseInt(req.getParameter("createdByUserId"));
+	    	Date dateCreated = new Date();
+	    	
+	    	String meetingDate = req.getParameter("datepicker");
+	    	String meetingTime = req.getParameter("meetingTime");
+	    	
+	    	//Parse meeting date time details
+	    	DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+	    	Date dateDue = new Date();
+	    	try {
+				dateDue = format.parse(meetingDate + " " + meetingTime);
+			} catch (ParseException e) {
+				//Unable to parse date
+			}
+	    	
+	    	int groupId = Integer.parseInt(req.getParameter("groupId"));
+	    	
+	    	//Create a Meeting
+	    	Meeting meeting = new Meeting();
+	    	meeting.setDescription(description);
+	    	meeting.setCreatedByUserId(createdByUserId);
+	    	meeting.setDateCreated(dateCreated);
+	    	meeting.setDateDue(dateDue);
+	    	meeting.setGroupId(groupId);
+	    	
+	    	meetingMan.createMeeting(meeting);
+	    	int meetingId = meetingMan.getIdFor(meeting);
+	    	
+	    	//Create a notification for all users in group
+	    	GroupManager groupMan = new GroupManager();
+	    	NotificationManager notificationMan = new NotificationManager();
+	    	List<User> users = groupMan.getGroupUsers(groupId);
+	    	
+	    	for (User u : users) {
+	    		Notification notification = new Notification(u.getId(), u, groupId,
+	    				null, "Meeting " + description + " was created by " + u.getFullName(),
+	    				"/group/meeting?meetingId=" + meetingId);
+	    		notificationMan.createNotification(notification);
+	    	}
+	    	
 	    }
 	}
 	

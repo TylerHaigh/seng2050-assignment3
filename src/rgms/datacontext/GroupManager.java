@@ -93,6 +93,44 @@ public class GroupManager extends DataManager {
 		 return groups;
 	 }
 	 
+	 public List<User> getGroupUsers(int groupId) {
+		 Connection conn = null;
+		 List<User> groupUsers = new LinkedList<User>();
+		 
+		 try {
+			 conn = connection.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(
+				 "SELECT * FROM Users u " +
+				 "JOIN GroupUserMaps m ON u.Id=m.userId " +
+				 "WHERE m.groupId = ?"
+			 );
+			 
+			 pstmt.setInt(1, groupId);
+			 
+			 ResultSet rs = pstmt.executeQuery();
+			 
+			 if (rs.isBeforeFirst()) {
+				 while (!rs.isAfterLast()) {
+					 User user = User.fromResultSet(rs);
+					 if (user != null)
+						 groupUsers.add(user);
+				 }
+			 }
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+		 } finally {
+			 if (conn != null) { 
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
+		 }
+		 
+		 return groupUsers;
+	 }
+	 
 	 public List<String> getGroupMembers(String groupId){
 		 List<String> usersInGroup = new LinkedList<String>();
 		 Connection conn = null;

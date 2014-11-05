@@ -21,8 +21,8 @@ public class MeetingManager extends DataManager {
 			 
 			 pstmt.setString(1, meeting.getDescription());
 			 pstmt.setInt   (2, meeting.getCreatedByUserId());
-			 pstmt.setDate  (3, (Date) meeting.getDateCreated());
-			 pstmt.setDate  (4, (Date) meeting.getDateDue());
+			 pstmt.setDate  (3, new Date(meeting.getDateCreated().getTime()));
+			 pstmt.setDate  (4, new Date(meeting.getDateDue().getTime()));
 			 pstmt.setInt   (5, meeting.getGroupId());		 
 			 
 			 pstmt.execute();
@@ -53,6 +53,41 @@ public class MeetingManager extends DataManager {
 				 }
 			 }
 		 }
+	 }
+	 
+	 public int getIdFor(Meeting meeting) {
+		 Connection conn = null;
+		 try {
+			 conn = connection.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(
+				 "SELECT * FROM Meetings " +
+				 "WHERE Description=? AND CreatedByUserId=? " + 
+				 "AND DateCreated=? AND DateDue=? and GroupId=?");
+			 
+			 pstmt.setString(1, meeting.getDescription());
+			 pstmt.setInt(2, meeting.getCreatedByUserId());
+			 pstmt.setDate(3, new Date(meeting.getDateCreated().getTime()));
+			 pstmt.setDate(4, new Date(meeting.getDateDue().getTime()));
+			 pstmt.setInt(5, meeting.getGroupId());
+			 
+			 ResultSet rs = pstmt.executeQuery();
+			 if (rs.first()) {
+				 int meetingId = rs.getInt("Id");
+				 return meetingId;
+			 }
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+		 } finally {
+			 if (conn != null) {
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
+		 }
+		 
+		 return -1;
 	 }
 	 
 	 public List<Meeting> getAllMeetings(int userId) {

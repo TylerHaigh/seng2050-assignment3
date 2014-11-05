@@ -89,3 +89,16 @@ function validateEdit(code)
 	}
 	return valid;
 }
+
+validateMeeting(code) {
+	var valid = true;
+	var msg = "";
+	
+	//Perform error checking for meeting
+	
+	if (valid == false) {
+		alert(msg);
+	}
+	
+	return valid;
+}

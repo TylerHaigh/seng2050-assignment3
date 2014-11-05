@@ -41,7 +41,8 @@
 			<c:otherwise>
 				<div class="list-group">
 			    	<c:forEach var="meeting" items="${ userSession.user.meetings }" >
-			    		<a href="#" class="list-group-item">
+			    		<a href="${ pageContext.request.contextPath }/group/meeting?meetingId=${ meeting.id }"
+			    		   class="list-group-item">
 			    			<c:out value="${ meeting.description } : " />
 			    			<c:out value="${ meeting.dateDue }" />
 			    		</a>
