@@ -25,7 +25,7 @@
 	<c:forEach var="member" items="${ groupMembers }" >
    	   	<li>
    	   		<!-- Link to users Profile -->
-   	   		<a href="#" class="list-group-item">
+   	   		<a href="${pageContext.request.contextPath}/account/profile?userName=${member}" class="list-group-item">
     			<c:out value="${ member }" />
     		</a>
    	   	</li>   		

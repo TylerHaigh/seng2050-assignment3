@@ -19,8 +19,7 @@
                     
                     <c:forEach var="group" items="${ userSession.user.groups }" >
 			    		<li>
-			    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }">
-				    		<!--  <a href="${pageContext.request.contextPath}/group/researchGroup">-->
+			    			<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }">
 				    			<c:out value="${ group.groupName }" />
 				    		</a>
 			    		</li>

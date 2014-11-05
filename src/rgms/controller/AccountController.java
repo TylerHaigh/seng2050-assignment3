@@ -126,18 +126,27 @@ public class AccountController extends Controller {
 	  try {
 		  UserManager um = new UserManager();
 		  GroupManager gm = new GroupManager();
-		  
-		  int userId = Integer.parseInt(req.getParameter("userId"));
-		  profileUser = um.get(userId);
-
+		  if(req.getParameter("userId") != null){
+			  int userId = Integer.parseInt(req.getParameter("userId"));
+			  profileUser = um.get(userId);
+			  if(profileUser != null){
+				  Logger.getLogger("").info("Showing profile for user: " + profileUser.getFullName());
+				  profileUserGroups = gm.getAllGroups(profileUser.getId());
+			  }
+		  }
+		  else if(req.getParameter("userName") != null){
+			  String userName = req.getParameter("userName");
+			  profileUser = um.get(userName);
+		  }
 		  if (profileUser == null) {
-        //return 404
-        httpNotFound(res);
-        return;
-		  } else {
+	        //return 404
+	        httpNotFound(res);
+	        return;
+		  } 
+		  /*else {
 			  Logger.getLogger("").info("Showing profile for user: " + profileUser.getFullName());
 			  profileUserGroups = gm.getAllGroups(profileUser.getId());
-		  }
+		  }*/
 		  
 	  } catch (Exception e) {
 		  Logger.getLogger("").log(Level.SEVERE, "An error occurred when getting profile user", e);
