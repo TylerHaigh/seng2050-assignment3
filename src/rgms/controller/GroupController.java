@@ -12,27 +12,24 @@ import rgms.infrastructure.*;
 import rgms.model.*;
 import rgms.datacontext.*;
 
-@WebServlet(urlPatterns = { "/group*", "/group" })
+@WebServlet(urlPatterns = { "/group/*", "/group" })
 public class GroupController extends Controller{
-	private static Logger logger = Logger.getLogger("rgms.GroupController");
+	private static Logger logger = Logger.getLogger(GroupController.class.getName());
 
 	public GroupController() { }
 	
-	public void researchGroupAction(HttpServletRequest req, HttpServletResponse res) {
+	public void researchgroupAction(HttpServletRequest req, HttpServletResponse res) {
 	    Map<String, Object> viewData = new HashMap<String, Object>();
-	    viewData.put("title", "Research Group");
-
+	    viewData.put("title", "Research Group");	
+	    String aString = req.getParameter("groupName");
+	    viewData.put("groupName", req.getParameter("groupName"));
 			if (req.getMethod() == HttpMethod.Get) {
 				view(req, res, "/views/group/ResearchGroup.jsp", viewData);
+				return;
 			} else if (req.getMethod() == HttpMethod.Post) {
 				//404
 				httpNotFound(res);
 			}
-		}
-	
-	
-	public void createAction(HttpServletRequest req, HttpServletResponse res){
-		
-	}
+		}	
 	
 }

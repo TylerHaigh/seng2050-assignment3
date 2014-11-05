@@ -7,19 +7,19 @@
 <%@page import="rgms.infrastructure.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:if test="${empty userSession}">
-	<c:redirect url="Login.jsp" />
-</c:if>
+<c:choose>
+	<c:when test="${empty profileUser}">
+		<!-- FILL THIS IN WITH GROUP NAME -->
+	</c:when>
+	<c:otherwise>
+		<h1>
+    	</h1>
+    </c:otherwise>
+</c:choose>
+	<div>
+		${groupName }
+	</div>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>

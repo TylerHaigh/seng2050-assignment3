@@ -38,7 +38,9 @@
     <div class="list-group">
     	<c:forEach var="group"
     		items="${ profileUserGroups }" >
-    		<a href="ResearchGroup.jsp?groupName=${ group.groupName }" class="list-group-item">
+    		<!-- ResearchGroup.jsp?groupName=${ group.groupName } -->
+    		
+    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupName=${group.groupName }" class="list-group-item">
     			<c:out value="${ group.groupName }" />
     		</a>
     	</c:forEach>
