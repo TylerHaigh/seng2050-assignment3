@@ -126,6 +126,7 @@ public class AccountController extends Controller {
 	  try {
 		  UserManager um = new UserManager();
 		  GroupManager gm = new GroupManager();
+		  //If finding user by ID
 		  if(req.getParameter("userId") != null){
 			  int userId = Integer.parseInt(req.getParameter("userId"));
 			  profileUser = um.get(userId);
@@ -134,6 +135,7 @@ public class AccountController extends Controller {
 				  profileUserGroups = gm.getAllGroups(profileUser.getId());
 			  }
 		  }
+		  //Finding user by username
 		  else if(req.getParameter("userName") != null){
 			  String userName = req.getParameter("userName");
 			  profileUser = um.get(userName);
