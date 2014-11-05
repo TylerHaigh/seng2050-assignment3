@@ -42,6 +42,9 @@ public class AccountController extends Controller {
       if (userSession == null) {
         req.setAttribute("loginError", true);
         view(req, res, "/views/account/Login.jsp", viewData);
+      } else if (!userSession.getUser().isActive()) {
+    	  req.setAttribute("inactiveUser", true);
+          view(req, res, "/views/account/Login.jsp", viewData);
       } else {
         HttpSession session = req.getSession();
         session.setAttribute("userSession", userSession);
@@ -65,19 +68,30 @@ public class AccountController extends Controller {
       user.setLastName(req.getParameter("lastName"));
       user.setStudentId(req.getParameter("studentId"));
 
+      //Create the user in the database
       UserManager userManager = new UserManager();
       userManager.createUser(user, req.getParameter("password"));
       
+      //Try and authenticate the user
       Session userSession = AuthenticationManager.login(user.getUserName(), req.getParameter("password") , false);
       if (userSession == null) {
         req.setAttribute("registerError", true);
         view(req, res, "/views/account/Register.jsp", viewData);
       }
       else {
-        HttpSession session = req.getSession();
-        session.setAttribute("userSession", userSession);
-        redirectToLocal(req, res, "/account/profile?userId=" + user.getId());
-        return;
+        
+    	  //Notify all coordinators to approve the user
+          NotificationManager notificationManager = new NotificationManager();
+          User admin = userManager.get(1);
+          
+          Notification registerNotification = new Notification(admin.getId(), admin,
+        		  NotificationType.RegisteringUser, user, "New user " + user.getFullName() + " wants to join");
+          
+          notificationManager.createNotification(registerNotification);
+    	  
+    	  //Redirect back to login page
+    	  req.setAttribute("registerSuccess", true);
+    	  redirectToLocal(req, res, "/account/login");
       }
     }
   }

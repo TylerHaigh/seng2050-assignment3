@@ -2,9 +2,23 @@
 
 <h1>Research Group Management System</h1>
 
-<c:if test="${loginError}">
-    <div class="alert alert-danger">Error: Invalid username or password</div>
-</c:if>
+<c:choose>
+
+	<c:when test="${loginError}">
+		<div class="alert alert-danger">Error: Invalid username or password</div>
+	</c:when>
+	
+	<c:when test="${registerSuccess}">
+		<div class="alert alert-success">Success: Your account has been registered. 
+    	Please wait for a Coordinator to approve your access</div>
+	</c:when>
+	
+	<c:when test="${inactiveUser}">
+		<div class="alert alert-danger">Sorry, your account is inactive. 
+    	Please try again later</div>
+	</c:when>
+
+</c:choose>
 
 <form method="post" class="login-form">
     <h2>${title}</h2>

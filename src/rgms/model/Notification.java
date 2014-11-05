@@ -56,20 +56,14 @@ public class Notification implements Serializable {
 	 * @param registeringUser
 	 * @param description
 	 */
-	public Notification(int id, int userId, User user,
-			NotificationType notificationType,
-			int registeringUserId, User registeringUser,
-			String description) {
+	public Notification(int userId, User user, NotificationType notificationType,
+			User registeringUser, String description) {
 		
-		this.id = id;
 		this.userId = userId;
 		this.user = user;
 		
 		this.notificationType = notificationType;
-		
-		this.registeringUserId = registeringUserId;
 		this.registeringUser = registeringUser;
-		
 		this.description = description;
 	}
 	
@@ -83,13 +77,9 @@ public class Notification implements Serializable {
 	 * @param meeting
 	 * @param description
 	 */
-	public Notification(int id, int userId, User user,
-			int groupId, Group group,
-			NotificationType notificationType,
-			int meetingId, Meeting meeting,
-			String description) {
+	public Notification(int userId, User user, int groupId, Group group,
+			NotificationType notificationType, Meeting meeting, String description) {
 		
-		this.id = id;
 		this.userId = userId;
 		this.user = user;
 		
@@ -97,10 +87,7 @@ public class Notification implements Serializable {
 		this.group = group;
 		
 		this.notificationType = notificationType;
-		
-		this.meetingId = meetingId;
 		this.meeting = meeting;
-		
 		this.description = description;
 	}
 
@@ -114,13 +101,10 @@ public class Notification implements Serializable {
 	 * @param meeting
 	 * @param description
 	 */
-	public Notification(int id, int userId, User user,
-			int groupId, Group group,
-			NotificationType notificationType,
-			int documentId, Document document,
+	public Notification(int userId, User user, int groupId, Group group,
+			NotificationType notificationType, Document document,
 			String description) {
 		
-		this.id = id;
 		this.userId = userId;
 		this.user = user;
 		
@@ -128,10 +112,7 @@ public class Notification implements Serializable {
 		this.group = group;
 		
 		this.notificationType = notificationType;
-		
-		this.documentId = documentId;
 		this.document = document;
-		
 		this.description = description;
 	}
 	
@@ -147,13 +128,10 @@ public class Notification implements Serializable {
 	 * @param dicussionPost
 	 * @param description
 	 */
-	public Notification(int id, int userId, User user,
-			int groupId, Group group,
-			NotificationType notificationType,
-			int discussionPostId, DiscussionPost discussionPost,
+	public Notification(int userId, User user, int groupId, Group group,
+			NotificationType notificationType, DiscussionPost discussionPost,
 			String description) {
 		
-		this.id = id;
 		this.userId = userId;
 		this.user = user;
 		
@@ -161,10 +139,7 @@ public class Notification implements Serializable {
 		this.group = group;
 		
 		this.notificationType = notificationType;
-		
-		this.discussionPostId = discussionPostId;
 		this.discussionPost = discussionPost;
-		
 		this.description = description;
 	}
 	

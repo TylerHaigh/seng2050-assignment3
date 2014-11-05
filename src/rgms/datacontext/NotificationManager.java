@@ -112,27 +112,27 @@ public class NotificationManager extends DataManager {
 		 if (type == NotificationType.RegisteringUser) {
 			 query += String.format(
 				"(UserId, NotificationTypeId, RegisteringUserId, Description) " +
-				"VALUES ({0}, {1}, {2}, {3})",
+				"VALUES (%d, %d, %d, \'%s\')",
 				notification.getUserId(), 1,
-				notification.getRegisteringUserId(), "\'User wants to join\'");
+				notification.getRegisteringUserId(), notification.getDescription());
 		 } else if (type == NotificationType.Meeting) {
 			 query += String.format(
 				"(UserId, GroupId, NotificationTypeId, MeetingId, Description) " +
-				"VALUES ({0}, {1}, {2}, {3})",
+				"VALUES (%d, %d, %d, %d \'%s\')",
 				notification.getUserId(), notification.getGroupId(), 2,
-				notification.getMeetingId(), "\'A meeting has been created\'");
+				notification.getMeetingId(), notification.getDescription());
 		 } else if (type == NotificationType.Document) {
 			 query += String.format(
 				"(UserId, GroupId, NotificationTypeId, DocumentId, Description) " +
-				"VALUES ({0}, {1}, {2}, {3})",
+				"VALUES (%d, %d, %d, %d, \'%s\')",
 				notification.getUserId(), notification.getGroupId(), 3,
-				notification.getDocumentId(), "\'A document has been added\'");
+				notification.getDocumentId(), notification.getDescription());
 		 } else if (type == NotificationType.DiscussionPost) {
 			 query += String.format(
 				"(UserId, GroupId, NotificationTypeId, DiscussionPostId, Description) " +
-				"VALUES ({0}, {1}, {2}, {3})",
+				"VALUES (%d, %d, %d, %d, \'%s\')",
 				notification.getUserId(), notification.getGroupId(), 4,
-				notification.getDiscussionPostId(), "\'A new discussion post has been added\'");
+				notification.getDiscussionPostId(), notification.getDescription());
 		 } else {
 			 throw new Exception("Not a valid notification");
 		 }
