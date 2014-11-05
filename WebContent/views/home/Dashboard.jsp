@@ -33,16 +33,24 @@
 	<div class="col-md-6">
 		<h2>Meetings</h2>
 		
-		<div class="list-group">
-	    	<c:forEach var="meeting" items="${ userSession.user.meetings }" >
-	    		<a href="#" class="list-group-item">
-	    			<c:out value="${ meeting.description } : " />
-	    			<c:out value="${ meeting.dateDue }" />
-	    		</a>
-	    	</c:forEach>
-	    </div>
+		<c:choose>
+			<c:when test="${ fn:length(userSession.user.meetings) eq 0}">
+				You have no meetings
+			</c:when>
+			
+			<c:otherwise>
+				<div class="list-group">
+			    	<c:forEach var="meeting" items="${ userSession.user.meetings }" >
+			    		<a href="#" class="list-group-item">
+			    			<c:out value="${ meeting.description } : " />
+			    			<c:out value="${ meeting.dateDue }" />
+			    		</a>
+			    	</c:forEach>
+			    </div>
+			</c:otherwise>
+		</c:choose>
+		
 	</div>
-	
 </div>
 
 <!-- Second row of Dashboard -->
@@ -50,26 +58,42 @@
 	<div class="col-md-6">
 		<h2>My Groups</h2>
 		
-		<div class="list-group">
-	    	<c:forEach var="group" items="${ userSession.user.groups }" >
-	    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }" class="list-group-item">
-	    			<c:out value="${ group.groupName }" />
-	    			<span class="badge">10</span>
-	    		</a>
-	    	</c:forEach>
-	    </div>
+		<c:choose>
+			<c:when test="${ fn:length(userSession.user.groups) eq 0}">
+				You do not belong to any research groups
+			</c:when>
+			
+			<c:otherwise>
+				<div class="list-group">
+			    	<c:forEach var="group" items="${ userSession.user.groups }" >
+			    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }" class="list-group-item">
+			    			<c:out value="${ group.groupName }" />
+			    		</a>
+			    	</c:forEach>
+			    </div>
+			</c:otherwise>
+		</c:choose>
+		
 	</div>
 	
 	<div class="col-md-6">
 		<h2>My Documents</h2>
 		
-		<div class="list-group">
-	    	<c:forEach var="document" items="${ userDocuments }" >
-	    		<a href="#" class="list-group-item">
-	    			<c:out value="Document Name" />
-	    			<span class="badge">10</span>
-	    		</a>
-	    	</c:forEach>
-	    </div>
+		<c:choose>
+			<c:when test="${ fn:length(userDocuments) eq 0}">
+				You have not uploaded any documents
+			</c:when>
+			
+			<c:otherwise>
+				<div class="list-group">
+			    	<c:forEach var="document" items="${ userDocuments }" >
+			    		<a href="#" class="list-group-item">
+			    			<c:out value="Document Name" />
+			    			<span class="badge">10</span>
+			    		</a>
+			    	</c:forEach>
+			    </div>
+			</c:otherwise>
+		</c:choose>
 	</div>
 </div>
