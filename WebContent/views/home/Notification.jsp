@@ -22,16 +22,21 @@
 		<c:when test="${ fn:length(notifications) gt 0 }">
 			<c:forEach var="notification" items="${ notifications }" >
 				<div class="list-group-item">
-					<c:out value="${ notification.description}" />
 					
 					<c:choose>
 						<c:when test="${ fn:contains(notification.link, 'activate') }">
+							<c:out value="${ notification.description}" />
+							
 							<a href="${ pageContext.request.contextPath }${ notification.link }">
 								<button type="button" class="btn btn-default">Activate</button>
 							</a>
 						</c:when>
 						
 						<c:otherwise>
+							<a href="${ pageContext.request.contextPath }${ notification.link }">
+								<c:out value="${ notification.description}" />
+							</a>
+							
 							<a href="${ pageContext.request.contextPath }/home/notifications?dismiss=${ counter }">
 								<button type="button" class="btn btn-default">Dismiss</button>
 							</a>
