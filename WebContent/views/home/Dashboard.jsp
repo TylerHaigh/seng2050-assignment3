@@ -52,7 +52,7 @@
 		
 		<div class="list-group">
 	    	<c:forEach var="group" items="${ userSession.user.groups }" >
-	    		<a href="ResearchGroup.jsp?groupName=${ group.groupName }" class="list-group-item">
+	    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }" class="list-group-item">
 	    			<c:out value="${ group.groupName }" />
 	    			<span class="badge">10</span>
 	    		</a>

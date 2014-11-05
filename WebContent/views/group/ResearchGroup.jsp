@@ -15,11 +15,23 @@
 		<!-- FILL THIS IN WITH GROUP NAME -->
 	</c:when>
 	<c:otherwise>
-		<h1>
-    	</h1>
+		
     </c:otherwise>
 </c:choose>
-	<div>
-		${groupName }
-	</div>
+	<h1>${groupName }</h1>
+	<!-- LIST MEMBERS -->
+	<h2> Members</h2>
+	<ul>
+	<c:forEach var="member" items="${ groupMembers }" >
+   	   	<li>
+   	   		<!-- Link to users Profile -->
+   	   		<a href="#" class="list-group-item">
+    			<c:out value="${ member }" />
+    		</a>
+   	   	</li>   		
+   	</c:forEach>
+   	</ul>
+	
+	<!-- Link to group discussion board -->
+	
 

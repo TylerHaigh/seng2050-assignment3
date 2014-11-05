@@ -40,7 +40,7 @@
     		items="${ profileUserGroups }" >
     		<!-- ResearchGroup.jsp?groupName=${ group.groupName } -->
     		
-    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupName=${group.groupName }" class="list-group-item">
+    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }" class="list-group-item">
     			<c:out value="${ group.groupName }" />
     		</a>
     	</c:forEach>

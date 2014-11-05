@@ -4,6 +4,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.*;
 
@@ -21,8 +23,13 @@ public class GroupController extends Controller{
 	public void researchgroupAction(HttpServletRequest req, HttpServletResponse res) {
 	    Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Research Group");	
-	    String aString = req.getParameter("groupName");
-	    viewData.put("groupName", req.getParameter("groupName"));
+	    GroupManager gm = new GroupManager();
+	    viewData.put("groupName", gm.get(Integer.parseInt(req.getParameter("groupId"))).getGroupName());
+	    
+	    List<String> groupMembers = new LinkedList<String>();
+	    groupMembers = gm.getGroupMembers(req.getParameter("groupId"));
+	    
+	    viewData.put("groupMembers", groupMembers);
 			if (req.getMethod() == HttpMethod.Get) {
 				view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 				return;
