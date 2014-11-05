@@ -2,9 +2,11 @@ package rgms.mvc;
 
 import java.io.*;
 import java.net.*;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+
 import java.util.logging.*;
 import java.util.regex.*;
 import java.lang.reflect.Method;
@@ -85,7 +87,7 @@ public abstract class Controller extends HttpServlet {
       //no action found
       if (actionMethod == null) {
         //404 then return
-        httpNotFound(res);
+        httpNotFound(req, res);
         return;
       }
 
@@ -96,13 +98,11 @@ public abstract class Controller extends HttpServlet {
     }
   }
 
-  protected void httpNotFound(HttpServletResponse res) {
-    try {
-      res.sendError(HttpServletResponse.SC_NOT_FOUND);
-    }
-    catch (IOException e) {
-      logger.log(Level.SEVERE, "IO Error", e);
-    }
+  protected void httpNotFound(HttpServletRequest req, HttpServletResponse res) {
+	  Map<String, Object> viewData = new HashMap<String, Object>();
+	  viewData.put("title", "Http Not Found");
+	  
+	  view(req, res, "/views/shared/HttpNotFound.jsp", viewData);
   }
 
   protected void redirectToLocal(HttpServletRequest req, HttpServletResponse res, String path) {

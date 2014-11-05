@@ -34,7 +34,7 @@ public class HomeController extends Controller {
 			view(req, res, "/views/home/Dashboard.jsp", viewData);
 		} else if (req.getMethod() == HttpMethod.Post) {
 			//404
-			httpNotFound(res);
+			httpNotFound(req, res);
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class HomeController extends Controller {
 			view(req, res, "/views/home/Notification.jsp", viewData);
 		} else if (req.getMethod() == HttpMethod.Post) {
 			//404
-			httpNotFound(res);
+			httpNotFound(req, res);
 		}
 	}
 }

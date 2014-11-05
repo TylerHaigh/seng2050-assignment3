@@ -142,7 +142,7 @@ public class AccountController extends Controller {
 		  }
 		  if (profileUser == null) {
 	        //return 404
-	        httpNotFound(res);
+	        httpNotFound(req, res);
 	        return;
 		  } 
 		  /*else {
@@ -175,7 +175,7 @@ public class AccountController extends Controller {
   	  view(req, res, "/views/account/EditProfile.jsp", viewData);
     }
     else {
-      httpNotFound(res);
+      httpNotFound(req, res);
       return;
     }
   }

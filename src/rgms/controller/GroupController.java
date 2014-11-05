@@ -22,21 +22,49 @@ public class GroupController extends Controller{
 	
 	public void researchgroupAction(HttpServletRequest req, HttpServletResponse res) {
 	    Map<String, Object> viewData = new HashMap<String, Object>();
-	    viewData.put("title", "Research Group");	
-	    GroupManager gm = new GroupManager();
-	    viewData.put("groupName", gm.get(Integer.parseInt(req.getParameter("groupId"))).getGroupName());
+	    viewData.put("title", "Research Group");
 	    
-	    List<String> groupMembers = new LinkedList<String>();
-	    groupMembers = gm.getGroupMembers(req.getParameter("groupId"));
+	    if (req.getMethod() == HttpMethod.Get) {
+			
+	    	GroupManager gm = new GroupManager();
+		    int groupId = Integer.parseInt(req.getParameter("groupId"));
+		    Group group = gm.get(groupId);
+		    
+		    if (group != null) {
+			    viewData.put("groupName", group.getGroupName());
+			    
+			    List<String> groupMembers = gm.getGroupMembers(req.getParameter("groupId"));
+			    viewData.put("groupMembers", groupMembers);
+		    	
+		    	view(req, res, "/views/group/ResearchGroup.jsp", viewData);
+		    } else {
+		    	httpNotFound(req, res);
+		    }
+		    
+		} else if (req.getMethod() == HttpMethod.Post) {
+			//404
+			httpNotFound(req, res);
+		}
+	}
+	
+	public void meetingAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<String, Object>();
+	    viewData.put("title", "Meeting");
 	    
-	    viewData.put("groupMembers", groupMembers);
-			if (req.getMethod() == HttpMethod.Get) {
-				view(req, res, "/views/group/ResearchGroup.jsp", viewData);
-				return;
-			} else if (req.getMethod() == HttpMethod.Post) {
-				//404
-				httpNotFound(res);
-			}
-		}	
+	    if (req.getMethod() == HttpMethod.Get) {
+	    	int meetingId = Integer.parseInt(req.getParameter("meetingId"));
+		    MeetingManager meetingMan = new MeetingManager();
+		    Meeting meeting = meetingMan.get(meetingId);
+		    
+		    if (meeting != null) {
+			    viewData.put("meeting", meeting);
+			    view(req, res, "/views/group/Meeting.jsp", viewData);
+		    } else {
+		    	httpNotFound(req, res);
+		    }
+	    } else {
+	    	httpNotFound(req, res);
+	    }
+	}
 	
 }
