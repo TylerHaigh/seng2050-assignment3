@@ -15,6 +15,8 @@
 </c:choose>
 
 <div class="list-group">
+	<c:set var="counter" value="0" />
+	
 	<c:choose>
 		
 		<c:when test="${ fn:length(notifications) gt 0 }">
@@ -30,13 +32,16 @@
 						</c:when>
 						
 						<c:otherwise>
-							<a href="${ pageContext.request.contextPath }${ notification.link }">
+							<a href="${ pageContext.request.contextPath }/home/notifications?dismiss=${ counter }">
 								<button type="button" class="btn btn-default">Dismiss</button>
 							</a>
 						</c:otherwise>
 					</c:choose>
 					
 				</div>
+				
+				<c:set var="counter" value="${ counter + 1 }" />
+				
 			</c:forEach>
 		</c:when>
 		
