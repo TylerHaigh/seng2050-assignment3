@@ -29,7 +29,16 @@ public class AccountController extends Controller {
 
     //Check the Request method
     if (req.getMethod() == HttpMethod.Get) {
-      view(req, res, "/views/account/Login.jsp", viewData);
+      
+    	//Check if there is a registerSuccess session object
+    	HttpSession session = req.getSession();
+        Object registerSuccess = session.getAttribute("registerSuccess");
+    	if (registerSuccess != null) {
+    		req.setAttribute("registerSuccess", true);
+    		session.removeAttribute("registerSuccess");
+    	}
+        
+    	view(req, res, "/views/account/Login.jsp", viewData);
     } else if (req.getMethod() == HttpMethod.Post) {
       
       //User is trying to log in
@@ -90,7 +99,12 @@ public class AccountController extends Controller {
           notificationManager.createNotification(registerNotification);
     	  
     	  //Redirect back to login page
-    	  req.setAttribute("registerSuccess", true);
+          
+          /*
+           * This is a hack since you can't set attributes when redirecting - Tyler
+           */
+          HttpSession session = req.getSession();
+          session.setAttribute("registerSuccess", true);
     	  redirectToLocal(req, res, "/account/login");
       }
     }
