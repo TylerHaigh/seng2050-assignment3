@@ -28,8 +28,6 @@
                 </ul>
             </li>
 
-            <li><a href="#">Discussion Board</a></li>
-            
             <li class="dropdown">
             	<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                     <c:out value="${userSession.user.fullName}" />
