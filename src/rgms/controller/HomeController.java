@@ -67,12 +67,16 @@ public class HomeController extends Controller {
 			String activationString = req.getParameter("activate");
 			if (activationString != null) {
 				int activationIndex = Integer.parseInt(activationString);
-				Notification deleted = notifications.remove(activationIndex);
-				notificationMan.deleteNotification(deleted.getId());
-				int activatedUserId = deleted.getRegisteringUserId();
 				
+				//Activate the user
 				UserManager userManager = new UserManager();
-				userManager.activateUser(activatedUserId);
+				userManager.activateUser(activationIndex);
+				
+				//Delete the notification
+				for (Notification n : notifications) {
+					if (n.getLink().equals("/home/notifications?activate=" + activationString))
+						notificationMan.deleteNotification(n.getId());
+				}
 				
 				//Notify of activation
 				req.setAttribute("activated", true);

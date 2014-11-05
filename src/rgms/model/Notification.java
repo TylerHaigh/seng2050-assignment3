@@ -16,21 +16,8 @@ public class Notification implements Serializable {
 	private int groupId;
 	private Group group;
 	
-	private NotificationType notificationType;
-	
-	private int registeringUserId;
-	private User registeringUser;
-	
-	private int meetingId;
-	private Meeting meeting;
-	
-	private int documentId;
-	private Document document;
-	
-	private int discussionPostId;
-	private DiscussionPost discussionPost;
-	
 	private String description;
+	private String link;
 	
 	//Constructors
 	
@@ -42,43 +29,21 @@ public class Notification implements Serializable {
 		this.groupId = 1;
 		this.group = new Group();
 		
-		this.notificationType = NotificationType.Undefined;
 		this.description = "";
+		this.link = "";
 	}
 	
-	/**
-	 * Registering User Notification
-	 * @param id
-	 * @param userId
-	 * @param user
-	 * @param notificationType
-	 * @param registeringUserId
-	 * @param registeringUser
-	 * @param description
-	 */
-	public Notification(int userId, User user, NotificationType notificationType,
-			User registeringUser, String description) {
+	public Notification(int userId, User user, String description, String link) {
 		
 		this.userId = userId;
 		this.user = user;
 		
-		this.notificationType = notificationType;
-		this.registeringUser = registeringUser;
 		this.description = description;
+		this.link = link;
 	}
 	
-	/**
-	 * Meeting Notification
-	 * @param id
-	 * @param userId
-	 * @param user
-	 * @param notificationType
-	 * @param meetingId
-	 * @param meeting
-	 * @param description
-	 */
 	public Notification(int userId, User user, int groupId, Group group,
-			NotificationType notificationType, Meeting meeting, String description) {
+			String description, String link) {
 		
 		this.userId = userId;
 		this.user = user;
@@ -86,61 +51,8 @@ public class Notification implements Serializable {
 		this.groupId = groupId;
 		this.group = group;
 		
-		this.notificationType = notificationType;
-		this.meeting = meeting;
 		this.description = description;
-	}
-
-	/**
-	 * Document Notification
-	 * @param id
-	 * @param userId
-	 * @param user
-	 * @param notificationType
-	 * @param meetingId
-	 * @param meeting
-	 * @param description
-	 */
-	public Notification(int userId, User user, int groupId, Group group,
-			NotificationType notificationType, Document document,
-			String description) {
-		
-		this.userId = userId;
-		this.user = user;
-		
-		this.groupId = groupId;
-		this.group = group;
-		
-		this.notificationType = notificationType;
-		this.document = document;
-		this.description = description;
-	}
-	
-	/**
-	 * Discussion Post Notification
-	 * @param id
-	 * @param userId
-	 * @param user
-	 * @param groupId
-	 * @param group
-	 * @param notificationType
-	 * @param discussionPostId
-	 * @param dicussionPost
-	 * @param description
-	 */
-	public Notification(int userId, User user, int groupId, Group group,
-			NotificationType notificationType, DiscussionPost discussionPost,
-			String description) {
-		
-		this.userId = userId;
-		this.user = user;
-		
-		this.groupId = groupId;
-		this.group = group;
-		
-		this.notificationType = notificationType;
-		this.discussionPost = discussionPost;
-		this.description = description;
+		this.link = link;
 	}
 	
 	//Getters
@@ -165,44 +77,12 @@ public class Notification implements Serializable {
 		return group;
 	}
 
-	public NotificationType getNotificationType() {
-		return notificationType;
-	}
-	
-	public int getRegisteringUserId() {
-		return registeringUserId;
-	}
-	
-	public User getRegisteringUser() {
-		return registeringUser;
-	}
-	
-	public int getMeetingId() {
-		return meetingId;
-	}
-
-	public Meeting getMeeting() {
-		return meeting;
-	}
-
-	public int getDocumentId() {
-		return documentId;
-	}
-
-	public Document getDocument() {
-		return document;
-	}
-	
-	public int getDiscussionPostId() {
-		return discussionPostId;
-	}
-
-	public DiscussionPost getDiscussionPost() {
-		return discussionPost;
-	}
-	
 	public String getDescription() {
 		return this.description;
+	}
+	
+	public String getLink() {
+		return this.link;
 	}
 
 	//Setters
@@ -227,44 +107,12 @@ public class Notification implements Serializable {
 		this.group = group;
 	}
 
-	public void setNotificationType(NotificationType notificationType) {
-		this.notificationType = notificationType;
-	}
-	
-	public void setRegisteringUserId(int registeringUserId) {
-		this.registeringUserId = registeringUserId;
-	}
-	
-	public void setRegisteringUser(User registeringUser) {
-		this.registeringUser = registeringUser;
-	}
-	
-	public void setMeetingId(int meetingId) {
-		this.meetingId = meetingId;
-	}
-
-	public void setMeeting(Meeting meeting) {
-		this.meeting = meeting;
-	}
-
-	public void setDocumentId(int documentId) {
-		this.documentId = documentId;
-	}
-
-	public void setDocument(Document document) {
-		this.document = document;
-	}
-	
-	public void setDiscussionPostId(int discussionPostId) {
-		this.discussionPostId = discussionPostId;
-	}
-
-	public void setDiscussionPost(DiscussionPost discussionPost) {
-		this.discussionPost = discussionPost;
-	}
-
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public void setLink(String link) {
+		this.link = link;
 	}
 	
 	//Queries
@@ -280,26 +128,12 @@ public class Notification implements Serializable {
 				notification.setId(rs.getInt("Id"));
 				notification.setUserId(rs.getInt("UserId"));
 				notification.setDescription(rs.getString("Description"));
-				
-				int notificationTypeId = rs.getInt("NotificationTypeId");
-				NotificationType type = NotificationType.fromInteger(notificationTypeId);
-				
-				if (type == NotificationType.RegisteringUser) {
-					notification.setRegisteringUserId(rs.getInt("RegisteringUserId"));
-				} else if (type == NotificationType.Meeting) {
-					notification.setGroupId(rs.getInt("GroupId"));
-					notification.setMeetingId(rs.getInt("MeetingId"));
-				} else if (type == NotificationType.Document) {
-					notification.setGroupId(rs.getInt("GroupId"));
-					notification.setDocumentId(rs.getInt("DocumentId"));
-				} else if (type == NotificationType.DiscussionPost) {
-					notification.setGroupId(rs.getInt("GroupId"));
-					notification.setDiscussionPostId(rs.getInt("DiscussionPostId"));
-				}
+				notification.setLink(rs.getString("Link"));
 				
 				Logger.getLogger("rgms.model.Notification")
                 .info(String.format("Loaded User: %d, %d, %s",
-                    notification.getId(), notification.getUserId(), notification.getDescription()));
+                    notification.getId(), notification.getUserId(),
+                    notification.getDescription(), notification.getLink() ));
 				
 			}
 		} catch (SQLException e) {

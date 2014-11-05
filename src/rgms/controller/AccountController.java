@@ -98,7 +98,8 @@ public class AccountController extends Controller {
           for (User coordinator : coordinators) {
         	  
         	  Notification registerNotification = new Notification(coordinator.getId(), coordinator,
-            		  NotificationType.RegisteringUser, user, "New user " + user.getFullName() + " wants to join");
+            		  "New user " + user.getFullName() + " wants to join",
+            		  "/account/notifications?activate=" + user.getId());
               
               notificationManager.createNotification(registerNotification);
           }

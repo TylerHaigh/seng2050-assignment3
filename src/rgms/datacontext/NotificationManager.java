@@ -14,8 +14,20 @@ public class NotificationManager extends DataManager {
 	 public void createNotification(Notification notification) {
 		 try {
 			 Connection conn = connection.getConnection();
-			 String preparedStatementString = createPreparedStatementString(notification);
-			 PreparedStatement pstmt = conn.prepareStatement(preparedStatementString);
+			 PreparedStatement pstmt = conn.prepareStatement(
+				 "INSERT INTO Notifications (UserId, GroupId, Description, Link) " +
+				 "VALUES(?,?,?,?)"
+			 );
+			 
+			 pstmt.setInt(1, notification.getUserId());
+			 pstmt.setString(3, notification.getDescription());
+			 pstmt.setString(4, notification.getLink());
+			 
+			 if (notification.getGroup() == null)
+				 pstmt.setNull(2, Types.INTEGER);
+			 else
+				 pstmt.setInt(2, notification.getGroupId());
+
 			 pstmt.execute();
 			 
 		 } catch (SQLException sql) {
@@ -103,42 +115,5 @@ public class NotificationManager extends DataManager {
 		 
 		 return notifications;
  	 }
-	 
- 	 private String createPreparedStatementString(Notification notification) throws Exception {
-		 
-		 String query = "INSERT INTO Notifications ";
-		 NotificationType type = notification.getNotificationType();
-		 
-		 if (type == NotificationType.RegisteringUser) {
-			 query += String.format(
-				"(UserId, NotificationTypeId, RegisteringUserId, Description) " +
-				"VALUES (%d, %d, %d, \'%s\')",
-				notification.getUserId(), 1,
-				notification.getRegisteringUser().getId(), notification.getDescription());
-		 } else if (type == NotificationType.Meeting) {
-			 query += String.format(
-				"(UserId, GroupId, NotificationTypeId, MeetingId, Description) " +
-				"VALUES (%d, %d, %d, %d \'%s\')",
-				notification.getUserId(), notification.getGroupId(), 2,
-				notification.getMeetingId(), notification.getDescription());
-		 } else if (type == NotificationType.Document) {
-			 query += String.format(
-				"(UserId, GroupId, NotificationTypeId, DocumentId, Description) " +
-				"VALUES (%d, %d, %d, %d, \'%s\')",
-				notification.getUserId(), notification.getGroupId(), 3,
-				notification.getDocumentId(), notification.getDescription());
-		 } else if (type == NotificationType.DiscussionPost) {
-			 query += String.format(
-				"(UserId, GroupId, NotificationTypeId, DiscussionPostId, Description) " +
-				"VALUES (%d, %d, %d, %d, \'%s\')",
-				notification.getUserId(), notification.getGroupId(), 4,
-				notification.getDiscussionPostId(), notification.getDescription());
-		 } else {
-			 throw new Exception("Not a valid notification");
-		 }
-		 
-		 return query;
-	 }
-
 	 
 }
