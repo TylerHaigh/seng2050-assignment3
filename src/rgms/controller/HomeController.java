@@ -19,14 +19,50 @@ public class HomeController extends Controller {
 	public HomeController() { }
 	
 	public void dashboardAction(HttpServletRequest req, HttpServletResponse res) {
-    Map<String, Object> viewData = new HashMap<String, Object>();
-    viewData.put("title", "Dashboard");
-
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		viewData.put("title", "Dashboard");
+		
+		Session userSession = (Session) req.getSession().getAttribute("userSession");
+		int userId = userSession.getUser().getId();
+		
+		NotificationManager notificationMan = new NotificationManager();
+		List<Notification> notifications = notificationMan.getAllNotifications(userId);
+		
+		viewData.put("notifications", notifications);
+		
 		if (req.getMethod() == HttpMethod.Get) {
 			view(req, res, "/views/home/Dashboard.jsp", viewData);
 		} else if (req.getMethod() == HttpMethod.Post) {
 			//404
 			httpNotFound(res);
 		}
-	}	
+	}
+	
+	public void notificationsAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		viewData.put("title", "Notifications");
+
+		Session userSession = (Session) req.getSession().getAttribute("userSession");
+		int userId = userSession.getUser().getId();
+		
+		NotificationManager notificationMan = new NotificationManager();
+		List<Notification> notifications = notificationMan.getAllNotifications(userId);
+		
+		viewData.put("notifications", notifications);
+		
+		if (req.getMethod() == HttpMethod.Get) {
+			
+			String dismissString = req.getParameter("dismiss");
+			if (dismissString != null) {
+				int dismissIndex = Integer.parseInt(req.getParameter("dismiss"));
+				Notification deleted = notifications.remove(dismissIndex);
+				notificationMan.deleteNotification(deleted.getId());
+			}
+			
+			view(req, res, "/views/home/Notification.jsp", viewData);
+		} else if (req.getMethod() == HttpMethod.Post) {
+			//404
+			httpNotFound(res);
+		}
+	}
 }

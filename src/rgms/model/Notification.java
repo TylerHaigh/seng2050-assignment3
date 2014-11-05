@@ -1,6 +1,9 @@
 package rgms.model;
 
 import java.io.Serializable;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Notification implements Serializable {
 
@@ -21,8 +24,11 @@ public class Notification implements Serializable {
 	private int meetingId;
 	private Meeting meeting;
 	
+	private int documentId;
+	private Document document;
+	
 	private int discussionPostId;
-	private DiscussionPost discssionPost;
+	private DiscussionPost discussionPost;
 	
 	private String description;
 	
@@ -40,34 +46,128 @@ public class Notification implements Serializable {
 		this.description = "";
 	}
 	
+	/**
+	 * Registering User Notification
+	 * @param id
+	 * @param userId
+	 * @param user
+	 * @param notificationType
+	 * @param registeringUserId
+	 * @param registeringUser
+	 * @param description
+	 */
 	public Notification(int id, int userId, User user,
-			int groupId, Group group,
 			NotificationType notificationType,
 			int registeringUserId, User registeringUser,
-			int meetingId, Meeting meeting,
-			int discussionPostId, DiscussionPost discssionPost,
 			String description) {
 		
 		this.id = id;
 		this.userId = userId;
 		this.user = user;
-		this.groupId = groupId;
-		this.group = group;
 		
 		this.notificationType = notificationType;
 		
 		this.registeringUserId = registeringUserId;
 		this.registeringUser = registeringUser;
 		
+		this.description = description;
+	}
+	
+	/**
+	 * Meeting Notification
+	 * @param id
+	 * @param userId
+	 * @param user
+	 * @param notificationType
+	 * @param meetingId
+	 * @param meeting
+	 * @param description
+	 */
+	public Notification(int id, int userId, User user,
+			int groupId, Group group,
+			NotificationType notificationType,
+			int meetingId, Meeting meeting,
+			String description) {
+		
+		this.id = id;
+		this.userId = userId;
+		this.user = user;
+		
+		this.groupId = groupId;
+		this.group = group;
+		
+		this.notificationType = notificationType;
+		
 		this.meetingId = meetingId;
 		this.meeting = meeting;
-		
-		this.discussionPostId = discussionPostId;
-		this.discssionPost = discssionPost;
 		
 		this.description = description;
 	}
 
+	/**
+	 * Document Notification
+	 * @param id
+	 * @param userId
+	 * @param user
+	 * @param notificationType
+	 * @param meetingId
+	 * @param meeting
+	 * @param description
+	 */
+	public Notification(int id, int userId, User user,
+			int groupId, Group group,
+			NotificationType notificationType,
+			int documentId, Document document,
+			String description) {
+		
+		this.id = id;
+		this.userId = userId;
+		this.user = user;
+		
+		this.groupId = groupId;
+		this.group = group;
+		
+		this.notificationType = notificationType;
+		
+		this.documentId = documentId;
+		this.document = document;
+		
+		this.description = description;
+	}
+	
+	/**
+	 * Discussion Post Notification
+	 * @param id
+	 * @param userId
+	 * @param user
+	 * @param groupId
+	 * @param group
+	 * @param notificationType
+	 * @param discussionPostId
+	 * @param dicussionPost
+	 * @param description
+	 */
+	public Notification(int id, int userId, User user,
+			int groupId, Group group,
+			NotificationType notificationType,
+			int discussionPostId, DiscussionPost discussionPost,
+			String description) {
+		
+		this.id = id;
+		this.userId = userId;
+		this.user = user;
+		
+		this.groupId = groupId;
+		this.group = group;
+		
+		this.notificationType = notificationType;
+		
+		this.discussionPostId = discussionPostId;
+		this.discussionPost = discussionPost;
+		
+		this.description = description;
+	}
+	
 	//Getters
 	
 	public int getId() {
@@ -110,12 +210,20 @@ public class Notification implements Serializable {
 		return meeting;
 	}
 
+	public int getDocumentId() {
+		return documentId;
+	}
+
+	public Document getDocument() {
+		return document;
+	}
+	
 	public int getDiscussionPostId() {
 		return discussionPostId;
 	}
 
-	public DiscussionPost getDiscssionPost() {
-		return discssionPost;
+	public DiscussionPost getDiscussionPost() {
+		return discussionPost;
 	}
 	
 	public String getDescription() {
@@ -164,15 +272,65 @@ public class Notification implements Serializable {
 		this.meeting = meeting;
 	}
 
+	public void setDocumentId(int documentId) {
+		this.documentId = documentId;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+	
 	public void setDiscussionPostId(int discussionPostId) {
 		this.discussionPostId = discussionPostId;
 	}
 
-	public void setDiscssionPost(DiscussionPost discssionPost) {
-		this.discssionPost = discssionPost;
+	public void setDiscussionPost(DiscussionPost discussionPost) {
+		this.discussionPost = discussionPost;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	//Queries
+	
+	public static Notification fromResultSet(ResultSet rs) {
+		Notification notification = null;
+		
+		try {
+			if (rs.next()) {
+				
+				notification = new Notification();
+				
+				notification.setId(rs.getInt("Id"));
+				notification.setUserId(rs.getInt("UserId"));
+				notification.setDescription(rs.getString("Description"));
+				
+				int notificationTypeId = rs.getInt("NotificationTypeId");
+				NotificationType type = NotificationType.fromInteger(notificationTypeId);
+				
+				if (type == NotificationType.RegisteringUser) {
+					notification.setRegisteringUserId(rs.getInt("RegisteringUserId"));
+				} else if (type == NotificationType.Meeting) {
+					notification.setGroupId(rs.getInt("GroupId"));
+					notification.setMeetingId(rs.getInt("MeetingId"));
+				} else if (type == NotificationType.Document) {
+					notification.setGroupId(rs.getInt("GroupId"));
+					notification.setDocumentId(rs.getInt("DocumentId"));
+				} else if (type == NotificationType.DiscussionPost) {
+					notification.setGroupId(rs.getInt("GroupId"));
+					notification.setDiscussionPostId(rs.getInt("DiscussionPostId"));
+				}
+				
+				Logger.getLogger("rgms.model.Notification")
+                .info(String.format("Loaded User: %d, %d, %s",
+                    notification.getId(), notification.getUserId(), notification.getDescription()));
+				
+			}
+		} catch (SQLException e) {
+			Logger.getLogger("rgms.model.Notification").log(Level.SEVERE, "SQL Error", e);
+		}
+		
+		return notification;
 	}
 }
