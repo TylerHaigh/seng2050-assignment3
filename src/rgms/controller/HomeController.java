@@ -52,11 +52,24 @@ public class HomeController extends Controller {
 		
 		if (req.getMethod() == HttpMethod.Get) {
 			
+			//Handle dismissed notification
 			String dismissString = req.getParameter("dismiss");
 			if (dismissString != null) {
 				int dismissIndex = Integer.parseInt(req.getParameter("dismiss"));
 				Notification deleted = notifications.remove(dismissIndex);
 				notificationMan.deleteNotification(deleted.getId());
+			}
+			
+			//Handle activation of user
+			String activationString = req.getParameter("activate");
+			if (activationString != null) {
+				int activationIndex = Integer.parseInt(activationString);
+				Notification deleted = notifications.remove(activationIndex);
+				notificationMan.deleteNotification(deleted.getId());
+				int activatedUserId = deleted.getRegisteringUserId();
+				
+				UserManager userManager = new UserManager();
+				userManager.activateUser(activatedUserId);
 			}
 			
 			view(req, res, "/views/home/Notification.jsp", viewData);

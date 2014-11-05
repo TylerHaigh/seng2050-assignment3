@@ -81,6 +81,9 @@ public class AccountController extends Controller {
       UserManager userManager = new UserManager();
       userManager.createUser(user, req.getParameter("password"));
       
+      //Update the User from the database
+      user = userManager.get(user.getUserName());
+      
       //Try and authenticate the user
       Session userSession = AuthenticationManager.login(user.getUserName(), req.getParameter("password") , false);
       if (userSession == null) {

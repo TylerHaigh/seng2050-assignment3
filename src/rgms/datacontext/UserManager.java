@@ -59,6 +59,20 @@ public class UserManager extends DataManager {
 	  }
   }
 
+  public void activateUser(int userId) {
+	  try {
+		  Connection conn = connection.getConnection();
+		  PreparedStatement pstmt = conn.prepareStatement(
+			  "UPDATE Users SET IsActive=true WHERE Id=?"
+		  );
+		  
+		  pstmt.setInt(1, userId);
+		  pstmt.execute();
+	  } catch (SQLException e) {
+		  logger.log(Level.SEVERE, "SQL Error", e);
+	  }
+  }
+  
   public User get(int id) {
     Connection conn = null;
     try {

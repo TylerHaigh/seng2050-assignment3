@@ -114,7 +114,7 @@ public class NotificationManager extends DataManager {
 				"(UserId, NotificationTypeId, RegisteringUserId, Description) " +
 				"VALUES (%d, %d, %d, \'%s\')",
 				notification.getUserId(), 1,
-				notification.getRegisteringUserId(), notification.getDescription());
+				notification.getRegisteringUser().getId(), notification.getDescription());
 		 } else if (type == NotificationType.Meeting) {
 			 query += String.format(
 				"(UserId, GroupId, NotificationTypeId, MeetingId, Description) " +
