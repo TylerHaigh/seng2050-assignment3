@@ -2,6 +2,7 @@ package rgms.datacontext;
 
 import java.sql.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.*;
 
@@ -94,6 +95,12 @@ public class MeetingManager extends DataManager {
 		 Connection conn = null;
 		 List<Meeting> meetings = new LinkedList<Meeting>();
 		 
+		 //Date so only returns meetings that are yet to occur.
+		 //TODO is sdfDate used??
+		 SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		 java.util.Date now = new java.util.Date();
+		 java.sql.Date sqlDate = new java.sql.Date(now.getTime());
+		 
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
@@ -101,9 +108,10 @@ public class MeetingManager extends DataManager {
 					 "JOIN Groups g ON meet.GroupId=g.Id " +
 					 "JOIN GroupUserMaps map ON g.Id=map.GroupId " +
 					 "JOIN Users u ON map.UserId=u.Id " +
-					 "WHERE u.Id = ?");
+					 "WHERE u.Id = ? AND DateDue > ?");
 			 
 			 pstmt.setInt(1, userId);
+			 pstmt.setDate(2, sqlDate);
 			 
 			 ResultSet rs = pstmt.executeQuery();
 			 
@@ -130,6 +138,52 @@ public class MeetingManager extends DataManager {
 			 }
 		 }
 		 
+		 return meetings;
+	 }
+	 public List<Meeting> getGroupMeetings(String grpId) {
+		 Connection conn = null;
+		 List<Meeting> meetings = new LinkedList<Meeting>();
+		 int groupId = Integer.parseInt(grpId);
+		 try {
+			 //Connect to Database
+			 conn = connection.getConnection();
+			 //Only want meetings in the future.
+			//TODO is sdfDate used??
+			 SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			 java.util.Date now = new java.util.Date();
+			 java.sql.Date sqlDate = new java.sql.Date(now.getTime());
+			 
+			 PreparedStatement pstmt = conn.prepareStatement(
+					 "SELECT * FROM Meetings meet " +
+					 "WHERE GroupId = ? AND DateDue > ?");
+			 
+			 pstmt.setInt(1, groupId);
+			 pstmt.setDate(2, sqlDate);
+			 
+			 ResultSet rs = pstmt.executeQuery();
+			 
+			 if (rs.isBeforeFirst()) {
+				 //Get all meetings from result set.
+				 while (!rs.isAfterLast()) {
+					Meeting resultMeeting = Meeting.fromResultSet(rs);
+					if (resultMeeting != null)
+						meetings.add(resultMeeting);
+				 }
+			 }
+			 
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+			 return null;
+			 
+		 } finally {
+			 if (conn != null) {
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
+		 }		 
 		 return meetings;
 	 }
 }

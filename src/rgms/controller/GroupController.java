@@ -29,17 +29,23 @@ public class GroupController extends Controller{
 	    viewData.put("title", "Research Group");
 	    
 	    if (req.getMethod() == HttpMethod.Get) {
-			
+			//Load group data into Map
 	    	GroupManager gm = new GroupManager();
 		    int groupId = Integer.parseInt(req.getParameter("groupId"));
-		    Group group = gm.get(groupId);
-		    
+		    Group group = gm.get(groupId);		    
 		    if (group != null) {
-			    viewData.put("groupName", group.getGroupName());
-			    
+		    	//Load group members into Map
+			    viewData.put("groupName", group.getGroupName());			    
 			    List<String> groupMembers = gm.getGroupMembers(req.getParameter("groupId"));
 			    viewData.put("groupMembers", groupMembers);
-		    	
+		    	//Load meetings into map
+			    MeetingManager meetMan = new MeetingManager();
+			    List<Meeting> groupMeetings = meetMan.getGroupMeetings(req.getParameter("groupId"));
+			    viewData.put("groupMeetings", groupMeetings);
+			    //Load Document Data into Map
+			    List<Document> groupDocuments = gm.getGroupDocuments(req.getParameter("groupId"));
+			    viewData.put("groupDocuments", groupDocuments);
+			    //View group page.
 		    	view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 		    } else {
 		    	httpNotFound(req, res);
