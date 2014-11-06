@@ -126,9 +126,15 @@ public class Meeting implements Serializable {
 				meeting.setId(rs.getInt("Id"));
 				meeting.setDescription(rs.getString("Description"));
 				meeting.setCreatedByUserId(rs.getInt("CreatedByUserId"));
-				meeting.setDateCreated(new Date(rs.getDate("DateCreated").getTime()));
-				meeting.setDateDue(new Date(rs.getDate("DateDue").getTime()));
 				meeting.setGroupId(rs.getInt("GroupId"));
+				
+				Timestamp createdTimeStamp = rs.getTimestamp("DateCreated");
+				Date createdDate = new Date(createdTimeStamp.getTime());
+				meeting.setDateCreated(createdDate);
+				
+				Timestamp dueTimeStamp = rs.getTimestamp("DateDue");
+				Date dueDate = new Date(dueTimeStamp.getTime());
+				meeting.setDateDue(dueDate);
 				
 				Logger.getLogger("rgms.model.Meeting").info(
 					String.format("Loaded Meeting: %d, %s, %d, %s, %s, %d",
