@@ -172,7 +172,7 @@ public class GroupController extends Controller{
 	    viewData.put("title", "Document");
 	    
 	    if (req.getMethod() == HttpMethod.Get) {
-			//Load group data into Map
+			//Load Document data into Map
 	    	GroupManager gm = new GroupManager();
 		    int documentId = Integer.parseInt(req.getParameter("documentId"));
 		    Document aDocument= gm.getDocument(documentId);		    
