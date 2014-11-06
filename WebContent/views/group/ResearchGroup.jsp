@@ -65,8 +65,8 @@
     </c:if>
     <c:forEach var="document" items="${ groupDocuments }" >
         <a href="${pageContext.request.contextPath}/group/document?documentId=${document.id}" class="list-group-item">
-            <c:out value="Title: ${ document.documentName }" />
+            <c:out value="File Name: ${ document.documentName }" />
         </a>
     </c:forEach>
 </div>	
-<button class="btn btn-primary">Upload Document</button>
+<a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ groupId }" class="btn btn-primary">Upload New Document</a>
