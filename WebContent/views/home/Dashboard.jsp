@@ -1,4 +1,3 @@
-<%@page import="rgms.infrastructure.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -92,7 +91,6 @@
 			    	<c:forEach var="document" items="${ userDocuments }" >
 			    		<a href="${pageContext.request.contextPath}/group/document?documentId=${document.id }" class="list-group-item">
 			    			<c:out value="${ document.documentName}" />
-			    			<span class="badge">10</span>
 			    		</a>
 			    	</c:forEach>
 			    </div>
