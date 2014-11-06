@@ -1,3 +1,17 @@
+function validateDiscussion(code) {
+	var valid = true;
+	var threadName = document.getElementById('threadName').value;
+	var msg = "";
+
+	if (threadName == "" || !threadName) {
+		msg = msg + "Thread Name is required.\n";
+		valid = false;
+	}
+
+	if (!valid) alert(msg);
+	return valid;
+}
+
 function validateReg(code)
 {
 	var valid = true;

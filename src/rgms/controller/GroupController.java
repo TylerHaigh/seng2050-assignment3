@@ -34,6 +34,7 @@ public class GroupController extends Controller{
 		    int groupId = Integer.parseInt(req.getParameter("groupId"));
 		    Group group = gm.get(groupId);		    
 		    if (group != null) {
+		    	viewData.put("groupId", groupId);
 
 		    	//Load group members into Map
 			    viewData.put("groupName", group.getGroupName());			    
@@ -244,6 +245,23 @@ public class GroupController extends Controller{
 
 			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
 		}
+	}
+
+	public void createDiscussionAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<>();
+
+		if (req.getMethod() == HttpMethod.Get) {
+			viewData.put("title", "Create Discussion");
+			viewData.put("groupId", req.getParameter("groupId"));
+
+			view(req, res, "/views/group/CreateDiscussion.jsp", viewData);
+			return;
+		}
+		else if (req.getMethod() == HttpMethod.Post) {
+			//save discussion
+			return;
+		}
+		httpNotFound(req, res);
 	}
 
 	public void uploadDocumentAction(HttpServletRequest req, HttpServletResponse res) {

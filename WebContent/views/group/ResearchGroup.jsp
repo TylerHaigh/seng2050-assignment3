@@ -56,7 +56,7 @@
     <c:forEach var="member" items="${ groupDiscussions }" >
     </c:forEach>
 </div>
-<button class="btn btn-primary">Create Discussion</button>
+<a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ groupId }" class="btn btn-primary">Create Discussion</a>
 <hr />
 
 <h2>Documents</h2>
