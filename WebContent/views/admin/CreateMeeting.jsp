@@ -13,7 +13,7 @@
 	</div>
 	
 	<div class="form-group">
-		<label for="groupId">Meeting Description:</label>
+		<label for="groupId">Group:</label>
 		<select class="form-control" name="groupId" id="groupId" >
 			<c:forEach var="group" items="${ groups }">
 				<option value=${ group.id }>
@@ -31,5 +31,6 @@
 		<input type="text" class="form-control" id="meetingTime" name="meetingTime" />
 	</div>
 	
-	<button class="btn btn-default" type="submit">Register</button>
+	<button class="btn btn-default" type="submit">Submit</button>
+	<button class="btn btn-default" type="reset">Reset</button>
 </form>
