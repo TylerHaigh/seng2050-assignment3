@@ -3,7 +3,20 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <h1><c:out value="${ meeting.description }" /></h1>
-<h3><c:out value="Meeting Date: ${ meeting.dateDue }" /></h3>
+
+<div class="row">
+	<div class="col-md-6">
+		<h3><c:out value="Meeting Date: ${ meeting.dateDue }" /></h3>
+	</div>
+	<div class="col-md-6">
+		<c:if test="${ userSession.user.id eq meeting.createdByUserId }">
+			<a href="${ pageContext.request.contextPath }/group/deleteMeeting?meetingId=${ meeting.id}">
+				Delete Meeting
+			</a>
+		</c:if>
+	</div>
+</div>
+
 
 <hr />
 
