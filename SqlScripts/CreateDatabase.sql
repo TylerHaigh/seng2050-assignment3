@@ -72,7 +72,7 @@ CREATE TABLE RGMS_DB.Documents (
 	VersionNumber INT NOT NULL,
 	UploadDate DATETIME NOT NULL DEFAULT NOW() ,
 	ThreadId INT NOT NULL REFERENCES RGMS_DB.DiscussionThreads(Id),
-    GroupId INT NOT NULL REFERENCES RGMS_DB.Groups(Id)
+  GroupId INT NOT NULL REFERENCES RGMS_DB.Groups(Id)
 );
 
 CREATE TABLE RGMS_DB.DiscussionPosts (

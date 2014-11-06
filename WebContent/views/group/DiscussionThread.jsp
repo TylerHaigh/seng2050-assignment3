@@ -3,7 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <h2>Discussion Thread: ${thread.threadName}</h2>
-
+<c:if test="${ !empty documents }">
+    <c:set var="document" value="${ documents.get(0) }" />
+    <p>
+        Document: ${ document.documentName }<br />
+        Version: ${ document.versionNumber }
+    </p>
+</c:if>
 <c:if test="${ empty thread.posts }">
     <p>
         No comments yet...

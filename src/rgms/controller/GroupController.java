@@ -12,14 +12,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.*;
+import java.util.UUID;
 
 import rgms.mvc.*;
 import rgms.infrastructure.*;
 import rgms.model.*;
 import rgms.datacontext.*;
 
+@MultipartConfig
 @WebServlet(urlPatterns = { "/group/*", "/group" })
-public class GroupController extends Controller{
+public class GroupController extends Controller {
 	private static Logger logger = Logger.getLogger(GroupController.class.getName());
 
 	public GroupController() { }
@@ -100,10 +102,10 @@ public class GroupController extends Controller{
 			group.setId(groupId);
 			
 			//Update the User Session to show new meeting
-	    	HttpSession session = req.getSession();
-	    	Session userSession = (Session) session.getAttribute("userSession");
-	    	User admin = userSession.getUser();
-	    	admin.getGroups().add(group);
+    	HttpSession session = req.getSession();
+    	Session userSession = (Session) session.getAttribute("userSession");
+    	User admin = userSession.getUser();
+    	admin.getGroups().add(group);
 			
 			//Show the Group Page
 			viewData.put("groupName", group.getGroupName());
@@ -259,10 +261,17 @@ public class GroupController extends Controller{
 			DiscussionThread thread = discussionManager.getThread(threadId);
 			thread.setPosts(discussionManager.getPosts(threadId));
 
+			//get documents for the thread
+			DocumentManager docMan = new DocumentManager();
+			viewData.put("documents", docMan.getDocumentsForThread(threadId));
+
 			viewData.put("thread", thread);
 			viewData.put("title", "Discussion: " + thread.getThreadName());
 
 			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
+		}
+		else {
+			httpNotFound(req, res);
 		}
 	}
 
@@ -285,10 +294,58 @@ public class GroupController extends Controller{
 			DiscussionManager dm = new DiscussionManager();
 			dm.createDiscussion(thread);
 
+			try {
+				Part documentPart = req.getPart("document");
+
+				//if we have a document to upload
+				if (documentPart.getSize() > 0) {
+					String uuid = saveDocument(documentPart);
+					Document doc = new Document();
+					doc.setDocumentName(getFileName(documentPart));
+					doc.setDocumentPath(uuid);
+					doc.setVersionNumber(1);
+					doc.setThreadId(thread.getId());
+					doc.setGroupId(thread.getGroupId());
+
+					DocumentManager docMan = new DocumentManager();
+					docMan.createDocument(doc);
+				}
+			}
+			catch (Exception e) {
+				logger.log(Level.SEVERE, "Document save error", e);
+			}
+
 			redirectToLocal(req, res, "/group/discussion/?threadId=" + thread.getId());
 			return;
 		}
 		httpNotFound(req, res);
+	}
+
+  private String getFileName(Part part) {
+    for (String cd : part.getHeader("content-disposition").split(";")) {
+      if (cd.trim().startsWith("filename")) {
+        return cd.substring(cd.indexOf('=') + 1).trim()
+            .replace("\"", "");
+      }
+    }
+    return null;
+  }
+
+	private String saveDocument(Part documentPart) {
+    try {
+      //get random uuid
+      String id = UUID.randomUUID().toString();
+
+      //save to disk
+      String savePath = getServletContext().getRealPath("/Uploads") + "/" + id;
+      documentPart.write(savePath);
+
+      return id;
+    }
+    catch (Exception e) {
+      logger.log(Level.SEVERE, "Error saving document", e);
+      return null;
+    }	
 	}
 
 	public void createPostAction(HttpServletRequest req, HttpServletResponse res) {
@@ -300,8 +357,9 @@ public class GroupController extends Controller{
 			HttpSession session = req.getSession();
 			Session userSession = (Session)session.getAttribute("userSession");
 			DiscussionPost post = new DiscussionPost();
-			post.setId(userSession.getUserId());
+			post.setUserId(userSession.getUserId());
 			post.setMessage(req.getParameter("comment"));
+			post.setThreadId(Integer.parseInt(req.getParameter("threadId")));
 			dm.createPost(post);
 
 			redirectToLocal(req, res, "/group/discussion/?threadId=" + req.getParameter("threadId"));
@@ -309,10 +367,6 @@ public class GroupController extends Controller{
 		else {
 			httpNotFound(req, res);
 		}
-	}
-
-	public void uploadDocumentAction(HttpServletRequest req, HttpServletResponse res) {
-	
 	}
 
 	public void inviteAction(HttpServletRequest req, HttpServletResponse res) {
