@@ -347,4 +347,33 @@ public class GroupManager extends DataManager {
 		 return -1;
 	 }
 
+	 public User getCoordinator(int groupId) {
+		 Connection conn = null;
+		 try {
+			 conn = connection.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(
+				 "SELECT u.* FROM Users u " +
+				 "JOIN GroupUserMaps m ON u.Id=m.UserId " +
+				 "JOIN Groups g ON g.Id=m.GroupId " + 
+				 "WHERE m.GroupId = ? " +
+				 "AND u.Id=g.CoordinatorId");
+			 
+			 pstmt.setInt(1, groupId);
+			 
+			 ResultSet rs = pstmt.executeQuery();
+			 return User.fromResultSet(rs);
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+			 return null;
+		 } finally {
+			 if (conn != null) {
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
+		 }
+	 }
+	 
 }

@@ -12,6 +12,10 @@
 	<c:when test="${ activated }">
 		<div class="alert alert-success">User account successfully activated</div>
 	</c:when>
+	
+	<c:when test="${ added }">
+		<div class="alert alert-success">User account added to Group</div>
+	</c:when>
 </c:choose>
 
 <div class="list-group">
@@ -29,6 +33,14 @@
 							
 							<a href="${ pageContext.request.contextPath }${ notification.link }">
 								<button type="button" class="btn btn-default">Activate</button>
+							</a>
+						</c:when>
+						
+						<c:when test="${ fn:contains(notification.link, 'addUserId') }">
+							<c:out value="${ notification.description}" />
+							
+							<a href="${ pageContext.request.contextPath }${ notification.link }">
+								<button type="button" class="btn btn-default">Add to Group</button>
 							</a>
 						</c:when>
 						

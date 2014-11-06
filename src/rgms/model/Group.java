@@ -10,17 +10,22 @@ public class Group implements Serializable {
 	private int id;
 	private String groupName;
 	private String description;
+	private int coordinatorId;
 	
 	//Constructors
 	
 	public Group() {
 		this.id = 0;
 		this.groupName = "";
+		this.description = "";
+		this.coordinatorId = 1;
 	}
 	
-	public Group(int id, String groupName) {
+	public Group(int id, String groupName, String description, int coordinatorId) {
 		this.id = id;
 		this.groupName = groupName;
+		this.description = description;
+		this.coordinatorId = coordinatorId;
 	}
 
 	//Getters

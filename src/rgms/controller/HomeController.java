@@ -90,6 +90,27 @@ public class HomeController extends Controller {
 				req.setAttribute("activated", true);
 			}
 			
+			//Handle addition of users to groups
+			String groupIdString = req.getParameter("groupId");
+			String addUserIdString = req.getParameter("addUserId");
+			if (groupIdString != null && addUserIdString != null) {
+				int groupId = Integer.parseInt(groupIdString);
+				int addUserId = Integer.parseInt(addUserIdString);
+				
+				//Activate the user
+				GroupManager groupMan = new GroupManager();
+				groupMan.createMapping(groupId, addUserId);
+				
+				//Delete the notification
+				for (Notification n : notifications) {
+					if (n.getLink().equals("/home/notifications?addUserId=" + userId + "&groupId=" + groupId))
+						notificationMan.deleteNotification(n.getId());
+				}
+				
+				//Notify of activation
+				req.setAttribute("added", true);
+			}
+			
 			view(req, res, "/views/home/Notification.jsp", viewData);
 		} else if (req.getMethod() == HttpMethod.Post) {
 			//404

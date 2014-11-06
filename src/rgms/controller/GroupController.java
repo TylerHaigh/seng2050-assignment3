@@ -33,6 +33,7 @@ public class GroupController extends Controller{
 	    	GroupManager gm = new GroupManager();
 		    int groupId = Integer.parseInt(req.getParameter("groupId"));
 		    Group group = gm.get(groupId);		    
+		    
 		    if (group != null) {
 		    	viewData.put("groupId", groupId);
 
@@ -55,6 +56,21 @@ public class GroupController extends Controller{
 			    DiscussionManager dm = new DiscussionManager();
 			    viewData.put("groupDiscussions", dm.getThreads(groupId));
 
+			    //Check if the user is a member
+			    boolean isMember = false;
+			    HttpSession session = req.getSession();
+		    	Session userSession = (Session) session.getAttribute("userSession");
+		    	User user = userSession.getUser();
+		    	
+		    	for (Group g : user.getGroups()) {
+		    		if (g.getId() == group.getId()) {
+		    			isMember = true;
+		    			break;
+		    		}
+		    	}
+		    	
+		    	viewData.put("notMember", !isMember);
+			    
 			    //View group page.
 		    	view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 
@@ -293,6 +309,35 @@ public class GroupController extends Controller{
 	}
 
 	public void uploadDocumentAction(HttpServletRequest req, HttpServletResponse res) {
+	
+	}
 
+	public void inviteAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		
+		int groupId = Integer.parseInt(req.getParameter("groupId"));
+		
+		try {
+		
+	    	HttpSession session = req.getSession();
+	    	Session userSession = (Session) session.getAttribute("userSession");
+	    	User user = userSession.getUser();
+	    	
+	    	GroupManager groupMan = new GroupManager();
+	    	Group group = groupMan.get(groupId);
+	    	User coordinator = groupMan.getCoordinator(groupId);
+	    	
+	    	NotificationManager notificationMan = new NotificationManager();
+	    	Notification notification = new Notification(coordinator.getId(), coordinator,
+	    			groupId, group, user.getFullName() + " wants to join your group " + group.getGroupName(),
+	    			"/home/notifications?addUserId=" + user.getId() + "&groupId=" + group.getId());
+	    	notificationMan.createNotification(notification);
+	    	
+	    	redirectToLocal(req, res, "/home/dashboard");
+    	
+		} catch (Exception e) {
+			redirectToLocal(req, res, "/home/dashboard");
+		}
+    	
 	}
 }

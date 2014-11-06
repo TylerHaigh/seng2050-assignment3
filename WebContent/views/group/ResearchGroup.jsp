@@ -1,24 +1,17 @@
-<%-- 
-    Document   : ResearchGroup
-    Created on : 29/09/2014, 7:38:07 PM
-    Author     : Tyler 2
---%>
-
-<%@page import="rgms.infrastructure.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<c:choose>
-	<c:when test="${empty profileUser}">
-		<!-- FILL THIS IN WITH GROUP NAME -->
-	</c:when>
-	<c:otherwise>
-		
-    </c:otherwise>
-</c:choose>
 	
-<h1>${groupName}</h1>
+<h1>${ groupName }</h1>
+
+<c:if test="${ joinSuccess }">
+	join was successful
+</c:if>
+
+<c:if test="${ notMember }">
+	<a href="${ pageContext.request.contextPath }/group/invite?groupId=${ groupId }">
+		Join this Group
+	</a>
+</c:if>
 
 <h2>Members</h2>
 <div class="list-group">
@@ -44,6 +37,7 @@
         </a>
     </c:forEach>
 </div>
+
 <hr />
 
 <h2>Discussions </h2>
