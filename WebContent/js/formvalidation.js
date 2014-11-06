@@ -1,3 +1,17 @@
+function validateComment() {
+	var valid = true;
+	var comment = document.getElementById('comment').value;
+	var msg = "";
+
+	if (comment == "" || !comment) {
+		msg += "Comment cannot be empty.\n";
+		valid = false;
+	}
+
+	if (!valid) alert(msg);
+	return valid;
+}
+
 function validateDiscussion(code) {
 	var valid = true;
 	var threadName = document.getElementById('threadName').value;

@@ -32,12 +32,13 @@ public class DiscussionManager extends DataManager {
       Connection conn = connection.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(
         "INSERT INTO DiscussionPosts (ThreadId, UserId, Message)" +
-        "VALUES (?, ?, ?)");
+        "VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
       pstmt.setInt(1, post.getThreadId());
       pstmt.setInt(2, post.getUserId());
       pstmt.setString(3, post.getMessage());
-      pstmt.execute();
+      int id = pstmt.executeUpdate();
+      post.setId(id);
     }
     catch (Exception e) {
       logger.log(Level.SEVERE, "SQL Error", e);

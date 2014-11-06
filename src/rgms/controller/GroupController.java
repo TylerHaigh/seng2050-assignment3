@@ -272,6 +272,26 @@ public class GroupController extends Controller{
 		httpNotFound(req, res);
 	}
 
+	public void createPostAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<>();
+
+		if (req.getMethod() == HttpMethod.Post) {
+			DiscussionManager dm = new DiscussionManager();
+
+			HttpSession session = req.getSession();
+			Session userSession = (Session)session.getAttribute("userSession");
+			DiscussionPost post = new DiscussionPost();
+			post.setId(userSession.getUserId());
+			post.setMessage(req.getParameter("comment"));
+			dm.createPost(post);
+
+			redirectToLocal(req, res, "/group/discussion/?threadId=" + req.getParameter("threadId"));
+		}
+		else {
+			httpNotFound(req, res);
+		}
+	}
+
 	public void uploadDocumentAction(HttpServletRequest req, HttpServletResponse res) {
 
 	}
