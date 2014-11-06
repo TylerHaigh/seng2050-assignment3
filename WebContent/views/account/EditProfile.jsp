@@ -10,6 +10,7 @@
 	<form method="post" onsubmit="return validateEdit();" action="${pageContext.request.contextPath}/account/update?userId=${ userSession.user.id }" enctype="multipart/form-data">
 		<h2>Edit your profile</h2>
     <div class="form-group">
+      <input type="hidden" name="imageReference" value="${profileUser.imageReference}"/>
       <label for="avatar">Avatar: </label>
       <div class="form-controls">
         <img class="profile-image" src="${pageContext.request.contextPath}/Uploads/images/${profileUser.imageReference}" data-src="holder.js/100x100/sky/text:No Image"/>

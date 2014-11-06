@@ -94,23 +94,14 @@ function validateEdit(code)
 		msg = msg + "Your last name was left blank. \n"
 		valid = false;
 	}
-	x = document.getElementById("password").value;
-	if(x=="" || x== null)
-	{
-		msg = msg + "Your password was left blank. \n"
-		valid = false;
-	}
-	y = document.getElementById("confirmPassword").value;
-	if(y=="" || y== null)
-	{
-		msg = msg + "You must confirm your password. \n"
-		valid = false;
-	}
-	if(y != x)
-	{
+
+	var password = document.getElementById("password").value;
+	var confirmPassword = document.getElementById("confirmPassword").value;
+	if((password > "" || confirmPassword > "") && password != confirmPassword) {
 		msg = msg + "Your passwords did not match. \n"
 		valid = false;
 	}	
+	
 	if(valid == false)
 	{
 		alert(msg);

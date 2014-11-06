@@ -251,7 +251,6 @@ public class GroupController extends Controller{
 
 	public void discussionAction(HttpServletRequest req, HttpServletResponse res) {
 		Map<String, Object> viewData = new HashMap<>();
-		viewData.put("title", "Discussion");
 
 		if (req.getMethod() == HttpMethod.Get) {
 			int threadId = Integer.parseInt(req.getParameter("threadId"));
@@ -261,6 +260,7 @@ public class GroupController extends Controller{
 			thread.setPosts(discussionManager.getPosts(threadId));
 
 			viewData.put("thread", thread);
+			viewData.put("title", "Discussion: " + thread.getThreadName());
 
 			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
 		}

@@ -197,10 +197,13 @@ public class AccountController extends Controller {
 
         try {
           Part avatar = req.getPart("avatar");
-          if (avatar != null) {
+          if (avatar.getSize() > 0) {
             String imageRef = saveProfileImage(avatar);
             user.setImageReference(imageRef);
             logger.info("Avatar uploaded for " + userId);
+          }
+          else {
+            user.setImageReference(req.getParameter("imageReference"));
           }
         }
         catch (Exception e) {
@@ -208,19 +211,10 @@ public class AccountController extends Controller {
         }
 
         UserManager userManager = new UserManager();
-        userManager.updateUser(user, req.getParameter("password"));
+        userManager.updateUser(user);
         
-        Session userSession = AuthenticationManager.login(user.getUserName(), req.getParameter("password") , false);
-        if (userSession == null) {
-          req.setAttribute("updateError", true);
-          view(req, res, "/views/account/Login.jsp", viewData);
-        }
-        else {
-          HttpSession session = req.getSession();
-          session.setAttribute("userSession", userSession);
-          redirectToLocal(req, res, "/account/profile?userId=" + userId);
-          return;
-        }
+        redirectToLocal(req, res, "/account/profile?userId=" + userId);
+        return;
       } 
   }
 

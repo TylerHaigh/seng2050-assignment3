@@ -2,7 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<h2>Thread: ${thread.threadName}</h2>
+<h2>Discussion Thread: ${thread.threadName}</h2>
 
 <c:if test="${ empty thread.posts }">
     <p>
@@ -12,7 +12,7 @@
 <c:forEach var="post" items="${ thread.posts }" >
     <div class="row post">
         <div class="col-md-12">
-            <img src="${ pageContext.request.contextPath }/Uploads/images/${ post.user.imageReference }" alt="${ post.user.fullName } Profile Image" data-src="holder.js/100x100/sky/text:${post.user.fullName}" class="pull-left"/>
+            <img src="${ pageContext.request.contextPath }/Uploads/images/${ post.user.imageReference }" alt="${ post.user.fullName } Profile Image" data-src="holder.js/100x100/sky/text:${post.user.fullName}" class="pull-left profile-image" />
             <h4>
                 <c:out value="${ post.user.fullName }"></c:out>
             </h4>

@@ -67,6 +67,27 @@ public class UserManager extends DataManager {
 		  logger.log(Level.SEVERE, "SQL Error, Updating table", e);
 	  }
   }
+  
+  public void updateUser(User user) {
+    //connect to db
+    try { 
+      Connection conn = connection.getConnection();
+      PreparedStatement pstmt = conn.prepareStatement(
+        "UPDATE users " + 
+        "SET FirstName=?, LastName=?, ImageReference = ?" + 
+        "WHERE Id=? ;"
+        );
+      pstmt.setString(1, user.getFirstName());
+      pstmt.setString(2, user.getLastName());
+      pstmt.setString(3, user.getImageReference());
+      pstmt.setInt(4, user.getId());
+      
+      pstmt.execute();
+    }
+    catch (Exception e) {
+      logger.log(Level.SEVERE, "SQL Error, Updating table", e);
+    }
+  }
 
   public void activateUser(int userId) {
 	  try {
