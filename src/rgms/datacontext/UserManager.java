@@ -160,6 +160,41 @@ public class UserManager extends DataManager {
 	  return coordinators;
   }
   
+  public List<User> getEveryUser() {
+	  Connection conn = null;
+	  List<User> users = new LinkedList<User>();
+	  
+	  try {
+		  conn = connection.getConnection();
+		  PreparedStatement pstmt = conn.prepareStatement(
+			  "SELECT * FROM Users"
+		  );
+		  
+		  ResultSet rs = pstmt.executeQuery();
+		  
+		  if (rs.isBeforeFirst()) {
+			  while (!rs.isAfterLast()) {
+				  User user = User.fromResultSet(rs);
+				  if (user != null)
+					  users.add(user);
+			  }
+		  }
+	  } catch (SQLException e) {
+		  logger.log(Level.SEVERE, "SQL Error", e);
+			 return null;
+	  } finally {
+		  if (conn != null) {
+			  try {
+				  conn.close();
+			  } catch (SQLException e) {
+				  logger.log(Level.WARNING, "Connection Close", e);
+			  }
+		  }
+	  }
+	  
+	  return users;
+  }
+  
   public boolean validate(String userName, String plainPassword) {
     User user = this.get(userName);
     String hashedPass = UserManager.hashPassword(plainPassword);

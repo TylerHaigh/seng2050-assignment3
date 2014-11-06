@@ -6,6 +6,7 @@ import javax.servlet.annotation.*;
 import javax.servlet.http.*;
 
 import rgms.datacontext.GroupManager;
+import rgms.datacontext.UserManager;
 import rgms.infrastructure.Session;
 import rgms.model.*;
 import rgms.mvc.Controller;
@@ -45,5 +46,29 @@ public class AdminController extends Controller {
 		viewData.put("scripts", datePickerScript);
 		
 		view(req, res, "/views/admin/CreateMeeting.jsp", viewData);
+	}
+
+	public void showusersAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		viewData.put("title", "RGMS Users");
+		  
+		UserManager userMan = new UserManager();
+		List<User> users = userMan.getEveryUser();
+		
+		viewData.put("allUsers", users);
+		
+		view(req, res, "/views/admin/ShowUsers.jsp", viewData);
+	}
+	
+	public void showgroupsAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		viewData.put("title", "RGMS Groups");
+		  
+		GroupManager groupMan = new GroupManager();
+		List<Group> groups = groupMan.getEveryGroup();
+		
+		viewData.put("allGroups", groups);
+		
+		view(req, res, "/views/admin/ShowGroups.jsp", viewData);
 	}
 }

@@ -122,6 +122,12 @@ public class GroupController extends Controller{
 	    		notificationMan.createNotification(notification);
 	    	}
 	    	
+	    	//Update the User Session to show new meeting
+	    	HttpSession session = req.getSession();
+	    	Session userSession = (Session) session.getAttribute("userSession");
+	    	User admin = userSession.getUser();
+	    	admin.getMeetings().add(meeting);
+	    	
 	    	//Show meeting page
 	    	viewData.put("meetingUsers", users);
 	    	viewData.put("meeting", meeting);
@@ -153,4 +159,32 @@ public class GroupController extends Controller{
 	}
 	
 	
+	public void deletemeetingAction(HttpServletRequest req, HttpServletResponse res) {
+		if (req.getMethod() == HttpMethod.Get) {
+			
+			int meetingId = Integer.parseInt(req.getParameter("meetingId"));
+			MeetingManager meetingMan = new MeetingManager();
+			Meeting meeting = meetingMan.get(meetingId);
+			meetingMan.deleteMeeting(meetingId);
+			
+			//Update the User Session to remove meeting
+	    	HttpSession session = req.getSession();
+	    	Session userSession = (Session) session.getAttribute("userSession");
+	    	List<Meeting> adminMeetings = userSession.getUser().getMeetings();
+
+	    	for (int i = 0; i < adminMeetings.size(); i++) {
+	    		Meeting m = adminMeetings.get(i);
+	    		if (m.getId() == meeting.getId()) {
+	    			adminMeetings.remove(i);
+	    			break;
+	    		}
+	    	}
+	    	
+	    	redirectToLocal(req, res, "/home/dashboard");
+			
+		} else if (req.getMethod() == HttpMethod.Post) {
+			httpNotFound(req, res);
+		}
+		
+	}
 }
