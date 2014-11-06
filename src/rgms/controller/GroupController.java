@@ -29,28 +29,71 @@ public class GroupController extends Controller{
 	    viewData.put("title", "Research Group");
 	    
 	    if (req.getMethod() == HttpMethod.Get) {
-			
+			//Load group data into Map
 	    	GroupManager gm = new GroupManager();
 		    int groupId = Integer.parseInt(req.getParameter("groupId"));
-		    Group group = gm.get(groupId);
-		    
+		    Group group = gm.get(groupId);		    
 		    if (group != null) {
-			    viewData.put("groupName", group.getGroupName());
-			    
+
+		    	//Load group members into Map
+			    viewData.put("groupName", group.getGroupName());			    
+
 			    List<String> groupMembers = gm.getGroupMembers(groupId);
 			    viewData.put("groupMembers", groupMembers);
 
+		    	//Load meetings into map
+			    MeetingManager meetMan = new MeetingManager();
+			    List<Meeting> groupMeetings = meetMan.getGroupMeetings(req.getParameter("groupId"));
+			    viewData.put("groupMeetings", groupMeetings);
+
+			    //Load Document Data into Map
+			    List<Document> groupDocuments = gm.getGroupDocuments(req.getParameter("groupId"));
+			    viewData.put("groupDocuments", groupDocuments);
+
+			    //Load discussion threads
 			    DiscussionManager dm = new DiscussionManager();
 			    viewData.put("groupDiscussions", dm.getThreads(groupId));
 
+			    //View group page.
 		    	view(req, res, "/views/group/ResearchGroup.jsp", viewData);
+
 		    } else {
 		    	httpNotFound(req, res);
 		    }
 		    
 		} else if (req.getMethod() == HttpMethod.Post) {
-			//404
-			httpNotFound(req, res);
+			//Create Group
+			
+			//Get data from parameters
+			String groupName = req.getParameter("groupName");
+			String description = req.getParameter("description");
+			int adminId = Integer.parseInt(req.getParameter("createdByUserId"));
+			
+			//Create the Group
+			GroupManager groupMan = new GroupManager();
+			Group group = new Group();
+			group.setGroupName(groupName);
+			group.setDescription(description);
+			
+			//Create the mapping
+			groupMan.createGroup(group);
+			int groupId = groupMan.getIdFor(group);
+			groupMan.createMapping(groupId, adminId);
+			
+			group.setId(groupId);
+			
+			//Update the User Session to show new meeting
+	    	HttpSession session = req.getSession();
+	    	Session userSession = (Session) session.getAttribute("userSession");
+	    	User admin = userSession.getUser();
+	    	admin.getGroups().add(group);
+			
+			//Show the Group Page
+			viewData.put("groupName", group.getGroupName());
+	    List<String> groupMembers = groupMan.getGroupMembers(groupId);
+	    viewData.put("groupMembers", groupMembers);
+		    
+			view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 		}
 	}
 	
@@ -107,6 +150,7 @@ public class GroupController extends Controller{
 	    	
 	    	meetingMan.createMeeting(meeting);
 	    	int meetingId = meetingMan.getIdFor(meeting);
+	    	meeting.setId(meetingId);
 	    	
 	    	//Create a notification for all users in group
 	    	NotificationManager notificationMan = new NotificationManager();
@@ -131,6 +175,29 @@ public class GroupController extends Controller{
 		    view(req, res, "/views/group/Meeting.jsp", viewData);
 	    	
 	    }
+	}
+	
+	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
+	    Map<String, Object> viewData = new HashMap<String, Object>();
+	    viewData.put("title", "Document");
+	    
+	    if (req.getMethod() == HttpMethod.Get) {
+			//Load Document data into Map
+	    	GroupManager gm = new GroupManager();
+		    int documentId = Integer.parseInt(req.getParameter("documentId"));
+		    Document aDocument= gm.getDocument(documentId);		    
+		    if (aDocument != null) {
+		    	viewData.put("document", aDocument);
+			    //View group page.
+		    	view(req, res, "/views/group/Document.jsp", viewData);
+		    } else {
+		    	httpNotFound(req, res);
+		    }
+		    
+		} else if (req.getMethod() == HttpMethod.Post) {
+			//404
+			httpNotFound(req, res);
+		}
 	}
 	
 	public void deletemeetingAction(HttpServletRequest req, HttpServletResponse res) {
@@ -176,19 +243,6 @@ public class GroupController extends Controller{
 			viewData.put("thread", thread);
 
 			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
-		}
-	}
-
-	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
-		Map<String, Object> viewData = new HashMap<>();
-		viewData.put("title", "Document");
-
-		if (req.getMethod() == HttpMethod.Get) {
-			int documentId = Integer.parseInt(req.getParameter("documentId"));
-			view(req, res, "/views/group/Document.jsp", viewData);
-		}
-		else {
-			httpNotFound(req, res);
 		}
 	}
 

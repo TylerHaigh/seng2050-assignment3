@@ -47,6 +47,12 @@ public class AdminController extends Controller {
 		
 		view(req, res, "/views/admin/CreateMeeting.jsp", viewData);
 	}
+	
+	public void creategroupAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		viewData.put("title", "Create Group");
+		view(req, res, "/views/admin/CreateGroup.jsp", viewData);
+	}
 
 	public void showusersAction(HttpServletRequest req, HttpServletResponse res) {
 		Map<String, Object> viewData = new HashMap<String, Object>();
