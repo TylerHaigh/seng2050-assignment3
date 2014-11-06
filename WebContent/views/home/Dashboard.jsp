@@ -54,6 +54,8 @@
 	</div>
 </div>
 
+<hr />
+
 <!-- Second row of Dashboard -->
 <div class="row">
 	<div class="col-md-6">

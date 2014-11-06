@@ -56,14 +56,20 @@ public class GroupController extends Controller{
 	    viewData.put("title", "Meeting");
 	    
 	    MeetingManager meetingMan = new MeetingManager();
+	    GroupManager groupMan = new GroupManager();
 	    
 	    if (req.getMethod() == HttpMethod.Get) {
 	    	int meetingId = Integer.parseInt(req.getParameter("meetingId"));
 		    Meeting meeting = meetingMan.get(meetingId);
 		    
 		    if (meeting != null) {
-			    viewData.put("meeting", meeting);
+			    
+		    	List<User> meetingUsers = groupMan.getGroupUsers(meeting.getGroupId());
+		    	
+		    	viewData.put("meetingUsers", meetingUsers);
+		    	viewData.put("meeting", meeting);
 			    view(req, res, "/views/group/Meeting.jsp", viewData);
+			    
 		    } else {
 		    	httpNotFound(req, res);
 		    }
@@ -100,7 +106,6 @@ public class GroupController extends Controller{
 	    	int meetingId = meetingMan.getIdFor(meeting);
 	    	
 	    	//Create a notification for all users in group
-	    	GroupManager groupMan = new GroupManager();
 	    	NotificationManager notificationMan = new NotificationManager();
 	    	List<User> users = groupMan.getGroupUsers(groupId);
 	    	
@@ -110,6 +115,11 @@ public class GroupController extends Controller{
 	    				"/group/meeting?meetingId=" + meetingId);
 	    		notificationMan.createNotification(notification);
 	    	}
+	    	
+	    	//Show meeting page
+	    	viewData.put("meetingUsers", users);
+	    	viewData.put("meeting", meeting);
+		    view(req, res, "/views/group/Meeting.jsp", viewData);
 	    	
 	    }
 	}
