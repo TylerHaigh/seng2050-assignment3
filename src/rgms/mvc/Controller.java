@@ -105,7 +105,7 @@ public abstract class Controller extends HttpServlet {
 	  view(req, res, "/views/shared/HttpNotFound.jsp", viewData);
   }
 
-  protected void redirectToLocal(HttpServletRequest req, HttpServletResponse res, String path) {
+  protected static void redirectToLocal(HttpServletRequest req, HttpServletResponse res, String path) {
     try {
       res.sendRedirect(req.getContextPath() + path);
       return;

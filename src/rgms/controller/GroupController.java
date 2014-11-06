@@ -4,20 +4,10 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import javax.servlet.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.text.*;
+import java.util.*;
 import java.util.logging.*;
-import java.util.UUID;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
-import java.io.IOException;
+import java.io.*;
 
 import rgms.mvc.*;
 import rgms.infrastructure.*;
@@ -32,7 +22,9 @@ public class GroupController extends Controller {
 	public GroupController() { }
 	
 	public void researchgroupAction(HttpServletRequest req, HttpServletResponse res) {
-	    Map<String, Object> viewData = new HashMap<String, Object>();
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
+		Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Research Group");
 	    
 	    if (req.getMethod() == HttpMethod.Get) {
@@ -122,6 +114,8 @@ public class GroupController extends Controller {
 	}
 	
 	public void meetingAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Meeting");
 	    
@@ -205,7 +199,9 @@ public class GroupController extends Controller {
 	}
 	
 	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
-	    Map<String, Object> viewData = new HashMap<String, Object>();
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
+		Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Document");
 	    
 	    if (req.getMethod() == HttpMethod.Get) {
@@ -228,6 +224,8 @@ public class GroupController extends Controller {
 	}
 	
 	public void deletemeetingAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		if (req.getMethod() == HttpMethod.Get) {
 			
 			int meetingId = Integer.parseInt(req.getParameter("meetingId"));
@@ -257,6 +255,8 @@ public class GroupController extends Controller {
 	}
 
 	public void discussionAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<>();
 
 		if (req.getMethod() == HttpMethod.Get) {
@@ -281,6 +281,8 @@ public class GroupController extends Controller {
 	}
 
 	public void createDiscussionAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<>();
 
 		if (req.getMethod() == HttpMethod.Get) {
@@ -354,6 +356,8 @@ public class GroupController extends Controller {
 	}
 
 	public void createPostAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<>();
 
 		if (req.getMethod() == HttpMethod.Post) {
@@ -375,6 +379,8 @@ public class GroupController extends Controller {
 	}
 
 	public void inviteAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		
 		int groupId = Integer.parseInt(req.getParameter("groupId"));

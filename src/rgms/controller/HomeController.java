@@ -19,10 +19,14 @@ public class HomeController extends Controller {
 	public HomeController() { }
 	
 	public void dashboardAction(HttpServletRequest req, HttpServletResponse res) {
+		
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "Dashboard");
 		
-		Session userSession = (Session) req.getSession().getAttribute("userSession");
+		HttpSession session = req.getSession();
+		Session userSession = (Session) session.getAttribute("userSession");
 		int userId = userSession.getUser().getId();
 		
 		//Get Notifications
@@ -58,6 +62,8 @@ public class HomeController extends Controller {
 	}
 	
 	public void notificationsAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "Notifications");
 

@@ -17,6 +17,8 @@ public class AdminController extends Controller {
 	public AdminController() { }
 	
 	public void adminAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "Admin");
 		  
@@ -24,6 +26,8 @@ public class AdminController extends Controller {
 	}
 	
 	public void createmeetingAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "Create Meeting");
 		  
@@ -49,12 +53,16 @@ public class AdminController extends Controller {
 	}
 	
 	public void creategroupAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "Create Group");
 		view(req, res, "/views/admin/CreateGroup.jsp", viewData);
 	}
 
 	public void showusersAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "RGMS Users");
 		  
@@ -67,6 +75,8 @@ public class AdminController extends Controller {
 	}
 	
 	public void showgroupsAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("title", "RGMS Groups");
 		  

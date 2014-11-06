@@ -11,6 +11,7 @@ import rgms.model.*;
 import rgms.datacontext.*;
 
 import java.util.*;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
@@ -22,6 +23,39 @@ public class AccountController extends Controller {
 
   public AccountController() { }
 
+  public static boolean redirectIfNoCookie(HttpServletRequest req, HttpServletResponse res) {
+	  Session userSession = null; 
+	  
+	  //Check if there is a cookie
+	  Cookie[] cookies = req.getCookies();
+	  if (cookies != null) {
+		  for (Cookie cookie : cookies) {
+			  if (cookie.getName().equals("userCookie")) {
+				  
+				  //Create the User
+				  UserManager userMan = new UserManager();
+				  int userId = Integer.parseInt(cookie.getValue());
+				  User user = userMan.get(userId);
+				  
+				  //Create a session for the user
+				  userSession = new Session(false, userId, user);
+				  break;
+			  }
+		  }
+	  }
+	  
+	  if (userSession != null) {
+		  HttpSession session = req.getSession();
+		  if (session.getAttribute("userSession") == null)
+			  session.setAttribute("userSession", userSession);
+		  
+		  return false;
+	  } else {
+		  redirectToLocal(req, res, "/account/login");
+		  return true;
+	  }
+  }
+  
   public void loginAction(HttpServletRequest req, HttpServletResponse res) {
 	
 	Map<String, Object> viewData = new HashMap<String, Object>();
@@ -55,9 +89,16 @@ public class AccountController extends Controller {
     	  req.setAttribute("inactiveUser", true);
           view(req, res, "/views/account/Login.jsp", viewData);
       } else {
-        HttpSession session = req.getSession();
-        session.setAttribute("userSession", userSession);
-        redirectToLocal(req, res, "/home/dashboard");
+        
+    	  //Make a cookie for the user session
+    	  Cookie loginCookie = new Cookie("userCookie", String.valueOf(userSession.getUser().getId()));
+    	  loginCookie.setMaxAge(24 * 60 * 60); // 24 Hours
+    	  loginCookie.setPath("/");
+
+    	  res.addCookie(loginCookie);
+    	  
+    	  redirectToLocal(req, res, "/home/dashboard");
+    	  return;
       }
       
     }
@@ -99,7 +140,7 @@ public class AccountController extends Controller {
         	  
         	  Notification registerNotification = new Notification(coordinator.getId(), coordinator,
             		  "New user " + user.getFullName() + " wants to join",
-            		  "/account/notifications?activate=" + user.getId());
+            		  "/home/notifications?activate=" + user.getId());
               
               notificationManager.createNotification(registerNotification);
           }
@@ -112,11 +153,15 @@ public class AccountController extends Controller {
           HttpSession session = req.getSession();
           session.setAttribute("registerSuccess", true);
     	  redirectToLocal(req, res, "/account/login");
+    	  return;
       }
     }
   }
 
   public void profileAction(HttpServletRequest req, HttpServletResponse res) {
+	  
+	  if (redirectIfNoCookie(req, res)) return;
+	  
 	  Map<String, Object> viewData = new HashMap<String, Object>();
 	  viewData.put("title", "Profile");
 
@@ -160,6 +205,8 @@ public class AccountController extends Controller {
   }
   
   public void editprofileAction(HttpServletRequest req, HttpServletResponse res) {
+	  if (redirectIfNoCookie(req, res)) return;
+	  
 	  Map<String, Object> viewData = new HashMap<String, Object>();
 	  viewData.put("title", "Edit Profile");
 
@@ -181,6 +228,8 @@ public class AccountController extends Controller {
   }
   
   public void updateAction(HttpServletRequest req, HttpServletResponse res){
+	  redirectIfNoCookie(req, res);
+	  
 	  Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Update Profile");
 
@@ -235,13 +284,36 @@ public class AccountController extends Controller {
     }
   }
 
-	public void logoutAction(HttpServletRequest req, HttpServletResponse res) {
-		 Map<String, Object> viewData = new HashMap<String, Object>();
-		 viewData.put("title", "Login");
-		 Logger.getLogger("").info("Loging out");
-		 HttpSession session = req.getSession();
-	     session.removeAttribute("userSession");
-	     redirectToLocal(req, res, "/account/login");
-		 return;
-	}
+  public void logoutAction(HttpServletRequest req, HttpServletResponse res) {
+	 Map<String, Object> viewData = new HashMap<String, Object>();
+	 viewData.put("title", "Login");
+	 Logger.getLogger("").info("Loging out");
+	 
+	 //Find user cookie
+	 Cookie[] cookies = req.getCookies();
+	 Cookie loginCookie = null;
+	 if (cookies != null) {
+		 for (Cookie cookie : cookies) {
+			 if (cookie.getName().equals("userCookie")) {
+				 loginCookie = cookie;
+				 break;
+			 }
+		 }
+	 }
+	 
+	 //Remove Cookie
+	 if (loginCookie != null) {
+		 loginCookie.setMaxAge(0);
+		 loginCookie.setPath("/");
+		 res.addCookie(loginCookie);
+	 }
+			 
+	 //Remove Session
+	 HttpSession session = req.getSession();
+     session.removeAttribute("userSession");
+     
+     redirectToLocal(req, res, "/account/login");
+	 return;
+  }
+
 }
