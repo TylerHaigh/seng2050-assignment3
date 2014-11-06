@@ -2,6 +2,7 @@ package rgms.controller;
 
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.servlet.*;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,6 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.*;
 import java.util.UUID;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.IOException;
 
 import rgms.mvc.*;
 import rgms.infrastructure.*;
@@ -396,5 +401,49 @@ public class GroupController extends Controller {
 			redirectToLocal(req, res, "/home/dashboard");
 		}
     	
+	}
+
+	public void downloadDocumentAction(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		if (req.getMethod() == HttpMethod.Get) {
+			int documentId = Integer.parseInt(req.getParameter("documentId"));
+			DocumentManager docMan = new DocumentManager();
+			Document document = docMan.get(documentId);
+			if (document != null) {
+				ServletContext context = getServletContext();
+				String documentPath = String.format("%s/%s",
+					context.getRealPath("/Uploads"), 
+					document.getDocumentPath());
+
+				File documentFile = new File(documentPath);
+				FileInputStream stream = new FileInputStream(documentFile);
+
+				String mimeType = context.getMimeType(documentPath);
+				if (mimeType == null) {
+					mimeType = "application/octet-stream";
+				}
+
+				res.setContentType(mimeType);
+				res.setContentLength((int)documentFile.length());
+
+				//forces download of file
+				String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", document.getDocumentName());
+        res.setHeader(headerKey, headerValue);
+
+        OutputStream os = res.getOutputStream();
+
+        byte[] buffer = new byte[1024];
+        int read = -1;
+
+        while ((read = stream.read(buffer)) != -1) {
+        	os.write(buffer, 0, read);
+        }
+
+        stream.close();
+        os.close();
+        return;
+			}
+		}
+		httpNotFound(req, res);
 	}
 }

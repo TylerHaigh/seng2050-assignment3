@@ -114,7 +114,7 @@ public class DocumentManager extends DataManager {
      return groupDocuments;
     }
    
-   public Document getDocument(int documentId){
+   public Document get(int documentId){
      Document aDocument = new Document();
      Connection conn = null;
      try {

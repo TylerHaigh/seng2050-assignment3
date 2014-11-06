@@ -6,7 +6,7 @@
 <c:if test="${ !empty documents }">
     <c:set var="document" value="${ documents.get(0) }" />
     <p>
-        Document: ${ document.documentName }<br />
+        Document: <a href="${pageContext.request.contextPath}/group/downloaddocument/?documentId=${document.id}" alt="Download document">${ document.documentName }</a><br />
         Version: ${ document.versionNumber }
     </p>
 </c:if>
