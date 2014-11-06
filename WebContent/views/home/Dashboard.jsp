@@ -88,10 +88,11 @@
 			</c:when>
 			
 			<c:otherwise>
+			<!-- HERE TYLER, CANT WORK OUT HOW TO PUT THE DOCUMENTS INTO THE SESSION VARIABLE, SHOULD BE THE SAME AS MEETINGS  -->
 				<div class="list-group">
 			    	<c:forEach var="document" items="${ userDocuments }" >
-			    		<a href="#" class="list-group-item">
-			    			<c:out value="Document Name" />
+			    		<a href="${pageContext.request.contextPath}/group/document?documentId=${document.id }" class="list-group-item">
+			    			<c:out value="${ document.documentName}" />
 			    			<span class="badge">10</span>
 			    		</a>
 			    	</c:forEach>

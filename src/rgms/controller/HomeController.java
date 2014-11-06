@@ -26,9 +26,17 @@ public class HomeController extends Controller {
 		int userId = userSession.getUser().getId();
 		
 		NotificationManager notificationMan = new NotificationManager();
-		List<Notification> notifications = notificationMan.getAllNotifications(userId);
-		
+		List<Notification> notifications = notificationMan.getAllNotifications(userId);		
 		viewData.put("notifications", notifications);
+		//Load Document into Map
+		GroupManager groupMan = new GroupManager();
+		UserManager userMan = new UserManager();
+		User currentUser = userMan.get(userId);
+		List<Document> userDocuments = new LinkedList<Document>();
+		for(Group g: currentUser.getGroups()){
+			userDocuments = groupMan.getGroupDocuments(Integer.toString(g.getId()));
+		}
+	    viewData.put("userDocuments", userDocuments);
 		
 		if (req.getMethod() == HttpMethod.Get) {
 			view(req, res, "/views/home/Dashboard.jsp", viewData);

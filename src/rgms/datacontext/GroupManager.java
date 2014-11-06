@@ -214,6 +214,44 @@ public class GroupManager extends DataManager {
 		 }
 		 return groupDocuments;
 	 }
+	 public Document getDocument(int documentId){
+		 Document aDocument = new Document();
+		 Connection conn = null;
+		 try {
+			 conn = connection.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(
+					 "SELECT * FROM documents " +
+					 "WHERE id = ?");
+			
+			 pstmt.setInt(1, documentId);
+			 
+			 ResultSet rs = pstmt.executeQuery();
+			 
+			 if (rs.isBeforeFirst()) {
+				 while (!rs.isAfterLast()) {
+					 //This may throw null pointer exception if there are no documents
+					 //if (rs.next()) {
+					 	aDocument = Document.fromResultSet(rs);
+					 	return aDocument;
+					// }				
+				 }
+			 }
+			 
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+			 return null;
+			 
+		 } finally {
+			 if (conn != null) {
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
+		 }
+		 return aDocument;
+	 }
 	 
 	 
 }

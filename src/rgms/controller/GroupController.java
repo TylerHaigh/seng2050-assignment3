@@ -129,5 +129,28 @@ public class GroupController extends Controller{
 	    	
 	    }
 	}
+	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
+	    Map<String, Object> viewData = new HashMap<String, Object>();
+	    viewData.put("title", "Document");
+	    
+	    if (req.getMethod() == HttpMethod.Get) {
+			//Load group data into Map
+	    	GroupManager gm = new GroupManager();
+		    int documentId = Integer.parseInt(req.getParameter("documentId"));
+		    Document aDocument= gm.getDocument(documentId);		    
+		    if (aDocument != null) {
+		    	viewData.put("document", aDocument);
+			    //View group page.
+		    	view(req, res, "/views/group/Document.jsp", viewData);
+		    } else {
+		    	httpNotFound(req, res);
+		    }
+		    
+		} else if (req.getMethod() == HttpMethod.Post) {
+			//404
+			httpNotFound(req, res);
+		}
+	}
+	
 	
 }

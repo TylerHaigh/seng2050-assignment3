@@ -29,7 +29,7 @@ public class Meeting implements Serializable {
 		this.createdByUser = new User();
 		this.dateCreated = new Date();
 		this.dateDue = new Date();
-		this.groupId = 1;
+		this.groupId = 0;
 		this.group = new Group();
 	}
 

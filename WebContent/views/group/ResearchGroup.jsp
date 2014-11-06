@@ -46,7 +46,7 @@
 <h2>Documents</h2>
 <div class="list-group">
 	   	<c:forEach var="document" items="${ groupDocuments }" >
-	   		<a href="${pageContext.request.contextPath}/group/Document?documentId=${document.id}" class="list-group-item">
+	   		<a href="${pageContext.request.contextPath}/group/document?documentId=${document.id}" class="list-group-item">
 		   		<c:out value="Title: ${ document.documentName }" />
 	   		</a>
 	   	</c:forEach>

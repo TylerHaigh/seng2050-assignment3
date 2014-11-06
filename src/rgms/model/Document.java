@@ -1,6 +1,11 @@
 package rgms.model;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Document implements Serializable {
 
@@ -11,6 +16,7 @@ public class Document implements Serializable {
 	private int versionNumber;
 	
 	private int threadId;
+	private int groupId;
 	private DiscussionThread thread;
 	
 	//Constructors
@@ -22,6 +28,7 @@ public class Document implements Serializable {
 		this.versionNumber = 1;
 		this.threadId = 1;
 		this.thread = new DiscussionThread();
+		this.groupId = 0;
 	}
 	
 	public Document(int id, String documentPath, String documentName,
@@ -60,6 +67,10 @@ public class Document implements Serializable {
 	public DiscussionThread getThread() {
 		return thread;
 	}
+	
+	public int getGroupId(){
+		return groupId;
+	}
 
 	//Setters
 	
@@ -85,6 +96,37 @@ public class Document implements Serializable {
 
 	public void setThread(DiscussionThread thread) {
 		this.thread = thread;
+	}
+	
+	public void setGroupId(int groupId){
+		this.groupId = groupId;
+	}
+	
+	public static Document fromResultSet(ResultSet rs) {
+		Document document = null;
+		
+		try {
+
+			if (rs.next()) {
+				document = new Document();
+				document.setId(rs.getInt("Id"));
+				document.setDocumentPath(rs.getString("DocumentPath"));
+				document.setDocumentName(rs.getString("DocumentName"));
+				document.setVersionNumber(rs.getInt("VersionNumber"));
+				document.setGroupId(rs.getInt("GroupId"));
+				
+				Logger.getLogger("rgms.model.Document").info(
+					String.format("Loaded Document: %d, %s, %s, %d, %d",
+							document.getId(), document.getDocumentPath(), document.getDocumentName(),
+							document.getVersionNumber(), document.getGroupId())
+				);
+			}
+				
+		} catch (SQLException e) {
+			Logger.getLogger("rgms.model.Meeting").log(Level.SEVERE, "SQL Error", e);
+		}
+		
+		return document;
 	}
 	
 }
