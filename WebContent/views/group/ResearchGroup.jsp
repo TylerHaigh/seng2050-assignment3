@@ -18,7 +18,7 @@
     </c:otherwise>
 </c:choose>
 	
-<h1>${groupName }</h1>
+<h1>${groupName}</h1>
 
 <h2>Members</h2>
 <div class="list-group">
@@ -28,29 +28,48 @@
    		</a>
    	</c:forEach>
 </div>
-
 <hr />
 
 <h2>Meetings</h2>
- 
-	<div class="list-group">
-	   	<c:forEach var="meeting" items="${ groupMeetings }" >
-	   		<a href="${pageContext.request.contextPath}/group/meeting?meetingId=${meeting.id}" class="list-group-item">
-		   		<c:out value="When: ${ meeting.dateDue }" /><br>
-		   		<c:out value="Description: ${ meeting.description }" />
-	   		</a>
-	   	</c:forEach>
-	</div>
+<div class="list-group">
+    <c:if test="${ empty groupMeetings }">
+        <p>
+            No Meetings yet...
+        </p>
+    </c:if>
+    <c:forEach var="meeting" items="${ groupMeetings }" >
+        <a href="${pageContext.request.contextPath}/group/meeting?meetingId=${meeting.id}" class="list-group-item">
+            <c:out value="When: ${ meeting.dateDue }" /><br>
+            <c:out value="Description: ${ meeting.description }" />
+        </a>
+    </c:forEach>
+</div>
+<hr />
+
+<h2>Discussions </h2>
+<div class="list-group">
+    <c:if test="${ empty groupDiscussions }">
+        <p>
+            No Discussions yet...
+        </p>
+    </c:if>
+    <c:forEach var="member" items="${ groupDiscussions }" >
+    </c:forEach>
+</div>
+<button class="btn btn-primary">Create Discussion</button>
 <hr />
 
 <h2>Documents</h2>
 <div class="list-group">
-	   	<c:forEach var="document" items="${ groupDocuments }" >
-	   		<a href="${pageContext.request.contextPath}/group/document?documentId=${document.id}" class="list-group-item">
-		   		<c:out value="Title: ${ document.documentName }" />
-	   		</a>
-	   	</c:forEach>
-	</div>
-	
-	
-
+    <c:if test="${ empty groupDocuments }">
+        <p>
+            No Documents yet...
+        </p>
+    </c:if>
+    <c:forEach var="document" items="${ groupDocuments }" >
+        <a href="${pageContext.request.contextPath}/group/document?documentId=${document.id}" class="list-group-item">
+            <c:out value="Title: ${ document.documentName }" />
+        </a>
+    </c:forEach>
+</div>	
+<button class="btn btn-primary">Upload Document</button>

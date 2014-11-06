@@ -34,19 +34,29 @@ public class GroupController extends Controller{
 		    int groupId = Integer.parseInt(req.getParameter("groupId"));
 		    Group group = gm.get(groupId);		    
 		    if (group != null) {
+
 		    	//Load group members into Map
 			    viewData.put("groupName", group.getGroupName());			    
-			    List<String> groupMembers = gm.getGroupMembers(req.getParameter("groupId"));
+
+			    List<String> groupMembers = gm.getGroupMembers(groupId);
 			    viewData.put("groupMembers", groupMembers);
+
 		    	//Load meetings into map
 			    MeetingManager meetMan = new MeetingManager();
 			    List<Meeting> groupMeetings = meetMan.getGroupMeetings(req.getParameter("groupId"));
 			    viewData.put("groupMeetings", groupMeetings);
+
 			    //Load Document Data into Map
 			    List<Document> groupDocuments = gm.getGroupDocuments(req.getParameter("groupId"));
 			    viewData.put("groupDocuments", groupDocuments);
+
+			    //Load discussion threads
+			    DiscussionManager dm = new DiscussionManager();
+			    viewData.put("groupDiscussions", dm.getThreads(groupId));
+
 			    //View group page.
 		    	view(req, res, "/views/group/ResearchGroup.jsp", viewData);
+
 		    } else {
 		    	httpNotFound(req, res);
 		    }
@@ -80,8 +90,8 @@ public class GroupController extends Controller{
 			
 			//Show the Group Page
 			viewData.put("groupName", group.getGroupName());
-		    List<String> groupMembers = groupMan.getGroupMembers(String.valueOf(groupId));
-		    viewData.put("groupMembers", groupMembers);
+	    List<String> groupMembers = groupMan.getGroupMembers(groupId);
+	    viewData.put("groupMembers", groupMembers);
 		    
 			view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 		}
@@ -217,5 +227,26 @@ public class GroupController extends Controller{
 			httpNotFound(req, res);
 		}
 		
+	}
+
+	public void discussionAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<>();
+		viewData.put("title", "Discussion");
+
+		if (req.getMethod() == HttpMethod.Get) {
+			int threadId = Integer.parseInt(req.getParameter("threadId"));
+
+			DiscussionManager discussionManager = new DiscussionManager();
+			DiscussionThread thread = discussionManager.getThread(threadId);
+			thread.setPosts(discussionManager.getPosts(threadId));
+
+			viewData.put("thread", thread);
+
+			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
+		}
+	}
+
+	public void uploadDocumentAction(HttpServletRequest req, HttpServletResponse res) {
+
 	}
 }

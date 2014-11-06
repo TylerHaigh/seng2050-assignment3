@@ -52,14 +52,8 @@ CREATE TABLE RGMS_DB.Meetings (
 	GroupId INT REFERENCES RGMS_DB.Groups(Id)
 );
 
-CREATE TABLE RGMS_DB.DiscussionTypes (
-	Id INT PRIMARY KEY NOT NULL auto_increment,
-	DiscussionType VARCHAR(64) NOT NULL /* Meeting, Document, etc. */
-);
-
 CREATE TABLE RGMS_DB.DiscussionThreads (
 	Id INT PRIMARY KEY NOT NULL auto_increment,
-	DiscussionType VARCHAR(64) NOT NULL REFERENCES RGMS_DB.DiscussionTypes(Id),
 	GroupId INT NOT NULL REFERENCES RGMS_DB.Groups(Id),
 	ThreadName VARCHAR(100)
 );

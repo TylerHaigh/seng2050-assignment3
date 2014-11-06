@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Document implements Serializable {
-
 	//Private Instance Variables
 	private int id;
 	private String documentPath; //Root Folder

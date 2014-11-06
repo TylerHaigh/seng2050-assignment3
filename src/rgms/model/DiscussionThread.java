@@ -1,32 +1,32 @@
 package rgms.model;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.util.logging.*;
+import java.util.List;
 
 public class DiscussionThread implements Serializable {
+	private static final Logger logger = Logger.getLogger("rgms.model.DiscussionThread");
 
 	//Private Instance Variables
 	private int id;
-	private DiscussionType discussionType;
-	
 	private int groupId;
 	private Group group;
-	
 	private String threadName;
+	private List<DiscussionPost> posts;
 
 	//Constructors
 	
 	public DiscussionThread() {
 		this.id = 1;
-		this.discussionType = DiscussionType.Document;
 		this.groupId = 1;
 		this.group = new Group();
 		this.threadName = "";
 	}
 	
-	public DiscussionThread(int id, DiscussionType discussionType, int groupId,
+	public DiscussionThread(int id, int groupId,
 			Group group, String threadName) {
 		this.id = id;
-		this.discussionType = discussionType;
 		this.groupId = groupId;
 		this.group = group;
 		this.threadName = threadName;
@@ -36,10 +36,6 @@ public class DiscussionThread implements Serializable {
 	
 	public int getId() {
 		return id;
-	}
-
-	public DiscussionType getDiscussionType() {
-		return discussionType;
 	}
 
 	public int getGroupId() {
@@ -54,14 +50,14 @@ public class DiscussionThread implements Serializable {
 		return threadName;
 	}
 
+	public List<DiscussionPost> getPosts() {
+		return this.posts;
+	}
+
 	//Setters
 	
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public void setDiscussionType(DiscussionType discussionType) {
-		this.discussionType = discussionType;
 	}
 
 	public void setGroupId(int groupId) {
@@ -75,5 +71,26 @@ public class DiscussionThread implements Serializable {
 	public void setThreadName(String threadName) {
 		this.threadName = threadName;
 	}
+
+	public void setPosts(List<DiscussionPost> posts) {
+		this.posts = posts;
+	}
 	
+	public static DiscussionThread fromResultSet(ResultSet rs) {
+		DiscussionThread thread = null;
+
+		try {
+			if (rs.next()) {
+				thread = new DiscussionThread();
+				thread.setId(rs.getInt("Id"));
+				thread.setGroupId(rs.getInt("GroupId"));
+				thread.setThreadName(rs.getString("ThreadName"));
+			}
+		}
+		catch (Exception e) {
+			logger.log(Level.SEVERE, "SQL Error", e);
+		}
+
+		return thread;
+	}
 }
