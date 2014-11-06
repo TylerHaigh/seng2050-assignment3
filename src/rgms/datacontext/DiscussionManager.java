@@ -19,8 +19,11 @@ public class DiscussionManager extends DataManager {
 
       pstmt.setInt(1, discussion.getGroupId());
       pstmt.setString(2, discussion.getThreadName());
-      int id = pstmt.executeUpdate();
-      discussion.setId(id);
+      pstmt.executeUpdate();
+
+      ResultSet rs = pstmt.getGeneratedKeys();
+      if (rs.next())
+        discussion.setId(rs.getInt(1));
     }
     catch (Exception e) {
        logger.log(Level.SEVERE, "SQL Error", e);
@@ -37,8 +40,12 @@ public class DiscussionManager extends DataManager {
       pstmt.setInt(1, post.getThreadId());
       pstmt.setInt(2, post.getUserId());
       pstmt.setString(3, post.getMessage());
-      int id = pstmt.executeUpdate();
-      post.setId(id);
+      pstmt.executeUpdate();
+
+      //get the generated id
+      ResultSet rs = pstmt.getGeneratedKeys();
+      if (rs.next())
+        post.setId(rs.getInt(1));
     }
     catch (Exception e) {
       logger.log(Level.SEVERE, "SQL Error", e);
