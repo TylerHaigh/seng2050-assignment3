@@ -45,6 +45,10 @@ public class JDBCConnection {
             logger.log(Level.SEVERE, "JDBC Error", e);
         }
     }
+
+    public JDBCConnection(Connection connection) {
+        this.conn = connection;
+    }
     
     /**
      * Creates a connection to the JDBC Database

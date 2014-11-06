@@ -3,6 +3,7 @@ package rgms.model;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.logging.*;
+import rgms.datacontext.UserManager;
 
 public class DiscussionPost implements Serializable {
 	private static final Logger logger = Logger.getLogger("rgms.model.DiscussionPost");
@@ -103,6 +104,10 @@ public class DiscussionPost implements Serializable {
 				post.setThreadId(rs.getInt("ThreadId"));
 				post.setUserId(rs.getInt("UserId"));
 				post.setMessage(rs.getString("Message"));
+
+				//get user
+				UserManager userManager = new UserManager(rs.getStatement().getConnection());
+				post.setUser(userManager.get(post.getUserId()));
 			}
 		}
 		catch (Exception e) {

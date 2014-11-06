@@ -80,3 +80,11 @@ and open the template in the editor.
     width:100px;
     height:100px;
 }
+
+.post {
+    padding-top: 10px;
+}
+
+.post img {
+    margin-right: 10px;
+}

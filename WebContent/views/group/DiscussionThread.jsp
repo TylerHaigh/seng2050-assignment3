@@ -10,12 +10,18 @@
     </p>
 </c:if>
 <c:forEach var="post" items="${ thread.posts }" >
-    <h4>
-        <c:out value="${ post.userId }"></c:out>
-    </h4>
-    <p><c:out value="${ post.message }"></c:out>
+    <div class="row post">
+        <div class="col-md-12">
+            <img src="${ pageContext.request.contextPath }/Uploads/images/${ post.user.imageReference }" alt="${ post.user.fullName } Profile Image" data-src="holder.js/100x100/sky/text:${post.user.fullName}" class="pull-left"/>
+            <h4>
+                <c:out value="${ post.user.fullName }"></c:out>
+            </h4>
+            <p><c:out value="${ post.message }"></c:out>   
+        </div>
+    </div>
 </c:forEach>
 
+<br />
 <div class="row">
     <form action="${pageContext.request.contextPath}/group/createpost/?threadId=${thread.id}" method="post" class="col-md-12" onsubmit="return validateComment()">
         <div class="form-group">

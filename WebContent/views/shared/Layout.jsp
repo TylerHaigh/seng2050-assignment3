@@ -48,6 +48,7 @@
         <script src="${pageContext.request.contextPath}/References/jquery-ui.js"></script>
         <script src="${pageContext.request.contextPath}/References/Scripts.js"></script>
         <script src="${pageContext.request.contextPath}/References/bootstrap/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/References/holder.js" type="text/javascript"></script>
         ${scripts}
     </body>
 </html>

@@ -12,6 +12,13 @@ import rgms.infrastructure.*;
 
 public class UserManager extends DataManager {
   private static final Logger logger = Logger.getLogger(UserManager.class.getName());
+
+  public UserManager() { 
+    super();
+  }
+  public UserManager(Connection connection) {
+    this.connection = new JDBCConnection(connection);
+  }
     
   public void createUser(User user, String plainPassword) {
     String hashedPass = UserManager.hashPassword(plainPassword);
@@ -88,15 +95,6 @@ public class UserManager extends DataManager {
     catch (Exception e) {
       logger.log(Level.SEVERE, "SQL Error", e);
       return null;
-    }
-    finally {
-      if (conn != null)
-        try {
-          conn.close();
-        }
-        catch (SQLException e) {
-          logger.log(Level.WARNING, "Connection Close", e);
-        }
     }
   }
 
