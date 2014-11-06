@@ -174,7 +174,7 @@ function validateMeeting(code) {
 	}
 	
 	if (validDate == false) {
-		msg += "Meeting Date format is invalid. Expected format: MM/dd/yyyy. \n";
+		msg += "Meeting Date format is invalid. Expected format: MM/dd/yyyy between 01/01/0001 and 12/31/9999. \n";
 		valid = false;
 	}
 	
@@ -204,7 +204,7 @@ function validateMeeting(code) {
 	}
 	
 	if (validTime == false) {
-		msg += "Meeting Time format is invalid. Expected format: HH:mm. \n";
+		msg += "Meeting Time format is invalid. Expected format: HH:mm between 00:00 and 23:59. \n";
 		valid = false;
 	}
 		

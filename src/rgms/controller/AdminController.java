@@ -40,14 +40,24 @@ public class AdminController extends Controller {
 		List<Group> groups = groupMan.getAllGroups(admin.getId());
 		viewData.put("groups", groups);
 		
-		//DatePicker.js
-		String datePickerScript =
+		//DatePicker.js and TimePicker.js
+		String dateTimePickerScript =
 			"<script>" +
 				"$(function() {" +
 					"$(\"#datepicker\").datepicker();" +
+					"$(\'#meetingTime\').timepicker({ 'timeFormat': 'H:i' });" +
 				"});" +
-			"</script>";
-		viewData.put("scripts", datePickerScript);
+			"</script>\n";
+		
+		String jqueryTimePickerScript =
+			"<script type=\"text/javascript\" src=\"" + 
+			req.getContextPath() + "/References/jquery-timepicker.js\"/></script>";
+		
+		String jqueryTimePickerStyle = "<link rel=\"stylesheet\" type=\"text/css\"" +
+			"href=\"" + req.getContextPath() + "/References/jquery-timepicker.css\" />";
+		
+		viewData.put("scripts", dateTimePickerScript + jqueryTimePickerScript);
+		viewData.put("styles", jqueryTimePickerStyle);
 		
 		view(req, res, "/views/admin/CreateMeeting.jsp", viewData);
 	}
