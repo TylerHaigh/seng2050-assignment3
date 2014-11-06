@@ -1,3 +1,5 @@
+/* Drop old Tables */
+
 DROP TABLE IF EXISTS RGMS_DB.Sessions;
 DROP TABLE IF EXISTS RGMS_DB.Notifications;
 DROP TABLE IF EXISTS RGMS_DB.AccessRecords;
@@ -11,14 +13,18 @@ DROP TABLE IF EXISTS RGMS_DB.Coordinators;
 DROP TABLE IF EXISTS RGMS_DB.Users;
 DROP TABLE IF EXISTS RGMS_DB.Groups;
 
-DROP DATABASE IF EXISTS RGMS_DB;
+/* Re-create Database */
 
+DROP DATABASE IF EXISTS RGMS_DB;
 CREATE DATABASE RGMS_DB;
+
+/* Create new Tables */
 
 CREATE TABLE RGMS_DB.Groups (
 	Id INT PRIMARY KEY NOT NULL auto_increment,
 	GroupName VARCHAR(100) NOT NULL,
-	Description VARCHAR(500)
+	Description VARCHAR(500),
+	CoordinatorId INT REFERENCES RGMS_DB.Users(Id)
 );
 
 CREATE TABLE RGMS_DB.Users (
@@ -30,7 +36,8 @@ CREATE TABLE RGMS_DB.Users (
 	Passphrase VARCHAR(64)NOT NULL,
 	ImageReference VARCHAR(512),
 	IsAdmin BOOLEAN DEFAULT 0,
-	IsActive BOOLEAN DEFAULT 0
+	IsActive BOOLEAN DEFAULT 0,
+	Description VARCHAR(512)
 );
 
 CREATE TABLE RGMS_DB.Coordinators (
@@ -96,3 +103,22 @@ CREATE TABLE RGMS_DB.Sessions (
 	Persistent BOOLEAN NOT NULL DEFAULT false,
 	UserId INT NOT NULL REFERENCES RGMS_DB.Users(Id)
 );
+
+
+/* Create Database User */
+
+GRANT USAGE ON *.* TO 'rgms'@'localhost';
+DROP USER 'rgms'@'localhost';
+
+CREATE USER 'rgms'@'localhost' IDENTIFIED BY 'seng2050';
+GRANT ALL PRIVILEGES ON *.* TO 'rgms'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+/* Insert Data */
+
+INSERT INTO RGMS_DB.Groups (GroupName) VALUES ('Aggregates');
+
+INSERT INTO RGMS_DB.Users (FirstName, LastName, Username, StudentId,  Passphrase, IsAdmin, IsActive)
+	VALUES('Admin', 'Admin', 'admin@rgms.com', 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', true, true);
+
+INSERT INTO RGMS_DB.GroupUserMaps (GroupId, UserId) VALUES (1,1);

@@ -23,6 +23,7 @@ public class User implements Serializable {
     private String imageReference; //Unique string containing a reference to the image on disk
     private boolean admin;
     private boolean active;
+    private String description;
     
     private List<Group> groups;
     private List<Meeting> meetings;
@@ -49,6 +50,7 @@ public class User implements Serializable {
                 user.setImageReference(rs.getString("ImageReference"));
                 user.setAdmin(rs.getBoolean("IsAdmin"));
                 user.setActive(rs.getBoolean("IsActive"));
+                user.setDescription(rs.getString("Description"));
                 
                 //Apply Data context specific data to user
                 user.setGroups(groupMan.getAllGroups(user.getId()));
@@ -130,6 +132,10 @@ public class User implements Serializable {
     	return active;
     }
     
+    public String getDescription() {
+    	return this.description;
+    }
+    
     public List<Group> getGroups() {
     	return groups;
     }
@@ -174,6 +180,10 @@ public class User implements Serializable {
 	
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public void setGroups(List<Group> groups) {
