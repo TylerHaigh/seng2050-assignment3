@@ -52,8 +52,38 @@ public class GroupController extends Controller{
 		    }
 		    
 		} else if (req.getMethod() == HttpMethod.Post) {
-			//404
-			httpNotFound(req, res);
+			//Create Group
+			
+			//Get data from parameters
+			String groupName = req.getParameter("groupName");
+			String description = req.getParameter("description");
+			int adminId = Integer.parseInt(req.getParameter("createdByUserId"));
+			
+			//Create the Group
+			GroupManager groupMan = new GroupManager();
+			Group group = new Group();
+			group.setGroupName(groupName);
+			group.setDescription(description);
+			
+			//Create the mapping
+			groupMan.createGroup(group);
+			int groupId = groupMan.getIdFor(group);
+			groupMan.createMapping(groupId, adminId);
+			
+			group.setId(groupId);
+			
+			//Update the User Session to show new meeting
+	    	HttpSession session = req.getSession();
+	    	Session userSession = (Session) session.getAttribute("userSession");
+	    	User admin = userSession.getUser();
+	    	admin.getGroups().add(group);
+			
+			//Show the Group Page
+			viewData.put("groupName", group.getGroupName());
+		    List<String> groupMembers = groupMan.getGroupMembers(String.valueOf(groupId));
+		    viewData.put("groupMembers", groupMembers);
+		    
+			view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 		}
 	}
 	
@@ -110,6 +140,7 @@ public class GroupController extends Controller{
 	    	
 	    	meetingMan.createMeeting(meeting);
 	    	int meetingId = meetingMan.getIdFor(meeting);
+	    	meeting.setId(meetingId);
 	    	
 	    	//Create a notification for all users in group
 	    	NotificationManager notificationMan = new NotificationManager();
@@ -135,6 +166,7 @@ public class GroupController extends Controller{
 	    	
 	    }
 	}
+	
 	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
 	    Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Document");
@@ -157,7 +189,6 @@ public class GroupController extends Controller{
 			httpNotFound(req, res);
 		}
 	}
-	
 	
 	public void deletemeetingAction(HttpServletRequest req, HttpServletResponse res) {
 		if (req.getMethod() == HttpMethod.Get) {

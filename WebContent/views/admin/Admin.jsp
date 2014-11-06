@@ -4,7 +4,9 @@
 
 <div class="list-group">
 	<a href="#" class="list-group-item disabled">Add User</a>
-	<a href="#" class="list-group-item disabled">Create Research Group</a>
+	<a href="${pageContext.request.contextPath}/admin/createGroup" class="list-group-item">
+		Create Research Group
+	</a>
 	<a href="${pageContext.request.contextPath}/admin/createMeeting" class="list-group-item">
 		Create Meeting
 	</a>

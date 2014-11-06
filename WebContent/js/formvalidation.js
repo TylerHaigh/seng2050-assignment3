@@ -195,3 +195,28 @@ function validateMeeting(code) {
 	
 	return valid;
 }
+
+function validateGroup(code) {
+
+	var valid = true;
+	var msg = "";
+	
+	x = document.getElementById("groupName").value;
+	if (x =="" || x == null) {
+		msg += "Group Name was left blank. \n";
+		valid = false;
+	}
+	
+	x = document.getElementById("description").value;
+	if (x =="" || x == null) {
+		msg += "Group Description was left blank. \n";
+		valid = false;
+	}
+	
+	if (valid == false) {
+		alert(msg);
+	}
+	
+	return valid;
+	
+}

@@ -1,6 +1,7 @@
 package rgms.datacontext;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.logging.*;
 
@@ -27,6 +28,31 @@ public class GroupManager extends DataManager {
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
+		 }
+	 }
+	 
+	 public void createMapping(int groupId, int userId) {
+		 Connection conn = null;
+		 try {
+			 conn = connection.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(
+				 "INSERT INTO GroupUserMaps (GroupId, UserId) " +
+				 "VALUES (?,?)");
+			 
+			 pstmt.setInt(1, groupId);
+			 pstmt.setInt(2, userId);
+			 
+			 pstmt.execute();
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+		 } finally {
+			 if (conn != null) {
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
 		 }
 	 }
 	 
@@ -175,9 +201,9 @@ public class GroupManager extends DataManager {
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
-					 "SELECT userName FROM Users u " +
-					 "JOIN GroupUserMaps m ON u.Id=m.userId " +
-					 "WHERE m.groupId = ?");
+					 "SELECT UserName FROM Users u " +
+					 "JOIN GroupUserMaps m ON u.Id=m.UserId " +
+					 "WHERE m.GroupId = ?");
 			
 			 pstmt.setInt(1, groupNum);
 			 
@@ -187,7 +213,7 @@ public class GroupManager extends DataManager {
 				 while (!rs.isAfterLast()) {
 					//Group resultGroup = Group.fromResultSet(rs);
 					 if (rs.next()) {
-						 String uname = rs.getString("userName");
+						 String uname = rs.getString("UserName");
 						 if (uname != null)
 								usersInGroup.add(uname);
 						 }
@@ -209,6 +235,7 @@ public class GroupManager extends DataManager {
 		 }
 		 return usersInGroup;
 	 }
+	 
 	 public List<Document> getGroupDocuments(String groupId){
 		 List<Document> groupDocuments = new LinkedList<Document>();
 		 Connection conn = null;
@@ -216,8 +243,8 @@ public class GroupManager extends DataManager {
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
-					 "SELECT * FROM documents " +
-					 "WHERE groupId = ?");
+					 "SELECT * FROM Documents " +
+					 "WHERE GroupId = ?");
 			
 			 pstmt.setInt(1, groupNum);
 			 
@@ -250,6 +277,7 @@ public class GroupManager extends DataManager {
 		 }
 		 return groupDocuments;
 	 }
+	 
 	 public Document getDocument(int documentId){
 		 Document aDocument = new Document();
 		 Connection conn = null;
@@ -276,7 +304,6 @@ public class GroupManager extends DataManager {
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-			 
 		 } finally {
 			 if (conn != null) {
 				 try {
@@ -286,8 +313,39 @@ public class GroupManager extends DataManager {
 				 }
 			 }
 		 }
+		 
 		 return aDocument;
+	}
+
+	 public int getIdFor(Group group) {
+		 Connection conn = null;
+		 try {
+			 conn = connection.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(
+				 "SELECT * FROM Groups " +
+				 "WHERE GroupName=? AND Description=?");
+			 
+			 pstmt.setString(1, group.getGroupName());
+			 pstmt.setString(2, group.getDescription());
+			 
+			 ResultSet rs = pstmt.executeQuery();
+			 if (rs.first()) {
+				 int groupId = rs.getInt("Id");
+				 return groupId;
+			 }
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+		 } finally {
+			 if (conn != null) {
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
+		 }
+ 
+		 return -1;
 	 }
-	 
-	 
+
 }
