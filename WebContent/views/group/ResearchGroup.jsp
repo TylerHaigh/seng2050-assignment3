@@ -53,7 +53,10 @@
             No Discussions yet...
         </p>
     </c:if>
-    <c:forEach var="member" items="${ groupDiscussions }" >
+    <c:forEach var="thread" items="${ groupDiscussions }" >
+        <a href="${pageContext.request.contextPath}/group/discussion?threadId=${thread.id}" class="list-group-item">
+            <c:out value="${ thread.threadName }" />
+        </a>
     </c:forEach>
 </div>
 <a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ groupId }" class="btn btn-primary">Create Discussion</a>

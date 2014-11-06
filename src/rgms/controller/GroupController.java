@@ -259,6 +259,14 @@ public class GroupController extends Controller{
 		}
 		else if (req.getMethod() == HttpMethod.Post) {
 			//save discussion
+			DiscussionThread thread = new DiscussionThread();
+			thread.setGroupId(Integer.parseInt(req.getParameter("groupId")));
+			thread.setThreadName(req.getParameter("threadName"));
+
+			DiscussionManager dm = new DiscussionManager();
+			dm.createDiscussion(thread);
+
+			redirectToLocal(req, res, "/group/discussion/?threadId=" + thread.getId());
 			return;
 		}
 		httpNotFound(req, res);

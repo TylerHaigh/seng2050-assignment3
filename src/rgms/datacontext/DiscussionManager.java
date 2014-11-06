@@ -15,11 +15,12 @@ public class DiscussionManager extends DataManager {
       Connection conn = connection.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(
         "INSERT INTO DiscussionThreads (GroupId, ThreadName)" +
-        "VALUES (?, ?)");
+        "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
 
       pstmt.setInt(1, discussion.getGroupId());
       pstmt.setString(2, discussion.getThreadName());
-      pstmt.execute();
+      int id = pstmt.executeUpdate();
+      discussion.setId(id);
     }
     catch (Exception e) {
        logger.log(Level.SEVERE, "SQL Error", e);
@@ -76,7 +77,7 @@ public class DiscussionManager extends DataManager {
     try {
       Connection conn = connection.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(
-        "SELECT * FROM DiscussionThreads WHERE ThreadId = ?");
+        "SELECT * FROM DiscussionThreads WHERE Id = ?");
 
       pstmt.setInt(1, threadId);
       ResultSet rs = pstmt.executeQuery();
@@ -104,7 +105,7 @@ public class DiscussionManager extends DataManager {
           DiscussionPost post = DiscussionPost.fromResultSet(rs);
 
           if (post != null)
-            posts.add(post);
+          posts.add(post);
         }
       }
     }
