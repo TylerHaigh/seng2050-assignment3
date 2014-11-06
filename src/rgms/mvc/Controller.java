@@ -53,7 +53,7 @@ public abstract class Controller extends HttpServlet {
   private Method getActionMethod(String actionName) {
     Method[] methods = this.getClass().getDeclaredMethods();
     for (Method m: methods) {
-      if (m.getName().equals(actionName + "Action")) {
+      if (m.getName().equalsIgnoreCase(actionName + "Action")) {
         return m;
       }
     }

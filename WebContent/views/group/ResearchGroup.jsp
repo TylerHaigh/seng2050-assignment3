@@ -32,10 +32,41 @@
 <hr />
 
 <h2>Meetings</h2>
+<div class="list-group">
+    <c:if test="${ empty groupMeetings }">
+        <p>
+            No Meetings yet...
+        </p>
+    </c:if>
+    <c:forEach var="member" items="${ groupMeetings }" >
+    </c:forEach>
+</div>
+<button class="btn btn-primary">Upload Document</button>
+<hr />
 
+<h2>Discussions </h2>
+<div class="list-group">
+    <c:if test="${ empty groupDiscussions }">
+        <p>
+            No Discussions yet...
+        </p>
+    </c:if>
+    <c:forEach var="member" items="${ groupDiscussions }" >
+    </c:forEach>
+</div>
+<button class="btn btn-primary">Create Discussion</button>
 <hr />
 
 <h2>Documents</h2>
-	
+<div class="list-group">
+    <c:if test="${ empty groupDocuments }">
+        <p>
+            No Documents yet...
+        </p>
+    </c:if>
+    <c:forEach var="member" items="${ groupDocuments }" >
+    </c:forEach>
+</div>	
+<button class="btn btn-primary">Upload Document</button>
 	
 

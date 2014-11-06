@@ -37,9 +37,12 @@ public class GroupController extends Controller{
 		    if (group != null) {
 			    viewData.put("groupName", group.getGroupName());
 			    
-			    List<String> groupMembers = gm.getGroupMembers(req.getParameter("groupId"));
+			    List<String> groupMembers = gm.getGroupMembers(groupId);
 			    viewData.put("groupMembers", groupMembers);
-		    	
+
+			    DiscussionManager dm = new DiscussionManager();
+			    viewData.put("groupDiscussions", dm.getThreads(groupId));
+
 		    	view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 		    } else {
 		    	httpNotFound(req, res);
@@ -157,5 +160,39 @@ public class GroupController extends Controller{
 			httpNotFound(req, res);
 		}
 		
+	}
+
+	public void discussionAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<>();
+		viewData.put("title", "Discussion");
+
+		if (req.getMethod() == HttpMethod.Get) {
+			int threadId = Integer.parseInt(req.getParameter("threadId"));
+
+			DiscussionManager discussionManager = new DiscussionManager();
+			DiscussionThread thread = discussionManager.getThread(threadId);
+			thread.setPosts(discussionManager.getPosts(threadId));
+
+			viewData.put("thread", thread);
+
+			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
+		}
+	}
+
+	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> viewData = new HashMap<>();
+		viewData.put("title", "Document");
+
+		if (req.getMethod() == HttpMethod.Get) {
+			int documentId = Integer.parseInt(req.getParameter("documentId"));
+			view(req, res, "/views/group/Document.jsp", viewData);
+		}
+		else {
+			httpNotFound(req, res);
+		}
+	}
+
+	public void uploadDocumentAction(HttpServletRequest req, HttpServletResponse res) {
+
 	}
 }

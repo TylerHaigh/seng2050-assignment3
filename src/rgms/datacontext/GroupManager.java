@@ -167,10 +167,9 @@ public class GroupManager extends DataManager {
 		 return groupUsers;
 	 }
 	 
-	 public List<String> getGroupMembers(String groupId){
+	 public List<String> getGroupMembers(int groupId){
 		 List<String> usersInGroup = new LinkedList<String>();
 		 Connection conn = null;
-		 int groupNum = Integer.parseInt(groupId);
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
@@ -178,7 +177,7 @@ public class GroupManager extends DataManager {
 					 "JOIN GroupUserMaps m ON u.Id=m.userId " +
 					 "WHERE m.groupId = ?");
 			
-			 pstmt.setInt(1, groupNum);
+			 pstmt.setInt(1, groupId);
 			 
 			 ResultSet rs = pstmt.executeQuery();
 			 

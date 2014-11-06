@@ -1,8 +1,11 @@
 package rgms.model;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.util.logging.*;
 
 public class DiscussionPost implements Serializable {
+	private static final Logger logger = Logger.getLogger("rgms.model.DiscussionPost");
 
 	//Private Instance Variables
 	private int id;
@@ -90,4 +93,22 @@ public class DiscussionPost implements Serializable {
 		this.message = message;
 	}
 	
+	public static DiscussionPost fromResultSet(ResultSet rs) {
+		DiscussionPost post = null;
+
+		try {
+			if (rs.next()) {
+				post = new DiscussionPost();
+				post.setId(rs.getInt("Id"));
+				post.setThreadId(rs.getInt("ThreadId"));
+				post.setUserId(rs.getInt("UserId"));
+				post.setMessage(rs.getString("Message"));
+			}
+		}
+		catch (Exception e) {
+			logger.log(Level.SEVERE, "SQL Error", e);
+		}
+
+		return post;
+	}
 }
