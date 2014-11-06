@@ -152,9 +152,9 @@ function validateMeeting(code) {
 		
 		if (isNaN(month) || isNaN(day) || isNaN(year)) {
 			validDate = false;
-		} else if (month < 0 || day < 0 || year < 0) {
+		} else if (month < 1 || day < 1 || year < 1970) {
 			validDate = false
-		} else if (month > 12 || year > 999999) {
+		} else if (month > 12 || year > 9999) {
 			validDate = false
 		} else {
 			if (month == 1 || month == 3 || month == 5 || month == 7 || month == 10 || month == 12) {
@@ -174,7 +174,7 @@ function validateMeeting(code) {
 	}
 	
 	if (validDate == false) {
-		msg += "Meeting Date format is invalid. Expected format: MM/dd/yyyy between 01/01/0001 and 12/31/9999. \n";
+		msg += "Meeting Date format is invalid. Expected format: MM/dd/yyyy between 01/01/1970 and 12/31/9999. \n";
 		valid = false;
 	}
 	
