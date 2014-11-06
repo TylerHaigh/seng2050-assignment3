@@ -169,13 +169,16 @@ public class GroupController extends Controller{
 	    	int meetingId = meetingMan.getIdFor(meeting);
 	    	meeting.setId(meetingId);
 	    	
+	    	UserManager userMan = new UserManager();
+	    	User createdByUser = userMan.get(createdByUserId);
+	    	
 	    	//Create a notification for all users in group
 	    	NotificationManager notificationMan = new NotificationManager();
 	    	List<User> users = groupMan.getGroupUsers(groupId);
 	    	
 	    	for (User u : users) {
 	    		Notification notification = new Notification(u.getId(), u, groupId,
-	    				null, "Meeting " + description + " was created by " + u.getFullName(),
+	    				null, "Meeting " + description + " was created by " + createdByUser.getFullName(),
 	    				"/group/meeting?meetingId=" + meetingId);
 	    		notificationMan.createNotification(notification);
 	    	}
