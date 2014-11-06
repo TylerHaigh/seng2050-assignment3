@@ -122,7 +122,7 @@ public class GroupManager extends DataManager {
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
-					 "SELECT * FROM Groups g " +
+					 "SELECT g.* FROM Groups g " +
 					 "JOIN GroupUserMaps m ON g.Id=m.GroupId " +
 					 "JOIN Users u ON m.UserId=u.Id " +
 					 "WHERE u.Id = ?");
@@ -163,7 +163,7 @@ public class GroupManager extends DataManager {
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
-				 "SELECT * FROM Users u " +
+				 "SELECT u.* FROM Users u " +
 				 "JOIN GroupUserMaps m ON u.Id=m.userId " +
 				 "WHERE m.groupId = ?"
 			 );

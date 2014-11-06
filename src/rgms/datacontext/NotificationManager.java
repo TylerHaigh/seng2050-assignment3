@@ -84,7 +84,7 @@ public class NotificationManager extends DataManager {
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
-				 "SELECT * FROM Notifications n " +
+				 "SELECT n.* FROM Notifications n " +
 				 "JOIN Users u ON n.UserId=u.Id " +
 				 "WHERE u.Id=?"
 			 );

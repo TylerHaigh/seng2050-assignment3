@@ -120,7 +120,7 @@ public class MeetingManager extends DataManager {
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
-					 "SELECT * FROM Meetings meet " +
+					 "SELECT meet.* FROM Meetings meet " +
 					 "JOIN Groups g ON meet.GroupId=g.Id " +
 					 "JOIN GroupUserMaps map ON g.Id=map.GroupId " +
 					 "JOIN Users u ON map.UserId=u.Id " +
