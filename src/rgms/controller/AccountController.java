@@ -29,7 +29,7 @@ public class AccountController extends Controller {
   private static Logger logger = Logger.getLogger("rgms.AccountController");
 
   /**
-   * Constructor for the account controller. Not required
+   * Constructor for the account controller. Provides no functionality
    */
   public AccountController() { }
 
