@@ -110,29 +110,38 @@ public class NotificationManager extends DataManager {
 		 }
 	 }
 	 
+	 /**
+	  * Retrieves a List of all Notifications that belong to a User
+	  * @param userId The Id of the User
+	  * @return A List of Notifications that belong to the User
+	  */
 	 public List<Notification> getAllNotifications(int userId) {
 		 Connection conn = null;
 		 List<Notification> notifications = new LinkedList<Notification>();
 		 
 		 try {
 			 conn = connection.getConnection();
+			 
+			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "SELECT n.* FROM Notifications n " +
 				 "JOIN Users u ON n.UserId=u.Id " +
 				 "WHERE u.Id=?"
 			 );
 			 
+			 //Set the required parameters and execute
 			 pstmt.setInt(1, userId);
 			 ResultSet rs = pstmt.executeQuery();
 			 
+			 //Retrieve the results and store in the List
 			 if (rs.isBeforeFirst()) {
-				 
 				 while (!rs.isAfterLast()) {
 					 Notification resultNotification = Notification.fromResultSet(rs);
 					 if (resultNotification != null)
 						 notifications.add(resultNotification);
 				 }
 			 }
+			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
