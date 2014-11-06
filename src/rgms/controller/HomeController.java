@@ -25,18 +25,29 @@ public class HomeController extends Controller {
 		Session userSession = (Session) req.getSession().getAttribute("userSession");
 		int userId = userSession.getUser().getId();
 		
+		//Get Notifications
 		NotificationManager notificationMan = new NotificationManager();
 		List<Notification> notifications = notificationMan.getAllNotifications(userId);		
 		viewData.put("notifications", notifications);
-		//Load Document into Map
+		
+		//Get Meetings
+		MeetingManager meetingMan = new MeetingManager();
+		List<Meeting> meetings = meetingMan.getAllMeetings(userId);
+		viewData.put("meetings", meetings);
+		
+		//Get Groups
 		GroupManager groupMan = new GroupManager();
-		UserManager userMan = new UserManager();
-		User currentUser = userMan.get(userId);
+		List<Group> groups = groupMan.getAllGroups(userId);
+		viewData.put("groups", groups);
+		
+		//Get Documents
 		List<Document> userDocuments = new LinkedList<Document>();
-		for(Group g: currentUser.getGroups()){
-			userDocuments = groupMan.getGroupDocuments(Integer.toString(g.getId()));
+		for(Group g: groups){
+			Collection<Document> documentCollection = (Collection<Document>) groupMan.getGroupDocuments(g.getId());
+			userDocuments.addAll(documentCollection);
 		}
-	    viewData.put("userDocuments", userDocuments);
+		
+	    viewData.put("documents", userDocuments);
 		
 		if (req.getMethod() == HttpMethod.Get) {
 			view(req, res, "/views/home/Dashboard.jsp", viewData);

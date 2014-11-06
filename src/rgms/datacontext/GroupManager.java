@@ -235,29 +235,25 @@ public class GroupManager extends DataManager {
 		 return usersInGroup;
 	 }
 	 
-	 public List<Document> getGroupDocuments(String groupId){
+	 public List<Document> getGroupDocuments(int groupId){
 		 List<Document> groupDocuments = new LinkedList<Document>();
 		 Connection conn = null;
-		 int groupNum = Integer.parseInt(groupId);
 		 try {
 			 conn = connection.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(
 					 "SELECT * FROM Documents " +
 					 "WHERE GroupId = ?");
 			
-			 pstmt.setInt(1, groupNum);
+			 pstmt.setInt(1, groupId);
 			 
 			 ResultSet rs = pstmt.executeQuery();
 			 
 			 if (rs.isBeforeFirst()) {
 				 while (!rs.isAfterLast()) {
-					 //This may throw null pointer exception if there are no documents
-					 //if (rs.next()) {
-					 	Document d = Document.fromResultSet(rs);
-					 	if(d != null){
-					 		groupDocuments.add(d);
-					 	}						 
-					// }				
+				 	Document d = Document.fromResultSet(rs);
+				 	if(d != null){
+				 		groupDocuments.add(d);
+				 	}						 
 				 }
 			 }
 			 

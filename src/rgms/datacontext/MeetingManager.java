@@ -157,10 +157,9 @@ public class MeetingManager extends DataManager {
 		 return meetings;
 	 }
 
-	 public List<Meeting> getGroupMeetings(String grpId) {
+	 public List<Meeting> getGroupMeetings(int groupId) {
 		 Connection conn = null;
 		 List<Meeting> meetings = new LinkedList<Meeting>();
-		 int groupId = Integer.parseInt(grpId);
 		 try {
 			 //Connect to Database
 			 conn = connection.getConnection();
@@ -194,7 +193,6 @@ public class MeetingManager extends DataManager {
 		 }
 		 return meetings;
 	 }
-
 	 
 	 public void deleteMeeting(int meetingId) {
 		 Connection conn = null;
@@ -220,6 +218,5 @@ public class MeetingManager extends DataManager {
 
 		 }		 
 	 }
- 
 
 }

@@ -34,13 +34,13 @@
 		<h2>Meetings</h2>
 		
 		<c:choose>
-			<c:when test="${ fn:length(userSession.user.meetings) eq 0}">
+			<c:when test="${ fn:length(meetings) eq 0}">
 				You have no meetings
 			</c:when>
 			
 			<c:otherwise>
 				<div class="list-group">
-			    	<c:forEach var="meeting" items="${ userSession.user.meetings }" >
+			    	<c:forEach var="meeting" items="${ meetings }" >
 			    		<a href="${ pageContext.request.contextPath }/group/meeting?meetingId=${ meeting.id }"
 			    		   class="list-group-item">
 			    			<c:out value="${ meeting.description } : " />
@@ -62,13 +62,13 @@
 		<h2>My Groups</h2>
 		
 		<c:choose>
-			<c:when test="${ fn:length(userSession.user.groups) eq 0}">
+			<c:when test="${ fn:length(groups) eq 0}">
 				You do not belong to any research groups
 			</c:when>
 			
 			<c:otherwise>
 				<div class="list-group">
-			    	<c:forEach var="group" items="${ userSession.user.groups }" >
+			    	<c:forEach var="group" items="${ groups }" >
 			    		<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }" class="list-group-item">
 			    			<c:out value="${ group.groupName }" />
 			    		</a>
@@ -88,7 +88,6 @@
 			</c:when>
 			
 			<c:otherwise>
-			<!-- HERE TYLER, CANT WORK OUT HOW TO PUT THE DOCUMENTS INTO THE SESSION VARIABLE, SHOULD BE THE SAME AS MEETINGS  -->
 				<div class="list-group">
 			    	<c:forEach var="document" items="${ userDocuments }" >
 			    		<a href="${pageContext.request.contextPath}/group/document?documentId=${document.id }" class="list-group-item">
@@ -99,5 +98,6 @@
 			    </div>
 			</c:otherwise>
 		</c:choose>
+		
 	</div>
 </div>

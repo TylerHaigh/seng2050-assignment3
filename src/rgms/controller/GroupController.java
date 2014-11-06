@@ -45,11 +45,11 @@ public class GroupController extends Controller{
 
 		    	//Load meetings into map
 			    MeetingManager meetMan = new MeetingManager();
-			    List<Meeting> groupMeetings = meetMan.getGroupMeetings(req.getParameter("groupId"));
+			    List<Meeting> groupMeetings = meetMan.getGroupMeetings(groupId);
 			    viewData.put("groupMeetings", groupMeetings);
 
 			    //Load Document Data into Map
-			    List<Document> groupDocuments = gm.getGroupDocuments(req.getParameter("groupId"));
+			    List<Document> groupDocuments = gm.getGroupDocuments(groupId);
 			    viewData.put("groupDocuments", groupDocuments);
 
 			    //Load discussion threads
