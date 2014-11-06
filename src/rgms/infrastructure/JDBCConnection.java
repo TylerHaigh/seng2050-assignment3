@@ -1,17 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package rgms.infrastructure;
 
 import	java.sql.*;
 import java.util.logging.*;
 
 /**
- *
- * @author Tyler 2
+ * Provides the means of connecting to a MYSQL Database for use within RGMS.
+ * 
+ * @author Tyler Haigh - C3182929
+ * @author Simon Hartcher - C3185790
+ * @author Josh Crompton - C3165877
+ * 
  */
 public class JDBCConnection {
     private static final Logger logger = Logger.getLogger(JDBCConnection.class.getName());
@@ -78,9 +76,10 @@ public class JDBCConnection {
     }
 
     /**
-     * 
-     * @return
-     * @throws SQLException 
+     * Executes a query to the database
+     * @param query The query to execute
+     * @return A Result Set containing the results of the query
+     * @throws SQLException  Unable to execute the query
      */
     public ResultSet executeQuery(String query) throws SQLException {
         ResultSet rs = null;
