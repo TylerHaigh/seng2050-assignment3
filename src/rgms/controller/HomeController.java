@@ -131,10 +131,15 @@ public class HomeController extends Controller {
 				userManager.activateUser(activationIndex);
 				
 				//Delete the notification
+				int deletionIndex = -1;
 				for (Notification n : notifications) {
-					if (n.getLink().equals("/home/notifications?activate=" + activationString))
+					if (n.getLink().equals("/home/notifications?activate=" + activationString)) {
 						notificationMan.deleteNotification(n.getId());
+						deletionIndex = notifications.indexOf(n);
+					}
 				}
+				
+				if (deletionIndex > -1) notifications.remove(deletionIndex);
 				
 				//Notify of activation
 				req.setAttribute("activated", true);
@@ -152,10 +157,15 @@ public class HomeController extends Controller {
 				groupMan.createMapping(groupId, addUserId);
 				
 				//Delete the notification
+				int deletionIndex = -1;
 				for (Notification n : notifications) {
-					if (n.getLink().equals("/home/notifications?addUserId=" + addUserId + "&groupId=" + groupId))
+					if (n.getLink().equals("/home/notifications?addUserId=" + addUserId + "&groupId=" + groupId)) {
 						notificationMan.deleteNotification(n.getId());
+						deletionIndex = notifications.indexOf(n);
+					}
 				}
+				
+				if (deletionIndex > -1) notifications.remove(deletionIndex);
 				
 				//Notify of activation
 				req.setAttribute("added", true);
