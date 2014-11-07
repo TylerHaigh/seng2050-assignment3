@@ -3,6 +3,7 @@ package rgms.model;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,13 +117,16 @@ public class Document implements Serializable {
 		try {
 
 			if (rs.next()) {
+				Timestamp uploadTimestamp = rs.getTimestamp("UploadDate");
+				Date uploadDate = new Date(uploadTimestamp.getTime());
+
 				document = new Document();
 				document.setId(rs.getInt("Id"));
 				document.setDocumentPath(rs.getString("DocumentPath"));
 				document.setDocumentName(rs.getString("DocumentName"));
 				document.setVersionNumber(rs.getInt("VersionNumber"));
 				document.setGroupId(rs.getInt("GroupId"));
-				document.setUploadDate(rs.getDate("UploadDate"));
+				document.setUploadDate(uploadDate);
 				document.setThreadId(rs.getInt("ThreadId"));
 				
 				Logger.getLogger("rgms.model.Document").info(
