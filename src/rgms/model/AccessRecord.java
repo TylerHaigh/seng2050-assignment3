@@ -1,7 +1,15 @@
 package rgms.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.io.Serializable;
+
+import rgms.datacontext.UserManager;
 
 public class AccessRecord implements Serializable {
 
@@ -88,6 +96,39 @@ public class AccessRecord implements Serializable {
 
 	public void setDocument(Document document) {
 		this.document = document;
+	}
+
+	public static AccessRecord fromResultSet(ResultSet rs) {
+		AccessRecord accessRecord = null;
+		
+		try {
+
+			if (rs.next()) {
+				//Get the date the document was accessed
+				Timestamp accessedTimeStamp = rs.getTimestamp("DateAccessed");
+				Date accessedDate = new Date(accessedTimeStamp.getTime());
+				int userId = rs.getInt("userId");
+				UserManager um = new UserManager();
+				User user = um.get(userId);
+				
+				accessRecord = new AccessRecord();
+				accessRecord.setId(rs.getInt("Id"));
+				accessRecord.setUserId(userId);
+				accessRecord.setUser(user);
+				accessRecord.setDateAccessed(accessedDate);
+				accessRecord.setDocumentId(rs.getInt("DocumentId"));
+				
+				Logger.getLogger("rgms.model.Document").info(
+					String.format("Loaded Access Record: %d, %d, %d",
+							accessRecord.getId(), accessRecord.getUserId(), accessRecord.getDocumentId())
+				);
+			}
+				
+		} catch (SQLException e) {
+			Logger.getLogger("rgms.model.Meeting").log(Level.SEVERE, "SQL Error", e);
+		}
+		
+		return accessRecord;
 	}
 	
 }

@@ -32,13 +32,14 @@ public class GroupManager extends DataManager {
 			 
 			 //Create a prepare statement
 			 PreparedStatement pstmt = conn.prepareStatement(
-					 "INSERT INTO Groups (GroupName, Description) " +
-					 "VALUES (?, ?)"
+					 "INSERT INTO Groups (GroupName, Description, CoordinatorId) " +
+					 "VALUES (?, ?, ?)"
 			 );
 			 
 			 //Set the required parameters and execute
 			 pstmt.setString(1, group.getGroupName());
 			 pstmt.setString(2, group.getDescription());
+			 pstmt.setInt(3, group.getCoordinatorId());
 			 pstmt.execute();
 			 
 		 } catch (Exception e) {

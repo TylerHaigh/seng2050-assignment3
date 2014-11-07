@@ -6,9 +6,16 @@
 <c:if test="${ !empty documents }">
     <c:set var="document" value="${ documents.get(0) }" />
     <p>
-        Document: <a href="${pageContext.request.contextPath}/group/downloaddocument/?documentId=${document.id}" alt="Download document">${ document.documentName }</a><br />
+        Document: <a href="${pageContext.request.contextPath}/group/downloaddocument/?documentId=${document.id}&userId=${userSession.user.id}" alt="Download document">${ document.documentName }</a><br />
         Version: ${ document.versionNumber }
     </p>
+    <!-- Button to view summary of Document -->
+    <c:if test="${ userSession.user.id == groupOfDocument.coordinatorId }">
+     	<a href="${pageContext.request.contextPath}/group/summary/?documentId=${ document.id}" class="btn btn-primary">View Access Summary</a>
+    </c:if>
+    
+     
+     
 </c:if>
 
 <c:if test="${ empty thread.posts }">

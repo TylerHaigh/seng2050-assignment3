@@ -18,7 +18,7 @@ public class Group implements Serializable {
 		this.id = 0;
 		this.groupName = "";
 		this.description = "";
-		this.coordinatorId = 1;
+		this.coordinatorId = 0;
 	}
 	
 	public Group(int id, String groupName, String description, int coordinatorId) {
@@ -42,6 +42,9 @@ public class Group implements Serializable {
 		return description;
 	}
 
+	public int getCoordinatorId(){
+		return coordinatorId;
+	}
 	//Setters
 	
 	public void setId(int id) {
@@ -56,6 +59,10 @@ public class Group implements Serializable {
 		this.description = description;
 	}
 	
+	public void setCoordinatorId(int id){
+		coordinatorId = id;
+	}
+	
 	//Queries
 	
 	public static Group fromResultSet(ResultSet rs) {
@@ -67,6 +74,7 @@ public class Group implements Serializable {
 				group.setId(rs.getInt("Id"));
 				group.setGroupName(rs.getString("GroupName"));
 				group.setDescription(rs.getString("Description"));
+				group.setCoordinatorId(rs.getInt("CoordinatorId"));
 				
 				Logger.getLogger("rgms.model.Group").info(
 					String.format("Loaded Group: %d, %s, %s",

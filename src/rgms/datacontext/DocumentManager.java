@@ -1,9 +1,14 @@
 package rgms.datacontext;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.logging.*;
+
+import rgms.model.AccessRecord;
 import rgms.model.Document;
+
 import java.sql.*;
 
 /**
@@ -182,5 +187,82 @@ public class DocumentManager extends DataManager {
        }
      }
   }
+
+	public void createAccessRecord(Document document, int userId) {
+		Connection conn = null; 
+		try {
+			conn = connection.getConnection();
+     
+			//Create a prepared statement
+			PreparedStatement pstmt = conn.prepareStatement(
+					"INSERT INTO accessRecords (userId, DateAccessed, DocumentId) " +
+					"VALUES (?, ?, ?)");
+
+			//Set the required parameters and execute
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String accessDate = dateFormat.format(System.currentTimeMillis());
+			 
+			pstmt.setInt(1, userId);
+			pstmt.setString(2,accessDate);
+			pstmt.setInt(3, document.getId());
+
+			pstmt.execute();
+		}
+		catch (Exception e) {
+			logger.log(Level.SEVERE, "SQL Error", e);
+	    } finally {
+	    	 if (conn != null) {
+	    		 try {
+	    			 conn.close();
+	    		 } catch (SQLException e) {
+	    			 logger.log(Level.WARNING, "Connection Close", e);
+	    		 }
+	    	 }
+	    }
+	       
+	
+	}
+
+	public List<AccessRecord> getAccessRecords(int documentId) {
+		List<AccessRecord> ar = new LinkedList<>();
+		Connection conn = null;
+		try {
+		     conn = connection.getConnection();
+		       
+		       //Create a prepared statement
+		       PreparedStatement pstmt = conn.prepareStatement(
+		           "SELECT * FROM accessrecords " +
+		           "WHERE DocumentId = ?");
+		      
+		       //Set the required parameters and execute
+		       pstmt.setInt(1, documentId);
+		       ResultSet rs = pstmt.executeQuery();
+
+		     //Retrieve the results and store in the list
+		       if (rs.isBeforeFirst()) {
+		         while (!rs.isAfterLast()) {
+		        	 AccessRecord record = AccessRecord.fromResultSet(rs);
+		            if(record != null){
+		              ar.add(record);
+		            }            
+		         }
+		       }
+		      
+		       
+		     } catch (Exception e) {
+		       logger.log(Level.SEVERE, "SQL Error", e);
+		       return null;
+		     } finally {
+		    	 if (conn != null) {
+		    		 try {
+		    			 conn.close();
+		    		 } catch (SQLException e) {
+		    			 logger.log(Level.WARNING, "Connection Close", e);
+		    		 }
+		    	 }
+		     	}	
+		
+		return ar;
+	}
    
 }

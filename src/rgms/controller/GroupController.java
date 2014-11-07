@@ -59,10 +59,9 @@ public class GroupController extends Controller {
 		    
 		    if (group != null) {
 		    	viewData.put("groupId", groupId);
-
-		    	//Load group members into Map
+		    	
 			    viewData.put("groupName", group.getGroupName());			    
-
+			    //Load group members into Map
 			    List<String> groupMembers = gm.getGroupMembers(groupId);
 			    viewData.put("groupMembers", groupMembers);
 
@@ -114,7 +113,7 @@ public class GroupController extends Controller {
 			Group group = new Group();
 			group.setGroupName(groupName);
 			group.setDescription(description);
-			
+			group.setCoordinatorId(adminId);
 			//Create the mapping
 			groupMan.createGroup(group);
 			int groupId = groupMan.getIdFor(group);
@@ -333,15 +332,19 @@ public class GroupController extends Controller {
 		if (req.getMethod() == HttpMethod.Get) {
 			
 			//Get the thread
+			GroupManager gm = new GroupManager();
 			int threadId = Integer.parseInt(req.getParameter("threadId"));
 			DiscussionManager discussionManager = new DiscussionManager();
 			DiscussionThread thread = discussionManager.getThread(threadId);
+			thread.setGroup(gm.get(thread.getGroupId()));
 			thread.setPosts(discussionManager.getPosts(threadId));
 
 			//get documents for the thread
 			DocumentManager docMan = new DocumentManager();
 			viewData.put("documents", docMan.getDocumentsForThread(threadId));
-
+			//Get group discussion belongs to
+			viewData.put("groupOfDocument", thread.getGroup());
+			
 			viewData.put("thread", thread);
 			viewData.put("title", "Discussion: " + thread.getThreadName());
 			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
@@ -378,9 +381,11 @@ public class GroupController extends Controller {
 		}
 		else if (req.getMethod() == HttpMethod.Post) {
 			//save discussion
+			GroupManager groupMan = new GroupManager();
 			DiscussionThread thread = new DiscussionThread();
 			int groupId = Integer.parseInt(req.getParameter("groupId"));
 			thread.setGroupId(groupId);
+			thread.setGroup(groupMan.get(groupId));
 			thread.setThreadName(req.getParameter("threadName"));
 
 			DiscussionManager dm = new DiscussionManager();
@@ -404,7 +409,7 @@ public class GroupController extends Controller {
 					
 					//Create a notification to all in the group
 					NotificationManager notificationMan = new NotificationManager();
-					GroupManager groupMan = new GroupManager();
+					groupMan = new GroupManager();
 					List<User> groupUsers = groupMan.getGroupUsers(groupId);
 					
 					for (User u : groupUsers) {
@@ -561,10 +566,15 @@ public class GroupController extends Controller {
 			
 			//Get the document
 			int documentId = Integer.parseInt(req.getParameter("documentId"));
+			int userId = Integer.parseInt(req.getParameter("userId"));
 			DocumentManager docMan = new DocumentManager();
 			Document document = docMan.get(documentId);
 			
 			if (document != null) {
+				//Create Access record.
+				docMan.createAccessRecord(document, userId);
+				
+				//Download the file.
 				ServletContext context = getServletContext();
 				String documentPath = String.format("%s/%s",
 					context.getRealPath("/Uploads"), 
@@ -634,4 +644,41 @@ public class GroupController extends Controller {
 			httpNotFound(req, res);
 		}
 	}
+	
+	public void summaryAction(HttpServletRequest req, HttpServletResponse res){
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		DocumentManager docMan = new DocumentManager();
+		 
+		try {
+		 
+		
+
+		if(req.getParameter("documentId") != null){
+			//Get the document ID
+			int docId = Integer.parseInt(req.getParameter("documentId"));
+			//Get the document using document id
+			Document document = docMan.get(docId);
+			//Set title to name of the document
+			viewData.put("title", document.getDocumentName());
+			//Create List of access records
+			List<AccessRecord> accessRecords = new LinkedList<AccessRecord>();
+			//Add access records for document to the list
+			accessRecords = docMan.getAccessRecords(docId);
+			
+			viewData.put("accessRecords", accessRecords);
+		}
+		else{
+			//Go back to thread page.
+		}
+
+			  
+		} catch (Exception e) {
+			Logger.getLogger("").log(Level.SEVERE, "An error occurred when getting profile user", e);
+		}
+
+		view(req, res, "/views/group/Document.jsp", viewData);
+	}
+		
 }
