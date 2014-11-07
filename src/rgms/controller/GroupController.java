@@ -71,7 +71,8 @@ public class GroupController extends Controller {
 			    viewData.put("groupMeetings", groupMeetings);
 
 			    //Load Document Data into Map
-			    List<Document> groupDocuments = gm.getGroupDocuments(groupId);
+			    DocumentManager docMan = new DocumentManager();
+			    List<Document> groupDocuments = docMan.getGroupDocuments(groupId);
 			    viewData.put("groupDocuments", groupDocuments);
 
 			    //Load discussion threads
@@ -235,41 +236,7 @@ public class GroupController extends Controller {
 	    	
 	    }
 	}
-	
-	/**
-	 * Displays a Document for a HTTP Get
-	 * 
-	 * - Requires a cookie for the session user
-	 * - Requires a documentId requestParameter for the GET
-	 * 
-	 * @param req The HTTP Request
-	 * @param res The HTTP Response
-	 */
-	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
-		//Ensure there is a cookie for the session user
-		if (AccountController.redirectIfNoCookie(req, res)) return;
-		
-		Map<String, Object> viewData = new HashMap<String, Object>();
-	    viewData.put("title", "Document");
-	    
-	    if (req.getMethod() == HttpMethod.Get) {
-			//Load Document data into Map
-	    	GroupManager gm = new GroupManager();
-		    int documentId = Integer.parseInt(req.getParameter("documentId"));
-		    Document aDocument= gm.getDocument(documentId);		    
-		    
-		    if (aDocument != null) {
-		    	viewData.put("document", aDocument);
-			    //View group page.
-		    	view(req, res, "/views/group/Document.jsp", viewData);
-		    } else {
-		    	httpNotFound(req, res);
-		    }
-		    
-		} else if (req.getMethod() == HttpMethod.Post) {
-			httpNotFound(req, res);
-		}
-	}
+
 	
 	/**
 	 * Deletes a meeting from the database
@@ -416,7 +383,7 @@ public class GroupController extends Controller {
 						Notification notification = new Notification(u.getId(), u,
 								groupId, null,
 								"User " + u.getFullName() + " has uploaded a document",
-								"/group/document?documentId=" + doc.getId());
+								"/document/document?documentId=" + doc.getId());
 						
 						notificationMan.createNotification(notification);
 					}
@@ -550,69 +517,6 @@ public class GroupController extends Controller {
 			redirectToLocal(req, res, "/home/dashboard");
 		}
     	
-	}
-
-	/**
-	 * Downloads a document from the server to the user's client machine
-	 * 
-	 * - Requires a documentId request parameter
-	 * 
-	 * @param req The HTTP Request
-	 * @param res The HTTP Response
-	 * @throws IOException Unable to download the document
-	 */
-	public void downloadDocumentAction(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		if (req.getMethod() == HttpMethod.Get) {
-			
-			//Get the document
-			int documentId = Integer.parseInt(req.getParameter("documentId"));
-			int userId = Integer.parseInt(req.getParameter("userId"));
-			DocumentManager docMan = new DocumentManager();
-			Document document = docMan.get(documentId);
-			
-			if (document != null) {
-				//Create Access record.
-				docMan.createAccessRecord(document, userId);
-				
-				//Download the file.
-				ServletContext context = getServletContext();
-				String documentPath = String.format("%s/%s",
-					context.getRealPath("/Uploads"), 
-					document.getDocumentPath());
-
-				//Create a stream
-				File documentFile = new File(documentPath);
-				FileInputStream stream = new FileInputStream(documentFile);
-
-				String mimeType = context.getMimeType(documentPath);
-				if (mimeType == null) {
-					mimeType = "application/octet-stream";
-				}
-
-				res.setContentType(mimeType);
-				res.setContentLength((int)documentFile.length());
-
-				//forces download of file
-				String headerKey = "Content-Disposition";
-				String headerValue = String.format("attachment; filename=\"%s\"", document.getDocumentName());
-		        res.setHeader(headerKey, headerValue);
-		
-		        OutputStream os = res.getOutputStream();
-		
-		        byte[] buffer = new byte[1024];
-		        int read = -1;
-		
-		        while ((read = stream.read(buffer)) != -1) {
-		        	os.write(buffer, 0, read);
-		        }
-		
-		        stream.close();
-		        os.close();
-		        return;
-			}
-		}
-		
-		httpNotFound(req, res);
 	}
 	
 	/**

@@ -72,7 +72,7 @@
 	    </c:if>
 	    
 	    <c:forEach var="document" items="${ groupDocuments }" >
-	        <a href="${pageContext.request.contextPath}/group/document?documentId=${document.id}" class="list-group-item">
+	        <a href="${pageContext.request.contextPath}/document/document?threadId=${document.threadId}" class="list-group-item">
 	            <c:out value="File Name: ${ document.documentName }" />
 	        </a>
 	    </c:forEach>

@@ -89,7 +89,7 @@
 			<c:otherwise>
 				<div class="list-group">
 			    	<c:forEach var="document" items="${ userDocuments }" >
-			    		<a href="${pageContext.request.contextPath}/group/document?documentId=${document.id }" class="list-group-item">
+			    		<a href="${pageContext.request.contextPath}/document/document?documentId=${document.id }" class="list-group-item">
 			    			<c:out value="${ document.documentName}" />
 			    		</a>
 			    	</c:forEach>

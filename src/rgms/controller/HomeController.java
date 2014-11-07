@@ -66,9 +66,10 @@ public class HomeController extends Controller {
 		viewData.put("groups", groups);
 		
 		//Get Documents
+		DocumentManager docMan = new DocumentManager();
 		List<Document> userDocuments = new LinkedList<Document>();
 		for(Group g: groups){
-			Collection<Document> documentCollection = (Collection<Document>) groupMan.getGroupDocuments(g.getId());
+			List<Document> documentCollection = docMan.getGroupDocuments(g.getId());
 			userDocuments.addAll(documentCollection);
 		}
 	    viewData.put("documents", userDocuments);

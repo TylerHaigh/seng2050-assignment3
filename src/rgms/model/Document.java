@@ -16,6 +16,7 @@ public class Document implements Serializable {
 	
 	private int threadId;
 	private int groupId;
+	private Date uploadDate;
 	private DiscussionThread thread;
 	
 	//Constructors
@@ -42,6 +43,10 @@ public class Document implements Serializable {
 	}
 
 	//Getters
+
+	public Date getUploadDate() {
+	  return uploadDate;
+	}
 	
 	public int getId() {
 		return id;
@@ -72,6 +77,10 @@ public class Document implements Serializable {
 	}
 
 	//Setters
+	
+	public void setUploadDate(Date uploadDate){
+	  this.uploadDate = uploadDate;
+	}
 	
 	public void setId(int id) {
 		this.id = id;
@@ -113,6 +122,8 @@ public class Document implements Serializable {
 				document.setDocumentName(rs.getString("DocumentName"));
 				document.setVersionNumber(rs.getInt("VersionNumber"));
 				document.setGroupId(rs.getInt("GroupId"));
+				document.setUploadDate(rs.getDate("UploadDate"));
+				document.setThreadId(rs.getInt("ThreadId"));
 				
 				Logger.getLogger("rgms.model.Document").info(
 					String.format("Loaded Document: %d, %s, %s, %d, %d",

@@ -33,6 +33,14 @@ public class AccountController extends Controller {
    */
   public AccountController() { }
 
+  public static Cookie getUserCookie(HttpServletRequest req) {
+    List<Cookie> cookies = Arrays.asList(req.getCookies());
+    for (Cookie c: cookies) {
+      if (c.getName().equals("userCookie")) return c;
+    }
+    return null;
+  }
+
   /**
    * Redirects the user to the login page if no Cookie exists for the user's session
    * @param req The HTTP Request

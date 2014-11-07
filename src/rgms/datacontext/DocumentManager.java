@@ -59,11 +59,9 @@ public class DocumentManager extends DataManager {
    * @param groupId The group's Id
    * @return A List of Documents belonging to the Group
    */
-   public List<Document> getGroupDocuments(String groupId){
+   public List<Document> getGroupDocuments(int groupId){
      List<Document> groupDocuments = new LinkedList<Document>();
      Connection conn = null;
-     int groupNum = Integer.parseInt(groupId);
-     
      try {
        conn = connection.getConnection();
        
@@ -73,7 +71,7 @@ public class DocumentManager extends DataManager {
            "WHERE GroupId = ?");
       
        //Set the required parameters and execute
-       pstmt.setInt(1, groupNum);
+       pstmt.setInt(1, groupId);
        ResultSet rs = pstmt.executeQuery();
        
        //Retrieve the result and add to the list
