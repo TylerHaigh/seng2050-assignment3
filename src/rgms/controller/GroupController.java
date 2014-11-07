@@ -58,9 +58,9 @@ public class GroupController extends Controller {
 		    Group group = gm.get(groupId);		    
 		    
 		    if (group != null) {
-		    	viewData.put("groupId", groupId);
-		    	
-			    viewData.put("groupName", group.getGroupName());			    
+		    	//Load Group into map
+		    	viewData.put("group", group);
+			    
 			    //Load group members into Map
 			    List<String> groupMembers = gm.getGroupMembers(groupId);
 			    viewData.put("groupMembers", groupMembers);

@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	
-<h1>${ groupName }</h1>
+<h1>${ group.groupName }</h1>
 
 <c:if test="${ joinSuccess }">
 	Join was successful
@@ -9,14 +9,16 @@
 
 <c:choose>
 	<c:when test="${ notMember }">
-		<a href="${ pageContext.request.contextPath }/group/invite?groupId=${ groupId }">
+		<a href="${ pageContext.request.contextPath }/group/invite?groupId=${ group.id }">
 			Join this Group
 		</a>
 	</c:when>
-	
 	<c:otherwise>
-		<a href="${ pageContext.request.contextPath }/group/leave?groupId=${ groupId }">Leave Group</a>
-	</c:otherwise>
+		<c:if test="${ userSession.user.id != group.coordinatorId }">
+    		<a href="${ pageContext.request.contextPath }/group/leave?groupId=${ group.id }">Leave Group</a>
+		</c:if>
+	</c:otherwise>	
+	
 </c:choose>
 
 <h2>Members</h2>
@@ -60,7 +62,7 @@
 	    </c:forEach>
 	</div>
 	
-	<a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ groupId }" class="btn btn-primary">Create Discussion</a>
+	<a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ group.id }" class="btn btn-primary">Create Discussion</a>
 	
 	<hr />
 	
@@ -78,6 +80,6 @@
 	    </c:forEach>
 	</div>	
 	
-	<a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ groupId }" class="btn btn-primary">Upload New Document</a>
+	<a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ group.id }" class="btn btn-primary">Upload New Document</a>
 </c:if>
 
