@@ -379,7 +379,8 @@ public class GroupController extends Controller {
 		else if (req.getMethod() == HttpMethod.Post) {
 			//save discussion
 			DiscussionThread thread = new DiscussionThread();
-			thread.setGroupId(Integer.parseInt(req.getParameter("groupId")));
+			int groupId = Integer.parseInt(req.getParameter("groupId"));
+			thread.setGroupId(groupId);
 			thread.setThreadName(req.getParameter("threadName"));
 
 			DiscussionManager dm = new DiscussionManager();
@@ -400,6 +401,20 @@ public class GroupController extends Controller {
 
 					DocumentManager docMan = new DocumentManager();
 					docMan.createDocument(doc);
+					
+					//Create a notification to all in the group
+					NotificationManager notificationMan = new NotificationManager();
+					GroupManager groupMan = new GroupManager();
+					List<User> groupUsers = groupMan.getGroupUsers(groupId);
+					
+					for (User u : groupUsers) {
+						Notification notification = new Notification(u.getId(), u,
+								groupId, null,
+								"User " + u.getFullName() + " has uploaded a document",
+								"/group/document?documentId=" + doc.getId());
+						
+						notificationMan.createNotification(notification);
+					}
 				}
 			}
 			catch (Exception e) {
