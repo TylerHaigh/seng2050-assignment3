@@ -55,3 +55,10 @@ buildscript {
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
     }
 }
+
+war {
+    into('Documentation') {
+        from 'Documentation'
+    }
+    from 'Documentation/SENG2050_Assignment3_Coversheet_C3182929_C3185790_C3165877.pdf'
+}
