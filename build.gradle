@@ -74,6 +74,7 @@ task zip(type: War, dependsOn: classes) {
         }
     }
     from 'Documentation/SENG2050_Assignment3_Coversheet_C3182929_C3185790_C3165877.pdf'
+    from 'Makefile'
     destinationDir = file("$buildDir/distributions")
     archiveName("seng2050-assignment3.zip")
 }
