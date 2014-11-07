@@ -372,6 +372,11 @@ public class GroupController extends Controller {
 					DocumentManager docMan = new DocumentManager();
 					docMan.createDocument(doc);
 					
+					//Get uploading User
+			        HttpSession session = req.getSession();
+			        Session userSession = (Session) session.getAttribute("userSession");
+			        User uploader = userSession.getUser();
+					
 					//Create a notification to all in the group
 					NotificationManager notificationMan = new NotificationManager();
 					groupMan = new GroupManager();
@@ -380,7 +385,7 @@ public class GroupController extends Controller {
 					for (User u : groupUsers) {
 						Notification notification = new Notification(u.getId(), u,
 								groupId, null,
-								"User " + u.getFullName() + " has uploaded a document",
+								"User " + uploader.getFullName() + " has uploaded a document",
 								"/document/document?documentId=" + doc.getId());
 						
 						notificationMan.createNotification(notification);
