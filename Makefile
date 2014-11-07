@@ -9,3 +9,5 @@ build:
 clean: FILES = $(SOURCES:.java=.class)
 clean:
 	rm -f $(FILES)
+
+.PHONY: clean all
