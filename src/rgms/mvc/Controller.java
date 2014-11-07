@@ -144,8 +144,9 @@ public abstract class Controller extends HttpServlet {
 
       actionMethod.invoke(this, req, res);
     }
-    catch (IllegalAccessException | InvocationTargetException e) {
+    catch (Exception e) {
       logger.log(Level.SEVERE, "Action Method Error", e);
+      httpNotFound(req, res);
     }
   }
 
