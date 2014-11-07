@@ -634,4 +634,26 @@ public class GroupController extends Controller {
 			httpNotFound(req, res);
 		}
 	}
+	
+	/**
+	 * Displays a page showing details for all groups in RGMS 
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
+	public void showgroupsAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		viewData.put("title", "RGMS Groups");
+		  
+		//Get all groups in the RGMS database
+		GroupManager groupMan = new GroupManager();
+		List<Group> groups = groupMan.getEveryGroup();
+		viewData.put("allGroups", groups);
+		
+		view(req, res, "/views/group/ShowGroups.jsp", viewData);
+	}
+	
 }

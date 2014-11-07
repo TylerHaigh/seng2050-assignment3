@@ -14,8 +14,4 @@
 	<a href="${pageContext.request.contextPath}/admin/showUsers" class="list-group-item">
 		Show all RGMS Users
 	</a>
-	
-	<a href="${pageContext.request.contextPath}/admin/showGroups" class="list-group-item">
-		Show all RGMS Groups
-	</a>
 </div>

@@ -15,6 +15,8 @@
         		</a>
         		<ul class="dropdown-menu">
                     
+                    <li><a href="${pageContext.request.contextPath}/group/showGroups">View All Groups</a></li>
+                    
                     <c:forEach var="group" items="${ userSession.user.groups }" >
 			    		<li>
 			    			<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }">
