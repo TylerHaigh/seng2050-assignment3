@@ -30,6 +30,7 @@
 					</c:when>
 					<c:otherwise>
 						<span class="glyphicon glyphicon-remove"></span>
+						<a href="${ pageContext.request.contextPath }/admin/showUsers?makeAdminId=${ user.id }">Make Administrator</a>
 					</c:otherwise>
 				</c:choose>
 			</td>

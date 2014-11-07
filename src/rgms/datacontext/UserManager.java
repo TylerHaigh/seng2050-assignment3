@@ -246,6 +246,22 @@ public class UserManager extends DataManager {
 	  return users;
   }
   
+  public void makeAdmin(int userId) {
+	  try {
+		  //Create a prepared statement
+		  PreparedStatement pstmt = conn.prepareStatement(
+			  "UPDATE Users SET IsAdmin=true WHERE Id=?"
+		  );
+		  
+		  //Set the required parameters and execute the Query
+		  pstmt.setInt(1, userId);
+		  pstmt.execute();
+		  
+	  } catch (SQLException e) {
+		  logger.log(Level.SEVERE, "SQL Error", e);
+	  } 
+  }
+  
   /**
    * Validates a User's password for authentication
    * @param userName The User's UserName
@@ -292,4 +308,5 @@ public class UserManager extends DataManager {
       return null;
     }
   }
+  
 }

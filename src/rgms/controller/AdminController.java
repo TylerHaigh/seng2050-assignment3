@@ -10,6 +10,7 @@ import rgms.datacontext.UserManager;
 import rgms.infrastructure.Session;
 import rgms.model.*;
 import rgms.mvc.Controller;
+import rgms.mvc.HttpMethod;
 
 /**
  * Servlet to handle requests for administrator specific tasks. Manages creation
@@ -124,15 +125,27 @@ public class AdminController extends Controller {
 		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
-		Map<String, Object> viewData = new HashMap<String, Object>();
-		viewData.put("title", "RGMS Users");
-		  
-		//Get all users in RGMS database
-		UserManager userMan = new UserManager();
-		List<User> users = userMan.getEveryUser();
-		viewData.put("allUsers", users);
-		
-		view(req, res, "/views/admin/ShowUsers.jsp", viewData);
+		if (req.getMethod() == HttpMethod.Get) {
+			Map<String, Object> viewData = new HashMap<String, Object>();
+			viewData.put("title", "RGMS Users");
+			
+			UserManager userMan = new UserManager();
+
+			//Check if making someone an admin
+			String makeAdminIdString = req.getParameter("makeAdminId");
+			if (makeAdminIdString != null) {
+				int makeAdminId = Integer.parseInt(makeAdminIdString);
+				userMan.makeAdmin(makeAdminId);
+			}
+			
+			//Get all users in RGMS database
+			List<User> users = userMan.getEveryUser();
+			viewData.put("allUsers", users);
+			
+			view(req, res, "/views/admin/ShowUsers.jsp", viewData);
+		} else {
+			httpNotFound(req, res);
+		}
 	}
 	
 }
