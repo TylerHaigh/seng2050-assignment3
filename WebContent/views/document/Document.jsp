@@ -11,12 +11,14 @@
   </c:forEach> 
 </div>
 
-<h3>Access Summary for Version ${documents.get(0).versionNumber}</h3>
-
-<table class="table table-bordered table-hover">
-  <tr><th>User</th><th>Date Accessed</th></tr>
-  <c:forEach var="ar" items="${accessRecords}" >
-    <tr><td>${ar.user.userName } </td><td> ${ar.dateAccessed }</td> </tr> 
-  </c:forEach>
-</table>
+<c:if test="${ userSession.user.id == thread.group.coordinatorId }">
+	<h3>Access Summary for Version ${documents.get(0).versionNumber}</h3>
+	
+	<table class="table table-bordered table-hover">
+	  <tr><th>User</th><th>Date Accessed</th></tr>
+	  <c:forEach var="ar" items="${accessRecords}" >
+	    <tr><td>${ar.user.userName } </td><td> ${ar.dateAccessed }</td> </tr> 
+	  </c:forEach>
+	</table>
+</c:if>
 

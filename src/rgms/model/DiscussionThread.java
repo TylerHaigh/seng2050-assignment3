@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.util.logging.*;
 import java.util.List;
 
+import rgms.datacontext.GroupManager;
+
 public class DiscussionThread implements Serializable {
 	private static final Logger logger = Logger.getLogger("rgms.model.DiscussionThread");
 
@@ -78,13 +80,15 @@ public class DiscussionThread implements Serializable {
 	
 	public static DiscussionThread fromResultSet(ResultSet rs) {
 		DiscussionThread thread = null;
-
+		GroupManager gm = new GroupManager();
 		try {
 			if (rs.next()) {
+				int groupId = rs.getInt("GroupId");
 				thread = new DiscussionThread();
 				thread.setId(rs.getInt("Id"));
-				thread.setGroupId(rs.getInt("GroupId"));
+				thread.setGroupId(groupId);
 				thread.setThreadName(rs.getString("ThreadName"));
+				thread.setGroup(gm.get(groupId));
 			}
 		}
 		catch (Exception e) {

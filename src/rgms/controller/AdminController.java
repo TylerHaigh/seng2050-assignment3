@@ -83,10 +83,10 @@ public class AdminController extends Controller {
 		
 		String jqueryTimePickerScript =
 			"<script type=\"text/javascript\" src=\"" + 
-			req.getContextPath() + "/References/jquery-timepicker.js\"/></script>";
+			req.getContextPath() + "/References/jquery-timepicker.js\"></script>";
 		
 		String jqueryTimePickerStyle = "<link rel=\"stylesheet\" type=\"text/css\"" +
-			"href=\"" + req.getContextPath() + "/References/jquery-timepicker.css\" />";
+			" href=\"" + req.getContextPath() + "/References/jquery-timepicker.css\" />";
 		
 		//Put scripts into the view data to be rendered in the layout
 		viewData.put("scripts", dateTimePickerScript + jqueryTimePickerScript);

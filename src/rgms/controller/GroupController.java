@@ -309,8 +309,6 @@ public class GroupController extends Controller {
 			//get documents for the thread
 			DocumentManager docMan = new DocumentManager();
 			viewData.put("documents", docMan.getDocumentsForThread(threadId));
-			//Get group discussion belongs to
-			viewData.put("groupOfDocument", thread.getGroup());
 			
 			viewData.put("thread", thread);
 			viewData.put("title", "Discussion: " + thread.getThreadName());
@@ -537,9 +535,13 @@ public class GroupController extends Controller {
 			HttpSession session = req.getSession();
 			Session userSession = (Session) session.getAttribute("userSession");
 			int userId = userSession.getUser().getId();
+		
 			
 			GroupManager groupMan = new GroupManager();
 			groupMan.removeMapping(groupId, userId);
+			//reload groups into the user
+			userSession.getUser().setGroups(groupMan.getAllGroups(userId));
+			
 			
 			redirectToLocal(req, res, "/home/dashboard");
 			return;

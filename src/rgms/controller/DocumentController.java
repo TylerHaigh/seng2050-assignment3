@@ -108,7 +108,7 @@ public class DocumentController extends Controller {
 
       //Load Document data into Map
       DocumentManager docMan = new DocumentManager();
-      List<Document> documents = docMan.getDocumentsForThread(threadId);       
+      List<Document> documents = docMan.getDocumentsForThread(threadId);      
 
       viewData.put("accessRecords", docMan.getAccessRecords(documents.get(0).getId()));
       

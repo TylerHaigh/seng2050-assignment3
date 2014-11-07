@@ -13,8 +13,8 @@
 	      <label for="avatar">Avatar: </label>
 	      
 	      <div class="form-controls">
-	        <img class="profile-image" src="${pageContext.request.contextPath}/Uploads/images/${profileUser.imageReference}" data-src="holder.js/100x100/sky/text:No Image"/>
-	        <input type="file" name="avatar" />
+	        <img class="profile-image" src="${pageContext.request.contextPath}/Uploads/images/${profileUser.imageReference}" data-src="holder.js/100x100/sky/text:No Image" alt="Profile Picture"/>
+	        <input type="file" name="avatar" id="avatar"/>
 	      </div>
 	    </div>
 	    
