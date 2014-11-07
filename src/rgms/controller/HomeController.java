@@ -152,7 +152,7 @@ public class HomeController extends Controller {
 				
 				//Delete the notification
 				for (Notification n : notifications) {
-					if (n.getLink().equals("/home/notifications?addUserId=" + userId + "&groupId=" + groupId))
+					if (n.getLink().equals("/home/notifications?addUserId=" + addUserId + "&groupId=" + groupId))
 						notificationMan.deleteNotification(n.getId());
 				}
 				
