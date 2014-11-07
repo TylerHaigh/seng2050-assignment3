@@ -85,7 +85,7 @@ public class GroupController extends Controller {
 		    	Session userSession = (Session) session.getAttribute("userSession");
 		    	User user = userSession.getUser();
 		    	
-		    	for (Group g : user.getGroups()) {
+		    	for (Group g : gm.getAllGroups(user.getId())) {
 		    		if (g.getId() == group.getId()) {
 		    			isMember = true;
 		    			break;
