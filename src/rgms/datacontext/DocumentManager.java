@@ -29,8 +29,6 @@ public class DocumentManager extends DataManager {
    */
   public void createDocument(Document document) {
     try {
-      Connection conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement(
         "INSERT INTO Documents (DocumentName, DocumentPath, VersionNumber, ThreadId, GroupId)" +
@@ -61,10 +59,7 @@ public class DocumentManager extends DataManager {
    */
    public List<Document> getGroupDocuments(int groupId){
      List<Document> groupDocuments = new LinkedList<Document>();
-     Connection conn = null;
      try {
-       conn = connection.getConnection();
-       
        //Create a prepared statement
        PreparedStatement pstmt = conn.prepareStatement(
            "SELECT * FROM Documents " +
@@ -88,15 +83,7 @@ public class DocumentManager extends DataManager {
        logger.log(Level.SEVERE, "SQL Error", e);
        return null;
        
-     } finally {
-       if (conn != null) {
-         try {
-           conn.close();
-         } catch (SQLException e) {
-           logger.log(Level.WARNING, "Connection Close", e);
-         }
-       }
-     }
+     } 
      
      return groupDocuments;
    }
@@ -108,11 +95,7 @@ public class DocumentManager extends DataManager {
     */
     public List<Document> getDocumentsForThread(int threadId) {
      List<Document> groupDocuments = new LinkedList<Document>();
-     Connection conn = null;
-     
      try {
-       conn = connection.getConnection();
-       
        //Create a Prepared Statement
        PreparedStatement pstmt = conn.prepareStatement(
            "SELECT * FROM Documents " +
@@ -136,15 +119,7 @@ public class DocumentManager extends DataManager {
        logger.log(Level.SEVERE, "SQL Error", e);
        return null;
        
-     } finally {
-       if (conn != null) {
-         try {
-           conn.close();
-         } catch (SQLException e) {
-           logger.log(Level.WARNING, "Connection Close", e);
-         }
-       }
-     }
+     } 
      
      return groupDocuments;
     }
@@ -155,11 +130,7 @@ public class DocumentManager extends DataManager {
      * @return The Document with the given Id
      */
    public Document get(int documentId){
-     Connection conn = null;
-     
      try {
-       conn = connection.getConnection();
-       
        //Create a prepared statement
        PreparedStatement pstmt = conn.prepareStatement(
            "SELECT * FROM documents " +
@@ -175,22 +146,11 @@ public class DocumentManager extends DataManager {
      } catch (Exception e) {
        logger.log(Level.SEVERE, "SQL Error", e);
        return null;
-     } finally {
-       if (conn != null) {
-         try {
-           conn.close();
-         } catch (SQLException e) {
-           logger.log(Level.WARNING, "Connection Close", e);
-         }
-       }
-     }
+     } 
   }
 
 	public void createAccessRecord(Document document, int userId) {
-		Connection conn = null; 
 		try {
-			conn = connection.getConnection();
-     
 			//Create a prepared statement
 			PreparedStatement pstmt = conn.prepareStatement(
 					"INSERT INTO accessRecords (userId, DateAccessed, DocumentId) " +
@@ -208,58 +168,37 @@ public class DocumentManager extends DataManager {
 		}
 		catch (Exception e) {
 			logger.log(Level.SEVERE, "SQL Error", e);
-	    } finally {
-	    	 if (conn != null) {
-	    		 try {
-	    			 conn.close();
-	    		 } catch (SQLException e) {
-	    			 logger.log(Level.WARNING, "Connection Close", e);
-	    		 }
-	    	 }
-	    }
-	       
-	
+    } 
 	}
 
 	public List<AccessRecord> getAccessRecords(int documentId) {
 		List<AccessRecord> ar = new LinkedList<>();
-		Connection conn = null;
 		try {
-		     conn = connection.getConnection();
-		       
-		       //Create a prepared statement
-		       PreparedStatement pstmt = conn.prepareStatement(
-		           "SELECT * FROM accessrecords " +
-		           "WHERE DocumentId = ?");
-		      
-		       //Set the required parameters and execute
-		       pstmt.setInt(1, documentId);
-		       ResultSet rs = pstmt.executeQuery();
+     //Create a prepared statement
+     PreparedStatement pstmt = conn.prepareStatement(
+         "SELECT * FROM accessrecords " +
+         "WHERE DocumentId = ?");
+    
+     //Set the required parameters and execute
+     pstmt.setInt(1, documentId);
+     ResultSet rs = pstmt.executeQuery();
 
-		     //Retrieve the results and store in the list
-		       if (rs.isBeforeFirst()) {
-		         while (!rs.isAfterLast()) {
-		        	 AccessRecord record = AccessRecord.fromResultSet(rs);
-		            if(record != null){
-		              ar.add(record);
-		            }            
-		         }
-		       }
-		      
-		       
-		     } catch (Exception e) {
-		       logger.log(Level.SEVERE, "SQL Error", e);
-		       return null;
-		     } finally {
-		    	 if (conn != null) {
-		    		 try {
-		    			 conn.close();
-		    		 } catch (SQLException e) {
-		    			 logger.log(Level.WARNING, "Connection Close", e);
-		    		 }
-		    	 }
-		     	}	
-		
+   //Retrieve the results and store in the list
+     if (rs.isBeforeFirst()) {
+       while (!rs.isAfterLast()) {
+      	 AccessRecord record = AccessRecord.fromResultSet(rs);
+          if(record != null){
+            ar.add(record);
+          }            
+       }
+     }
+    
+     
+   } catch (Exception e) {
+     logger.log(Level.SEVERE, "SQL Error", e);
+     return null;
+   } 	
+	
 		return ar;
 	}
    

@@ -30,16 +30,6 @@ public class UserManager extends DataManager {
   }
   
   /**
-   * Constructor for a User Manager. Sets the database connection to the parameterised
-   * connection
-   * 
-   * @param connection A Database connection
-   */
-  public UserManager(Connection connection) {
-    this.connection = new JDBCConnection(connection);
-  }
-    
-  /**
    * Creates a User in the database
    * @param user The User to insert
    * @param plainPassword An unhashed version of the User's password
@@ -49,8 +39,6 @@ public class UserManager extends DataManager {
     user.setPassword(hashedPass);
 
     try {
-      Connection conn = connection.getConnection();
-      
       //Create a Prepared Statement
       PreparedStatement pstmt = conn.prepareStatement(
         "INSERT INTO Users (FirstName, LastName, UserName, Passphrase, StudentId)" +
@@ -82,8 +70,6 @@ public class UserManager extends DataManager {
 	  
 	   //connect to db
 	  try { 
-		  Connection conn = connection.getConnection();
-		  
 		  //Create a Prepared statement
 		  PreparedStatement pstmt = conn.prepareStatement(
 		  	"UPDATE users " + 
@@ -112,8 +98,6 @@ public class UserManager extends DataManager {
   public void updateUser(User user) {
     //connect to db
     try { 
-      Connection conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement(
         "UPDATE users " + 
@@ -141,8 +125,6 @@ public class UserManager extends DataManager {
    */
   public void activateUser(int userId) {
 	  try {
-		  Connection conn = connection.getConnection();
-		  
 		  //Create a prepared statement
 		  PreparedStatement pstmt = conn.prepareStatement(
 			  "UPDATE Users SET IsActive=true WHERE Id=?"
@@ -163,10 +145,7 @@ public class UserManager extends DataManager {
    * @return A User with the given Id
    */
   public User get(int id) {
-    Connection conn = null;
     try {
-      conn = connection.getConnection();
-     
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE Id = ?");
       
@@ -187,10 +166,7 @@ public class UserManager extends DataManager {
    * @return The User with the UserName
    */
   public User get(String userName) {
-    Connection conn = null;
     try {
-      conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE Username = ?");
       
@@ -204,15 +180,6 @@ public class UserManager extends DataManager {
       logger.log(Level.SEVERE, "SQL Error", e);
       return null;
     }
-    finally {
-      if (conn != null)
-        try {
-          conn.close();
-        }
-        catch (SQLException e) {
-          logger.log(Level.WARNING, "Connection Close", e);
-        }
-    }
   }
 
   /**
@@ -220,12 +187,9 @@ public class UserManager extends DataManager {
    * @return A List of all Coordinators
    */
   public List<User> getCoordinators() {
-	  Connection conn = null;
 	  List<User> coordinators = new LinkedList<User>();
 	  
 	  try {
-		  conn = connection.getConnection();
-		  
 		  //Create a prepared statement
 		  PreparedStatement pstmt = conn.prepareStatement(
 			  "SELECT * FROM Users WHERE IsAdmin=true"
@@ -245,16 +209,8 @@ public class UserManager extends DataManager {
 	  } catch (SQLException e) {
 		  logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-	  } finally {
-		  if (conn != null) {
-			  try {
-				  conn.close();
-			  } catch (SQLException e) {
-				  logger.log(Level.WARNING, "Connection Close", e);
-			  }
-		  }
-	  }
-	  
+	  } 	  
+
 	  return coordinators;
   }
   
@@ -263,12 +219,9 @@ public class UserManager extends DataManager {
    * @return A List of all Users
    */
   public List<User> getEveryUser() {
-	  Connection conn = null;
 	  List<User> users = new LinkedList<User>();
 	  
 	  try {
-		  conn = connection.getConnection();
-		  
 		  //Create a prepared statement
 		  PreparedStatement pstmt = conn.prepareStatement(
 			  "SELECT * FROM Users"
@@ -288,16 +241,8 @@ public class UserManager extends DataManager {
 	  } catch (SQLException e) {
 		  logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-	  } finally {
-		  if (conn != null) {
-			  try {
-				  conn.close();
-			  } catch (SQLException e) {
-				  logger.log(Level.WARNING, "Connection Close", e);
-			  }
-		  }
-	  }
-	  
+	  } 	  
+
 	  return users;
   }
   

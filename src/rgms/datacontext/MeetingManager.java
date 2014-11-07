@@ -31,8 +31,6 @@ public class MeetingManager extends DataManager {
 	  */
 	 public void createMeeting(Meeting meeting) {
 		 try {
-			 Connection conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 					 "INSERT INTO Meetings (Description, CreatedByUserId, DateCreated, DateDue, GroupId) " +
@@ -69,8 +67,6 @@ public class MeetingManager extends DataManager {
 		 Connection conn = null;
 		 
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a Prepared Statement
 			 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Meetings WHERE Id = ?");
 			 
@@ -82,15 +78,7 @@ public class MeetingManager extends DataManager {
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 	 }
 	 
 	 /**
@@ -99,10 +87,7 @@ public class MeetingManager extends DataManager {
 	  * @return The Id of the Meeting
 	  */
 	 public int getIdFor(Meeting meeting) {
-		 Connection conn = null;
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "SELECT * FROM Meetings " +
@@ -132,15 +117,7 @@ public class MeetingManager extends DataManager {
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 		 
 		 return -1;
 	 }
@@ -151,7 +128,6 @@ public class MeetingManager extends DataManager {
 	  * @return A List of Meetings the User is attending
 	  */
 	 public List<Meeting> getAllMeetings(int userId) {
-		 Connection conn = null;
 		 List<Meeting> meetings = new LinkedList<Meeting>();
 		 
 		 //Date so only returns meetings that are yet to occur.
@@ -159,8 +135,6 @@ public class MeetingManager extends DataManager {
 		 java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 		 
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 					 "SELECT meet.* FROM Meetings meet " +
@@ -186,16 +160,7 @@ public class MeetingManager extends DataManager {
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-			 
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 		 
 		 return meetings;
 	 }
@@ -206,12 +171,8 @@ public class MeetingManager extends DataManager {
 	  * @return A List of Meetings that belong to the Group
 	  */
 	 public List<Meeting> getGroupMeetings(int groupId) {
-		 Connection conn = null;
 		 List<Meeting> meetings = new LinkedList<Meeting>();
 		 try {
-			 //Connect to Database
-			 conn = connection.getConnection();
-			 
 			 //Only want meetings in the future.
 			 java.util.Date now = new java.util.Date();
 			 java.sql.Date sqlDate = new java.sql.Date(now.getTime());
@@ -247,10 +208,7 @@ public class MeetingManager extends DataManager {
 	  * @param meetingId The Id of the Meeting 
 	  */
 	 public void deleteMeeting(int meetingId) {
-		 Connection conn = null;
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a Prepared Statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				"DELETE FROM Meetings WHERE Id=?"	 
@@ -263,16 +221,7 @@ public class MeetingManager extends DataManager {
 		 } catch (SQLException e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-
-		 }		 
+		 }  
 	 }
 
 }

@@ -12,5 +12,5 @@ import rgms.infrastructure.*;
  *
  */
 public abstract class DataManager {
-  protected JDBCConnection connection = new JDBCConnection();
+  protected Connection conn = JDBCConnection.getConnection();
 }

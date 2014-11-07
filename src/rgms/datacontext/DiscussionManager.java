@@ -25,8 +25,6 @@ public class DiscussionManager extends DataManager {
    */
   public void createDiscussion(DiscussionThread discussion) {
     try {
-      Connection conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement(
         "INSERT INTO DiscussionThreads (GroupId, ThreadName)" +
@@ -53,8 +51,6 @@ public class DiscussionManager extends DataManager {
    */
   public void createPost(DiscussionPost post) {
     try {
-      Connection conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement(
         "INSERT INTO DiscussionPosts (ThreadId, UserId, Message)" +
@@ -86,8 +82,6 @@ public class DiscussionManager extends DataManager {
     ArrayList<DiscussionThread> threads = new ArrayList<>();
 
     try {
-      Connection conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement(
         "SELECT * FROM DiscussionThreads WHERE GroupId = ?");
@@ -122,8 +116,6 @@ public class DiscussionManager extends DataManager {
     DiscussionThread thread = null;
 
     try {
-      Connection conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement(
         "SELECT * FROM DiscussionThreads WHERE Id = ?");
@@ -149,8 +141,6 @@ public class DiscussionManager extends DataManager {
     ArrayList<DiscussionPost> posts = new ArrayList<>();
 
     try {
-      Connection conn = connection.getConnection();
-      
       //Create a prepared statement
       PreparedStatement pstmt = conn.prepareStatement(
         "SELECT * FROM DiscussionPosts WHERE ThreadId = ?");

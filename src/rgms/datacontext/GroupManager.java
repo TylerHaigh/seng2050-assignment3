@@ -28,8 +28,6 @@ public class GroupManager extends DataManager {
 	  */
 	 public void createGroup(Group group) {
 		 try {
-			 Connection conn = connection.getConnection();
-			 
 			 //Create a prepare statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 					 "INSERT INTO Groups (GroupName, Description, CoordinatorId) " +
@@ -53,10 +51,7 @@ public class GroupManager extends DataManager {
 	  * @param userId The Id of the User
 	  */
 	 public void createMapping(int groupId, int userId) {
-		 Connection conn = null;
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "INSERT INTO GroupUserMaps (GroupId, UserId) " +
@@ -69,15 +64,7 @@ public class GroupManager extends DataManager {
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 	 }
 	 
 	 /**
@@ -87,10 +74,7 @@ public class GroupManager extends DataManager {
 	  * @return A Group with the given Id
 	  */
 	 public Group get(int groupId) {
-		 Connection conn = null;
 		 try {
-			 conn = connection.getConnection();
-			
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Groups WHERE Id = ?");
 			 
@@ -102,15 +86,7 @@ public class GroupManager extends DataManager {
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 	 }
 
 	 /**
@@ -118,12 +94,9 @@ public class GroupManager extends DataManager {
 	  * @return A List containing every Group
 	  */
 	 public List<Group> getEveryGroup() {
-		 Connection conn = null;
 		 List<Group> groups = new LinkedList<Group>();
 		 
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared connection
 			 PreparedStatement pstmt = conn.prepareStatement(
 					 "SELECT * FROM Groups");
@@ -144,15 +117,7 @@ public class GroupManager extends DataManager {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
 			 
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 		 
 		 return groups;
 	 }
@@ -163,12 +128,9 @@ public class GroupManager extends DataManager {
 	  * @return A List of Groups that the User belongs to
 	  */
 	 public List<Group> getAllGroups(int userId) {
-		 Connection conn = null;
 		 List<Group> groups = new LinkedList<Group>();
 		 
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 					 "SELECT g.* FROM Groups g " +
@@ -193,15 +155,7 @@ public class GroupManager extends DataManager {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
 			 
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 		 
 		 return groups;
 	 }
@@ -212,12 +166,9 @@ public class GroupManager extends DataManager {
 	  * @return A List of all Users in the Group
 	  */
 	 public List<User> getGroupUsers(int groupId) {
-		 Connection conn = null;
 		 List<User> groupUsers = new LinkedList<User>();
 		 
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "SELECT u.* FROM Users u " +
@@ -240,15 +191,7 @@ public class GroupManager extends DataManager {
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
-		 } finally {
-			 if (conn != null) { 
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 		 
 		 return groupUsers;
 	 }
@@ -260,11 +203,8 @@ public class GroupManager extends DataManager {
 	  */
 	 public List<String> getGroupMembers(int groupId){
 		 List<String> usersInGroup = new LinkedList<String>();
-		 Connection conn = null;
 		 
 		 try {
-			 conn = connection.getConnection();
-		
 			 //Create a Prepared Statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 					 "SELECT UserName FROM Users u " +
@@ -291,15 +231,8 @@ public class GroupManager extends DataManager {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
 			 
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
+
 		 return usersInGroup;
 	 }
 	 
@@ -309,10 +242,7 @@ public class GroupManager extends DataManager {
 	  * @return The Id of the Group
 	  */
 	 public int getIdFor(Group group) {
-		 Connection conn = null;
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a Prepared Statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "SELECT * FROM Groups " +
@@ -330,15 +260,7 @@ public class GroupManager extends DataManager {
 			 }
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
  
 		 return -1;
 	 }
@@ -349,10 +271,7 @@ public class GroupManager extends DataManager {
 	  * @return The Coordinator for the Group
 	  */
 	 public User getCoordinator(int groupId) {
-		 Connection conn = null;
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "SELECT u.* FROM Users u " +
@@ -369,15 +288,7 @@ public class GroupManager extends DataManager {
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 	 }
 	 
 	 /**
@@ -386,10 +297,7 @@ public class GroupManager extends DataManager {
 	  * @param userId The Id of the User
 	  */
 	 public void removeMapping(int groupId, int userId) {
-		 Connection conn = null;
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "DELETE FROM GroupUserMaps " +
@@ -402,15 +310,7 @@ public class GroupManager extends DataManager {
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 	 }
 	 
 }

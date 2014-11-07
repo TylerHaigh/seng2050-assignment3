@@ -106,7 +106,7 @@ public class DiscussionPost implements Serializable {
 				post.setMessage(rs.getString("Message"));
 
 				//get user
-				UserManager userManager = new UserManager(rs.getStatement().getConnection());
+				UserManager userManager = new UserManager();
 				post.setUser(userManager.get(post.getUserId()));
 			}
 		}

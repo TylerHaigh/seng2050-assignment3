@@ -26,8 +26,6 @@ public class NotificationManager extends DataManager {
 	  */
 	 public void createNotification(Notification notification) {
 		 try {
-			 Connection conn = connection.getConnection();
-			 
 			 //Create a Prepared Statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "INSERT INTO Notifications (UserId, GroupId, Description, Link) " +
@@ -59,8 +57,6 @@ public class NotificationManager extends DataManager {
 	  */
 	 public void deleteNotification(int notificationId) {
 		 try {
-			 Connection conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "DELETE FROM Notifications WHERE Id=?"
@@ -81,11 +77,7 @@ public class NotificationManager extends DataManager {
 	  * @return A Notification with the given Id
 	  */
 	 public Notification get(int notificationId) {
-		 Connection conn = null;
-		 
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "SELECT * FROM Notifications WHERE Id=?"
@@ -99,15 +91,7 @@ public class NotificationManager extends DataManager {
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 	 }
 	 
 	 /**
@@ -116,12 +100,9 @@ public class NotificationManager extends DataManager {
 	  * @return A List of Notifications that belong to the User
 	  */
 	 public List<Notification> getAllNotifications(int userId) {
-		 Connection conn = null;
 		 List<Notification> notifications = new LinkedList<Notification>();
 		 
 		 try {
-			 conn = connection.getConnection();
-			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
 				 "SELECT n.* FROM Notifications n " +
@@ -145,15 +126,7 @@ public class NotificationManager extends DataManager {
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
 			 return null;
-		 } finally {
-			 if (conn != null) {
-				 try {
-					 conn.close();
-				 } catch (SQLException e) {
-					 logger.log(Level.WARNING, "Connection Close", e);
-				 }
-			 }
-		 }
+		 } 
 		 
 		 return notifications;
  	 }
