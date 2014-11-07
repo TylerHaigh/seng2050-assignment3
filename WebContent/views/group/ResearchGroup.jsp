@@ -4,16 +4,23 @@
 <h1>${ groupName }</h1>
 
 <c:if test="${ joinSuccess }">
-	join was successful
+	Join was successful
 </c:if>
 
-<c:if test="${ notMember }">
-	<a href="${ pageContext.request.contextPath }/group/invite?groupId=${ groupId }">
-		Join this Group
-	</a>
-</c:if>
+<c:choose>
+	<c:when test="${ notMember }">
+		<a href="${ pageContext.request.contextPath }/group/invite?groupId=${ groupId }">
+			Join this Group
+		</a>
+	</c:when>
+	
+	<c:otherwise>
+		<a href="${ pageContext.request.contextPath }/group/leave?groupId=${ groupId }">Leave Group</a>
+	</c:otherwise>
+</c:choose>
 
 <h2>Members</h2>
+
 <div class="list-group">
    	<c:forEach var="member" items="${ groupMembers }" >
    		<a href="${pageContext.request.contextPath}/account/profile?userName=${member}" class="list-group-item">
@@ -21,6 +28,7 @@
    		</a>
    	</c:forEach>
 </div>
+
 <hr />
 
 <h2>Meetings</h2>
@@ -41,6 +49,7 @@
 <hr />
 
 <h2>Discussions </h2>
+
 <div class="list-group">
     <c:if test="${ empty groupDiscussions }">
         <p>
@@ -53,20 +62,25 @@
         </a>
     </c:forEach>
 </div>
+
 <a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ groupId }" class="btn btn-primary">Create Discussion</a>
+
 <hr />
 
 <h2>Documents</h2>
+
 <div class="list-group">
     <c:if test="${ empty groupDocuments }">
         <p>
             No Documents yet...
         </p>
     </c:if>
+    
     <c:forEach var="document" items="${ groupDocuments }" >
         <a href="${pageContext.request.contextPath}/group/document?documentId=${document.id}" class="list-group-item">
             <c:out value="File Name: ${ document.documentName }" />
         </a>
     </c:forEach>
 </div>	
+
 <a href="${pageContext.request.contextPath}/group/creatediscussion/?groupId=${ groupId }" class="btn btn-primary">Upload New Document</a>

@@ -1,7 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/formvalidation.js"/></script>
-
 <h1>Create Meeting</h1>
 
 <form role="form" action="${pageContext.request.contextPath}/group/meeting" method="post" onsubmit="return validateMeeting();">

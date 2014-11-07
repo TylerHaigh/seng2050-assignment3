@@ -14,14 +14,38 @@ import rgms.infrastructure.*;
 import rgms.model.*;
 import rgms.datacontext.*;
 
+/**
+ * Servlet to handle requests for group specific tasks. Manages creation and
+ * deletion of groups, meetings, documents, discussion threads 
+ * 
+ * @author Tyler Haigh - C3182929
+ * @author Simon Hartcher - C3185790
+ * @author Josh Crompton - C3165877
+ *
+ */
 @MultipartConfig
 @WebServlet(urlPatterns = { "/group/*", "/group" })
 public class GroupController extends Controller {
 	private static Logger logger = Logger.getLogger(GroupController.class.getName());
 
+	/**
+	 * Constructor for the Group Controller. Provides no functionality
+	 */
 	public GroupController() { }
 	
+	/**
+	 * Displays a given Research Group page for a HTTP Get, or creates a new
+	 * Group for a HTTP Post
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a groupId request parameter for a GET
+	 * - Requires a groupName, description, createdByUserId request parameters for a POST 
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void researchgroupAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		Map<String, Object> viewData = new HashMap<String, Object>();
@@ -98,38 +122,52 @@ public class GroupController extends Controller {
 			
 			group.setId(groupId);
 			
-			//Update the User Session to show new meeting
-    	HttpSession session = req.getSession();
-    	Session userSession = (Session) session.getAttribute("userSession");
-    	User admin = userSession.getUser();
-    	admin.getGroups().add(group);
+			//Update the User Session to show new group
+	    	HttpSession session = req.getSession();
+	    	Session userSession = (Session) session.getAttribute("userSession");
+	    	User admin = userSession.getUser();
+	    	admin.getGroups().add(group);
 			
 			//Show the Group Page
 			viewData.put("groupName", group.getGroupName());
-	    List<String> groupMembers = groupMan.getGroupMembers(groupId);
-	    viewData.put("groupMembers", groupMembers);
+			List<String> groupMembers = groupMan.getGroupMembers(groupId);
+			viewData.put("groupMembers", groupMembers);
 		    
 			view(req, res, "/views/group/ResearchGroup.jsp", viewData);
 		}
 	}
 	
+	/**
+	 * Displays a given Meeting page for a HTTP Get, or creates a new Meeting
+	 * for a HTTP Post
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a meetingId request parameter for a GET
+	 * - Requires description, createdByUserId, datepicker, meetingTime, groupId
+	 * 		request parameters for a POST
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void meetingAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 	    viewData.put("title", "Meeting");
 	    
+	    //Initialise Manager connections
 	    MeetingManager meetingMan = new MeetingManager();
 	    GroupManager groupMan = new GroupManager();
 	    
 	    if (req.getMethod() == HttpMethod.Get) {
+	    	//Get request parameter
 	    	int meetingId = Integer.parseInt(req.getParameter("meetingId"));
 		    Meeting meeting = meetingMan.get(meetingId);
 		    
 		    if (meeting != null) {
 			    
 		    	List<User> meetingUsers = groupMan.getGroupUsers(meeting.getGroupId());
-		    	
 		    	viewData.put("meetingUsers", meetingUsers);
 		    	viewData.put("meeting", meeting);
 			    view(req, res, "/views/group/Meeting.jsp", viewData);
@@ -153,7 +191,8 @@ public class GroupController extends Controller {
 	    	try {
 				dateDue = format.parse(meetingDate + " " + meetingTime);
 			} catch (ParseException e) {
-				//Unable to parse date
+				//Unable to parse date. This shouldn't happen since we are
+				//performing javascript validation.
 			}
 	    	
 	    	int groupId = Integer.parseInt(req.getParameter("groupId"));
@@ -198,7 +237,17 @@ public class GroupController extends Controller {
 	    }
 	}
 	
+	/**
+	 * Displays a Document for a HTTP Get
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a documentId requestParameter for the GET
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void documentAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		Map<String, Object> viewData = new HashMap<String, Object>();
@@ -209,6 +258,7 @@ public class GroupController extends Controller {
 	    	GroupManager gm = new GroupManager();
 		    int documentId = Integer.parseInt(req.getParameter("documentId"));
 		    Document aDocument= gm.getDocument(documentId);		    
+		    
 		    if (aDocument != null) {
 		    	viewData.put("document", aDocument);
 			    //View group page.
@@ -218,16 +268,26 @@ public class GroupController extends Controller {
 		    }
 		    
 		} else if (req.getMethod() == HttpMethod.Post) {
-			//404
 			httpNotFound(req, res);
 		}
 	}
 	
+	/**
+	 * Deletes a meeting from the database
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a meetingId request parameter for the HTTP GET
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void deletemeetingAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		if (req.getMethod() == HttpMethod.Get) {
 			
+			//Get the meeting
 			int meetingId = Integer.parseInt(req.getParameter("meetingId"));
 			MeetingManager meetingMan = new MeetingManager();
 			Meeting meeting = meetingMan.get(meetingId);
@@ -247,6 +307,7 @@ public class GroupController extends Controller {
 	    	}
 	    	
 	    	redirectToLocal(req, res, "/home/dashboard");
+	    	return;
 			
 		} else if (req.getMethod() == HttpMethod.Post) {
 			httpNotFound(req, res);
@@ -254,14 +315,25 @@ public class GroupController extends Controller {
 		
 	}
 
+	/**
+	 * Displays a Discussion Thread page
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a threadId request parameter for the HTTP GET
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void discussionAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		Map<String, Object> viewData = new HashMap<>();
 
 		if (req.getMethod() == HttpMethod.Get) {
+			
+			//Get the thread
 			int threadId = Integer.parseInt(req.getParameter("threadId"));
-
 			DiscussionManager discussionManager = new DiscussionManager();
 			DiscussionThread thread = discussionManager.getThread(threadId);
 			thread.setPosts(discussionManager.getPosts(threadId));
@@ -272,7 +344,6 @@ public class GroupController extends Controller {
 
 			viewData.put("thread", thread);
 			viewData.put("title", "Discussion: " + thread.getThreadName());
-
 			view(req, res, "/views/group/DiscussionThread.jsp", viewData);
 		}
 		else {
@@ -280,7 +351,20 @@ public class GroupController extends Controller {
 		}
 	}
 
+	/**
+	 * Displays the Create Discussion page for a HTTP Get, or creates a Discussion
+	 * Thread for a HTTP Post
+	 * 
+	 *  - Requires a cookie for the session user
+	 *  - Requires a groupId request parameter for a GET
+	 *  - Requires a groupId and threadName request parameter for a POST
+	 *  - Requires a document request part for a POST
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void createDiscussionAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		Map<String, Object> viewData = new HashMap<>();
@@ -295,7 +379,8 @@ public class GroupController extends Controller {
 		else if (req.getMethod() == HttpMethod.Post) {
 			//save discussion
 			DiscussionThread thread = new DiscussionThread();
-			thread.setGroupId(Integer.parseInt(req.getParameter("groupId")));
+			int groupId = Integer.parseInt(req.getParameter("groupId"));
+			thread.setGroupId(groupId);
 			thread.setThreadName(req.getParameter("threadName"));
 
 			DiscussionManager dm = new DiscussionManager();
@@ -316,6 +401,20 @@ public class GroupController extends Controller {
 
 					DocumentManager docMan = new DocumentManager();
 					docMan.createDocument(doc);
+					
+					//Create a notification to all in the group
+					NotificationManager notificationMan = new NotificationManager();
+					GroupManager groupMan = new GroupManager();
+					List<User> groupUsers = groupMan.getGroupUsers(groupId);
+					
+					for (User u : groupUsers) {
+						Notification notification = new Notification(u.getId(), u,
+								groupId, null,
+								"User " + u.getFullName() + " has uploaded a document",
+								"/group/document?documentId=" + doc.getId());
+						
+						notificationMan.createNotification(notification);
+					}
 				}
 			}
 			catch (Exception e) {
@@ -328,34 +427,56 @@ public class GroupController extends Controller {
 		httpNotFound(req, res);
 	}
 
-  private String getFileName(Part part) {
-    for (String cd : part.getHeader("content-disposition").split(";")) {
-      if (cd.trim().startsWith("filename")) {
-        return cd.substring(cd.indexOf('=') + 1).trim()
-            .replace("\"", "");
-      }
-    }
-    return null;
-  }
-
-	private String saveDocument(Part documentPart) {
-    try {
-      //get random uuid
-      String id = UUID.randomUUID().toString();
-
-      //save to disk
-      String savePath = getServletContext().getRealPath("/Uploads") + "/" + id;
-      documentPart.write(savePath);
-
-      return id;
-    }
-    catch (Exception e) {
-      logger.log(Level.SEVERE, "Error saving document", e);
-      return null;
-    }	
+	/**
+	 * Gets the filename from a request part
+	 * 
+	 * @param part The request part to process
+	 * @return The file name of the part
+	 */
+	private String getFileName(Part part) {
+		for (String cd : part.getHeader("content-disposition").split(";")) {
+			if (cd.trim().startsWith("filename")) {
+				return cd.substring(cd.indexOf('=') + 1).trim()
+						.replace("\"", "");
+			}
+		}
+		return null;
 	}
 
+	/**
+	 * Saves an uploaded document to the server hard disk
+	 * 
+	 * @param documentPart The request part for the document
+	 * @return The UUID string for the document name on disk
+	 */
+	private String saveDocument(Part documentPart) {
+	    try {
+	      //get random uuid
+	      String id = UUID.randomUUID().toString();
+	
+	      //save to disk
+	      String savePath = getServletContext().getRealPath("/Uploads") + "/" + id;
+	      documentPart.write(savePath);
+	
+	      return id;
+	    }
+	    catch (Exception e) {
+	      logger.log(Level.SEVERE, "Error saving document", e);
+	      return null;
+	    }	
+	}
+
+	/**
+	 * Creates a Discussion Post
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a comment and threadId request parameter for the POST
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void createPostAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		Map<String, Object> viewData = new HashMap<>();
@@ -365,10 +486,13 @@ public class GroupController extends Controller {
 
 			HttpSession session = req.getSession();
 			Session userSession = (Session)session.getAttribute("userSession");
+			
+			//Create the discussion post
 			DiscussionPost post = new DiscussionPost();
 			post.setUserId(userSession.getUserId());
 			post.setMessage(req.getParameter("comment"));
 			post.setThreadId(Integer.parseInt(req.getParameter("threadId")));
+			
 			dm.createPost(post);
 
 			redirectToLocal(req, res, "/group/discussion/?threadId=" + req.getParameter("threadId"));
@@ -378,7 +502,17 @@ public class GroupController extends Controller {
 		}
 	}
 
+	/**
+	 * Creates a notification to a Group coordinator signaling that a user wants to
+	 * join their group
+	 * 
+	 * - Requires a groupId request parameter for the GET
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
 	public void inviteAction(HttpServletRequest req, HttpServletResponse res) {
+		//Ensure there is a cookie for the session user
 		if (AccountController.redirectIfNoCookie(req, res)) return;
 		
 		Map<String, Object> viewData = new HashMap<String, Object>();
@@ -387,14 +521,17 @@ public class GroupController extends Controller {
 		
 		try {
 		
+			//Get the session user
 	    	HttpSession session = req.getSession();
 	    	Session userSession = (Session) session.getAttribute("userSession");
 	    	User user = userSession.getUser();
 	    	
+	    	//Get the coordinator for the group
 	    	GroupManager groupMan = new GroupManager();
 	    	Group group = groupMan.get(groupId);
 	    	User coordinator = groupMan.getCoordinator(groupId);
 	    	
+	    	//Send a notification to the coordinator for them to permit access to the group
 	    	NotificationManager notificationMan = new NotificationManager();
 	    	Notification notification = new Notification(coordinator.getId(), coordinator,
 	    			groupId, group, user.getFullName() + " wants to join your group " + group.getGroupName(),
@@ -402,24 +539,38 @@ public class GroupController extends Controller {
 	    	notificationMan.createNotification(notification);
 	    	
 	    	redirectToLocal(req, res, "/home/dashboard");
-    	
+	    	return;
+	    	
 		} catch (Exception e) {
 			redirectToLocal(req, res, "/home/dashboard");
 		}
     	
 	}
 
+	/**
+	 * Downloads a document from the server to the user's client machine
+	 * 
+	 * - Requires a documentId request parameter
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 * @throws IOException Unable to download the document
+	 */
 	public void downloadDocumentAction(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		if (req.getMethod() == HttpMethod.Get) {
+			
+			//Get the document
 			int documentId = Integer.parseInt(req.getParameter("documentId"));
 			DocumentManager docMan = new DocumentManager();
 			Document document = docMan.get(documentId);
+			
 			if (document != null) {
 				ServletContext context = getServletContext();
 				String documentPath = String.format("%s/%s",
 					context.getRealPath("/Uploads"), 
 					document.getDocumentPath());
 
+				//Create a stream
 				File documentFile = new File(documentPath);
 				FileInputStream stream = new FileInputStream(documentFile);
 
@@ -433,23 +584,54 @@ public class GroupController extends Controller {
 
 				//forces download of file
 				String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"", document.getDocumentName());
-        res.setHeader(headerKey, headerValue);
-
-        OutputStream os = res.getOutputStream();
-
-        byte[] buffer = new byte[1024];
-        int read = -1;
-
-        while ((read = stream.read(buffer)) != -1) {
-        	os.write(buffer, 0, read);
-        }
-
-        stream.close();
-        os.close();
-        return;
+				String headerValue = String.format("attachment; filename=\"%s\"", document.getDocumentName());
+		        res.setHeader(headerKey, headerValue);
+		
+		        OutputStream os = res.getOutputStream();
+		
+		        byte[] buffer = new byte[1024];
+		        int read = -1;
+		
+		        while ((read = stream.read(buffer)) != -1) {
+		        	os.write(buffer, 0, read);
+		        }
+		
+		        stream.close();
+		        os.close();
+		        return;
 			}
 		}
+		
 		httpNotFound(req, res);
+	}
+	
+	/**
+	 * Removes User from the Group
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a groupId request parameter for the HTTP GET
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
+	public void leaveAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
+		if (req.getMethod() == HttpMethod.Get) {
+			int groupId = Integer.parseInt(req.getParameter("groupId"));
+
+			HttpSession session = req.getSession();
+			Session userSession = (Session) session.getAttribute("userSession");
+			int userId = userSession.getUser().getId();
+			
+			GroupManager groupMan = new GroupManager();
+			groupMan.removeMapping(groupId, userId);
+			
+			redirectToLocal(req, res, "/home/dashboard");
+			return;
+			
+		} else {
+			httpNotFound(req, res);
+		}
 	}
 }

@@ -16,7 +16,17 @@ import java.nio.charset.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Generic Servlet that will act as a Controller as part of an MVC architecture
+ * 
+ * @author Tyler Haigh - C3182929
+ * @author Simon Hartcher - C3185790
+ * @author Josh Crompton - C3165877
+ *
+ */
 public abstract class Controller extends HttpServlet {
+  
+  //Constants
   private static final Logger logger = Logger.getLogger(Controller.class.getName());
   public static final String LAYOUT_PATH = "/views/shared/Layout.jsp";
   private static final String BODY_ATTRIBUTE = "body";
@@ -24,6 +34,11 @@ public abstract class Controller extends HttpServlet {
   private static final String STYLES_ATTRIBUTE = "styles";
   private static final String TITLE_ATTRIBUTE = "title";
 
+  /**
+   * Gets the action method name from the URI
+   * @param requestUri The uri requested
+   * @return The action name of the controller action to run
+   */
   private static String getAction(URI requestUri) {
     String[] paths = requestUri.getPath().toLowerCase().split("/");
     String actionName = paths[paths.length - 1];
@@ -32,6 +47,11 @@ public abstract class Controller extends HttpServlet {
     return actionName;
   }
 
+  /**
+   * Gets the action method name from a request string
+   * @param requestString The request path
+   * @return The action name of the controller action to run
+   */
   private static String getAction(String requestString) {
     try {
       return getAction(new URI(requestString));
@@ -42,14 +62,25 @@ public abstract class Controller extends HttpServlet {
     }
   }
 
+  /**
+   * Performs a HTTP GET method
+   */
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
     routeRequest(req, resp);
   }
 
+  /**
+   * Performs a HTTP POST method
+   */
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
     routeRequest(req, resp);
   }
 
+  /**
+   * Gets the action method to be run based on the name of the action 
+   * @param actionName The name of the action to run
+   * @return The method to run
+   */
   private Method getActionMethod(String actionName) {
     Method[] methods = this.getClass().getDeclaredMethods();
     for (Method m: methods) {
@@ -61,14 +92,29 @@ public abstract class Controller extends HttpServlet {
     return null;
   }
 
+  /**
+   * Renders a view with supplied view data
+   * @param req A HTTP Request
+   * @param res A HTTP Response
+   * @param viewPath The path of the view
+   * @param viewData The data to be displayed on the view
+   */
   protected void view(HttpServletRequest req, HttpServletResponse res, String viewPath, Map<String, Object> viewData) {
-    for (Map.Entry<String, Object> entry : viewData.entrySet()) {
+    
+	//Create request parameters for each entry in the view data
+	for (Map.Entry<String, Object> entry : viewData.entrySet()) {
       req.setAttribute(entry.getKey(), entry.getValue());
     }
 
     view(req, res, viewPath);
   }
 
+  /**
+   * Renders the layout for a view
+   * @param req A HTTP Request
+   * @param res A HTTP Response
+   * @param viewPath The path of the view
+   */
   protected void view(HttpServletRequest req, HttpServletResponse res, String viewPath) {
     req.setAttribute("partialViewMain", viewPath);
 
@@ -76,6 +122,11 @@ public abstract class Controller extends HttpServlet {
     renderLayout(req, res);
   }
 
+  /**
+   * Determines the route to be invoked by the controller
+   * @param req A HTTP Request
+   * @param res A HTTP Response
+   */
   private void routeRequest(HttpServletRequest req, HttpServletResponse res) {
     try {
       //get action name
@@ -98,6 +149,11 @@ public abstract class Controller extends HttpServlet {
     }
   }
 
+  /**
+   * Displays a HTTP 404 Page Not Found error page
+   * @param req A HTTP Request
+   * @param res A HTTP Response
+   */
   protected void httpNotFound(HttpServletRequest req, HttpServletResponse res) {
 	  Map<String, Object> viewData = new HashMap<String, Object>();
 	  viewData.put("title", "Http Not Found");
@@ -105,6 +161,12 @@ public abstract class Controller extends HttpServlet {
 	  view(req, res, "/views/shared/HttpNotFound.jsp", viewData);
   }
 
+  /**
+   * Redirects the response to the given view path
+   * @param req A HTTP Request
+   * @param res A HTTP Response
+   * @param path The view path
+   */
   protected static void redirectToLocal(HttpServletRequest req, HttpServletResponse res, String path) {
     try {
       res.sendRedirect(req.getContextPath() + path);
@@ -115,6 +177,11 @@ public abstract class Controller extends HttpServlet {
     }
   }
 
+  /**
+   * Renders the layout for the page and display the page
+   * @param req A HTTP Request
+   * @param res A HTTP Response
+   */
   private void renderLayout(HttpServletRequest req, HttpServletResponse res) {
     try{
       RequestDispatcher rd = req.getRequestDispatcher(LAYOUT_PATH);
