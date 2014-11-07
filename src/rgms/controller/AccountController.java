@@ -240,9 +240,11 @@ public class AccountController extends Controller {
       }
       else if (req.getMethod() == HttpMethod.Post) {
         User user = new User();
+        user.setId(userId);
         user.setUserName(req.getParameter("userName"));
         user.setFirstName(req.getParameter("firstName"));
         user.setLastName(req.getParameter("lastName"));
+        user.setDescription(req.getParameter("description"));
 
         try {
           Part avatar = req.getPart("avatar");

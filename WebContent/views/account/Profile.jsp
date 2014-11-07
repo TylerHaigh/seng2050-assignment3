@@ -20,7 +20,7 @@
         <div class="col-md-8 aboutMe">
             
             <div> Username: <c:out value="${ profileUser.userName }" /> </div>
-            
+            <div> ${ profileUser.description }</div>
             <c:if test="${ profileUser.userName eq userSession.user.userName }">
 	            <div class = "btn-group">
 			    	<a href="${pageContext.request.contextPath}/account/editProfile?userId=${ userSession.user.id }" >Edit Profile</a>
@@ -35,8 +35,7 @@
     </h2>
     
     <div class="list-group">
-    	<c:forEach var="group" items="${ profileUser.groups }" >
-    		<!-- ResearchGroup.jsp?groupName=${ group.groupName } -->    		
+    	<c:forEach var="group" items="${ profileUser.groups }" >  		
     		<a href="${pageContext.request.contextPath}/group/researchGroup?groupId=${group.id }" class="list-group-item">
     			<c:out value="${ group.groupName }" />
     		</a>

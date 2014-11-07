@@ -57,10 +57,10 @@ public class User implements Serializable {
                 user.setMeetings(meetingMan.getAllMeetings(user.getId()));
                 
                 Logger.getLogger("rgms.model.User")
-                    .info(String.format("Loaded User: %d, %s, %s, %s, %s, %s",
+                    .info(String.format("Loaded User: %d, %s, %s, %s, %s, %s, %s",
                         user.getId(), user.getFirstName(), user.getLastName(),
                         user.getPassword(), user.getStudentId(), 
-                        user.getImageReference()));
+                        user.getImageReference(), user.getDescription()));
             }
         }
         catch (SQLException e) {

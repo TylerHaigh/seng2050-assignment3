@@ -74,13 +74,14 @@ public class UserManager extends DataManager {
       Connection conn = connection.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(
         "UPDATE users " + 
-        "SET FirstName=?, LastName=?, ImageReference = ?" + 
+        "SET FirstName=?, LastName=?, ImageReference = ?, description = ? " + 
         "WHERE Id=? ;"
         );
       pstmt.setString(1, user.getFirstName());
       pstmt.setString(2, user.getLastName());
       pstmt.setString(3, user.getImageReference());
-      pstmt.setInt(4, user.getId());
+      pstmt.setString(4, user.getDescription());
+      pstmt.setInt(5, user.getId());
       
       pstmt.execute();
     }
