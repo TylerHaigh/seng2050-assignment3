@@ -152,7 +152,6 @@ public class DocumentManager extends DataManager {
      * @return The Document with the given Id
      */
    public Document get(int documentId){
-     Document aDocument = new Document();
      Connection conn = null;
      
      try {
@@ -168,9 +167,7 @@ public class DocumentManager extends DataManager {
        ResultSet rs = pstmt.executeQuery();
 
        //Retrieve the result
-       if (rs.isBeforeFirst()) {
-    	   aDocument = Document.fromResultSet(rs);
-       }
+       return Document.fromResultSet(rs);
        
      } catch (Exception e) {
        logger.log(Level.SEVERE, "SQL Error", e);
@@ -184,8 +181,6 @@ public class DocumentManager extends DataManager {
          }
        }
      }
-     
-     return aDocument;
   }
    
 }

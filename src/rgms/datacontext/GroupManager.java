@@ -355,7 +355,6 @@ public class GroupManager extends DataManager {
 	  * @return The Document with the given Id
 	  */
 	 public Document getDocument(int documentId){
-		 Document aDocument = new Document();
 		 Connection conn = null;
 		 
 		 try {
@@ -363,18 +362,14 @@ public class GroupManager extends DataManager {
 			 
 			 //Create a prepared statement
 			 PreparedStatement pstmt = conn.prepareStatement(
-					 "SELECT * FROM documents " +
-					 "WHERE id = ?");
+					 "SELECT * FROM Documents " +
+					 "WHERE Id = ?");
 			
 			 //Set the required parameters and execute
 			 pstmt.setInt(1, documentId);
 			 ResultSet rs = pstmt.executeQuery();
 			 
-			 if (rs.isBeforeFirst()) {
-				 while (!rs.isAfterLast()) {
-				 	aDocument = Document.fromResultSet(rs);
-				 }
-			 }
+			 return Document.fromResultSet(rs);
 			 
 		 } catch (Exception e) {
 			 logger.log(Level.SEVERE, "SQL Error", e);
@@ -388,8 +383,6 @@ public class GroupManager extends DataManager {
 				 }
 			 }
 		 }
-		 
-		 return aDocument;
 	}
 
 	 /**
