@@ -1,7 +1,17 @@
 Research Group Management System
 ================================
 
-Assignment for UoN SENG2050. Implement a system similar to Blackboard
+# Abstract #
+
+This application was built as an assignment for SENG2050 - Web Engineering at the University of Newcastle 2014. It aims to implement a java servlet application for a Research Groups. Members are able to log into the application, upload research documents and comment on each other's work.
+
+# Submission Notes #
+
+* Run gradle build to generate WAR file
+* WAR file can be found in build/libs
+* Replace .class files with .java files in rgms package
+* Add javax.servlet-api-3.0.1 to the WEB-INF/libs folder
+* Package with Documentation (PDF versions) and SQL Scripts
 
 # Developer Notes #
 
@@ -12,9 +22,7 @@ Assignment for UoN SENG2050. Implement a system similar to Blackboard
 * Download [MySQL Workbench](http://dev.mysql.com/downloads/workbench/ "MySQL Workbench")
 * Clone the repository using Github
 * Install the Database
-	* Create Database using <CreateDatabase.sql>
-	* Create RGMS User using <CreateDatabaseUser.sql>
-	* Insert Initial Data using <InsertData.sql>
+	* Create Database using "CreateDatabase.sql"
 * Build Gradle project using:
 	* *gradle build*
 	* *gradle eclipseWpt*
