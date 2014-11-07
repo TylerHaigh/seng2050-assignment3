@@ -590,4 +590,33 @@ public class GroupController extends Controller {
 		httpNotFound(req, res);
 	}
 	
+	/**
+	 * Removes User from the Group
+	 * 
+	 * - Requires a cookie for the session user
+	 * - Requires a groupId request parameter for the HTTP GET
+	 * 
+	 * @param req The HTTP Request
+	 * @param res The HTTP Response
+	 */
+	public void leaveAction(HttpServletRequest req, HttpServletResponse res) {
+		if (AccountController.redirectIfNoCookie(req, res)) return;
+		
+		if (req.getMethod() == HttpMethod.Get) {
+			int groupId = Integer.parseInt(req.getParameter("groupId"));
+
+			HttpSession session = req.getSession();
+			Session userSession = (Session) session.getAttribute("userSession");
+			int userId = userSession.getUser().getId();
+			
+			GroupManager groupMan = new GroupManager();
+			groupMan.removeMapping(groupId, userId);
+			
+			redirectToLocal(req, res, "/home/dashboard");
+			return;
+			
+		} else {
+			httpNotFound(req, res);
+		}
+	}
 }

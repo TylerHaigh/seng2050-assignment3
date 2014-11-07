@@ -462,4 +462,37 @@ public class GroupManager extends DataManager {
 		 }
 	 }
 	 
+	 /**
+	  * Deletes a mapping between a User and Group
+	  * @param groupId The Id of the Group
+	  * @param userId The Id of the User
+	  */
+	 public void removeMapping(int groupId, int userId) {
+		 Connection conn = null;
+		 try {
+			 conn = connection.getConnection();
+			 
+			 //Create a prepared statement
+			 PreparedStatement pstmt = conn.prepareStatement(
+				 "DELETE FROM GroupUserMaps " +
+				 "WHERE GroupId=? and UserId=?");
+			 
+			 //Set the required parameters and execute
+			 pstmt.setInt(1, groupId);
+			 pstmt.setInt(2, userId);
+			 pstmt.execute();
+			 
+		 } catch (Exception e) {
+			 logger.log(Level.SEVERE, "SQL Error", e);
+		 } finally {
+			 if (conn != null) {
+				 try {
+					 conn.close();
+				 } catch (SQLException e) {
+					 logger.log(Level.WARNING, "Connection Close", e);
+				 }
+			 }
+		 }
+	 }
+	 
 }

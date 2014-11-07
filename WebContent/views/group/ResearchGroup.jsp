@@ -4,14 +4,20 @@
 <h1>${ groupName }</h1>
 
 <c:if test="${ joinSuccess }">
-	join was successful
+	Join was successful
 </c:if>
 
-<c:if test="${ notMember }">
-	<a href="${ pageContext.request.contextPath }/group/invite?groupId=${ groupId }">
-		Join this Group
-	</a>
-</c:if>
+<c:choose>
+	<c:when test="${ notMember }">
+		<a href="${ pageContext.request.contextPath }/group/invite?groupId=${ groupId }">
+			Join this Group
+		</a>
+	</c:when>
+	
+	<c:otherwise>
+		<a href="${ pageContext.request.contextPath }/group/leave?groupId=${ groupId }">Leave Group</a>
+	</c:otherwise>
+</c:choose>
 
 <h2>Members</h2>
 
