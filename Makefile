@@ -8,6 +8,6 @@ build:
 
 clean: FILES = $(SOURCES:.java=.class)
 clean:
-	rm -f $(FILES)
+	$(RM) $(FILES)
 
 .PHONY: clean all
