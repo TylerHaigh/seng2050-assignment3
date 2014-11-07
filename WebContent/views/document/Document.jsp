@@ -11,6 +11,16 @@
   </c:forEach> 
 </div>
 
+<h3>Upload New Version</h3>
+<form action="${pageContext.request.contextPath}/document/uploaddocument/?threadId=${thread.id}&groupId=${thread.groupId}&versionNumber=${documents.get(0).versionNumber + 1}" enctype="multipart/form-data" method="post">
+  <p>
+    <input type="file" name="document" id="document" />
+  </p>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </div>  
+</form>
+
 <c:if test="${ userSession.user.id == thread.group.coordinatorId }">
 	<h3>Access Summary for Version ${documents.get(0).versionNumber}</h3>
 	

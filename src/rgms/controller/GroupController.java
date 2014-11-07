@@ -361,7 +361,7 @@ public class GroupController extends Controller {
 
 				//if we have a document to upload
 				if (documentPart.getSize() > 0) {
-					String uuid = saveDocument(documentPart);
+					String uuid = DocumentController.saveDocument(this.getServletContext(), documentPart);
 					Document doc = new Document();
 					doc.setDocumentName(getFileName(documentPart));
 					doc.setDocumentPath(uuid);
@@ -397,44 +397,7 @@ public class GroupController extends Controller {
 		httpNotFound(req, res);
 	}
 
-	/**
-	 * Gets the filename from a request part
-	 * 
-	 * @param part The request part to process
-	 * @return The file name of the part
-	 */
-	private String getFileName(Part part) {
-		for (String cd : part.getHeader("content-disposition").split(";")) {
-			if (cd.trim().startsWith("filename")) {
-				return cd.substring(cd.indexOf('=') + 1).trim()
-						.replace("\"", "");
-			}
-		}
-		return null;
-	}
 
-	/**
-	 * Saves an uploaded document to the server hard disk
-	 * 
-	 * @param documentPart The request part for the document
-	 * @return The UUID string for the document name on disk
-	 */
-	private String saveDocument(Part documentPart) {
-	    try {
-	      //get random uuid
-	      String id = UUID.randomUUID().toString();
-	
-	      //save to disk
-	      String savePath = getServletContext().getRealPath("/Uploads") + "/" + id;
-	      documentPart.write(savePath);
-	
-	      return id;
-	    }
-	    catch (Exception e) {
-	      logger.log(Level.SEVERE, "Error saving document", e);
-	      return null;
-	    }	
-	}
 
 	/**
 	 * Creates a Discussion Post

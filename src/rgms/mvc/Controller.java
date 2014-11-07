@@ -195,4 +195,20 @@ public abstract class Controller extends HttpServlet {
       logger.log(Level.SEVERE, "IO Error", e);
     }
   }
+
+  /**
+   * Gets the filename from a request part
+   * 
+   * @param part The request part to process
+   * @return The file name of the part
+   */
+  public String getFileName(Part part) {
+    for (String cd : part.getHeader("content-disposition").split(";")) {
+      if (cd.trim().startsWith("filename")) {
+        return cd.substring(cd.indexOf('=') + 1).trim()
+            .replace("\"", "");
+      }
+    }
+    return null;
+  }
 }

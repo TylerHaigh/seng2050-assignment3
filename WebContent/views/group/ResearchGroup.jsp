@@ -73,7 +73,7 @@
 	    
 	    <c:forEach var="document" items="${ groupDocuments }" >
 	        <a href="${pageContext.request.contextPath}/document/document?threadId=${document.threadId}" class="list-group-item">
-	            <c:out value="File Name: ${ document.documentName }" />
+	            ${document.documentName}: Version ${document.versionNumber} - Uploaded on ${document.uploadDate}
 	        </a>
 	    </c:forEach>
 	</div>	
